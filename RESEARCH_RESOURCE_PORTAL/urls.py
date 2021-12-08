@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from LOGIN import views
+# from LOGIN import views
+from testDB import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login_firebase/', views.login_firebase)
+    # path('login_firebase/', views.login_firebase),
+    path('', views.insertRecord)
 ]

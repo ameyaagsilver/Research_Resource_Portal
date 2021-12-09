@@ -1,0 +1,503 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=Life+Savers);
+
+.container,
+.headerWarp .brandInner,
+.newsWarp .newsInner,
+.newsWarp .menuInner,
+.footerMenu .newsInner,
+.footerMenu .menuInner,
+.mainWarp .mainContentInner,
+.footerWarp .footerInner {
+    width: 1000px;
+    margin: 0 auto;
+    overflow: auto;
+    background: #fff;
+    padding: 20px;
+}
+
+.headerWarp {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.headerWarp .brandInner .logo {
+    width: 15.25424%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: none;
+}
+
+.headerWarp .brandInner .brandName {
+    width: 57.62712%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 16.94915%;
+    clear: none;
+}
+
+.headerWarp .brandInner .brand {
+    width: 23.72881%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.headerWarp .brandInner .brand .block--block-29 {
+    display: none;
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+    .headerWarp .brandInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+        padding: 20px 20px 10px !important;
+    }
+
+    .headerWarp .brandInner .brandName h3 {
+        margin-bottom: 3px !important;
+        font-size: 14px !important;
+    }
+
+    .headerWarp .brandInner .brandName h1 a {
+        font-size: 26px;
+    }
+
+    .headerWarp .brandInner .brand h1 {
+        margin-right: 0px !important;
+        font-size: 20px !important;
+    }
+
+    .headerWarp .brandInner .brand img {
+        width: 42px;
+        float: right;
+    }
+}
+
+@media (min-width:0px) and (max-width:767px) {
+    .headerWarp .brandInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+        padding: 0px !important;
+        text-align: center;
+        padding: 0px 20px;
+    }
+
+    .headerWarp .brandInner .logo {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+        padding-top: 10px;
+        text-align: center;
+    }
+
+    .headerWarp .brandInner .brandName {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .headerWarp .brandInner .brandName h3 {
+        margin-bottom: 0px !important;
+        font-size: 14px !important;
+    }
+
+    .headerWarp .brandInner .brandName h1 a {
+        font-size: 20px !important;
+    }
+
+    .headerWarp .brandInner .brand {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+        padding: 0px 10px 5px;
+    }
+
+    .headerWarp .brandInner .brand h1 {
+        font-size: 20px !important;
+        line-height: 46px !important;
+    }
+
+    .headerWarp .brandInner .brand .block--block-1 {
+        width: 80%;
+        float: left;
+    }
+
+    .headerWarp .brandInner .brand .block--block-1 img {
+        width: 30px;
+        float: right;
+    }
+
+    .headerWarp .brandInner .brand .block--block-29 {
+        display: block;
+        width: 15%;
+        float: right;
+        padding-top: 7px;
+    }
+}
+
+.newsWarp,
+.footerMenu {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+
+    .newsWarp .newsInner,
+    .newsWarp .menuInner,
+    .footerMenu .newsInner,
+    .footerMenu .menuInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+    }
+
+    .newsWarp .newsInner .block--menu-menu-footer-menu ul li,
+    .newsWarp .menuInner .block--menu-menu-footer-menu ul li,
+    .footerMenu .newsInner .block--menu-menu-footer-menu ul li,
+    .footerMenu .menuInner .block--menu-menu-footer-menu ul li {
+        padding: 0px 0.32% !important;
+    }
+}
+
+@media (min-width:0px) and (max-width:767px) {
+
+    .newsWarp .newsInner,
+    .newsWarp .menuInner,
+    .footerMenu .newsInner,
+    .footerMenu .menuInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+    }
+
+    .newsWarp .newsInner .block--menu-menu-footer-menu ul li,
+    .newsWarp .menuInner .block--menu-menu-footer-menu ul li,
+    .footerMenu .newsInner .block--menu-menu-footer-menu ul li,
+    .footerMenu .menuInner .block--menu-menu-footer-menu ul li {
+        float: left;
+        width: 100%;
+        padding: 5px 0px;
+    }
+}
+
+.mmenubar {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.mmenubar .mmenubarInner {
+    width: 94.91525%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 2.54237%;
+    clear: none;
+}
+
+@media (min-width:1040px) {
+    .mmenubar {
+        display: none;
+    }
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+    .mmenubar {
+        display: none;
+    }
+}
+
+.front .mainContent {
+    width: 57.62712%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 16.94915%;
+    clear: none;
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+    .front .mainContent {
+        width: 57.62712%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 16.94915%;
+        clear: none;
+    }
+}
+
+.not-front .mainContent {
+    width: 83.05085%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+    .not-front .mainContent {
+        width: 83.05085%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+}
+
+.not-front .rightSidebar {
+    width: -1.69492%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 76.27119%;
+    clear: none;
+    display: none;
+}
+
+.mainWarp {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.mainWarp .mainContentInner {
+    overflow: hidden;
+}
+
+.mainWarp .mainContentInner .leftSidebar {
+    width: 15.25424%;
+    float: left;
+    margin-right: -100%;
+    margin-left: 0;
+    clear: none;
+}
+
+.mainWarp .mainContentInner .mainContent .block,
+.mainWarp .mainContentInner .mainContent .node {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.mainWarp .mainContentInner .rightSidebar {
+    width: 23.72881%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+    .mainWarp .mainContentInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .leftSidebar {
+        width: 15.25424%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 0;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .mainContent .block,
+    .mainWarp .mainContentInner .mainContent .node {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .rightSidebar {
+        width: 23.72881%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .rightSidebar ul.quicktabs-tabs li a {
+        padding: 2px 1% 4px !important;
+    }
+
+    .mainWarp .mainContentInner .rightSidebar .block--quicktabs p {
+        font-size: 11px !important;
+    }
+}
+
+@media (min-width:0px) and (max-width:767px) {
+    .mainWarp .mainContentInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+        overflow: hidden;
+    }
+
+    .mainWarp .mainContentInner .leftSidebar {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+        display: none;
+    }
+
+    .mainWarp .mainContentInner .mainContent {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .mainContent .block,
+    .mainWarp .mainContentInner .mainContent .node {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .rightSidebar {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .mainWarp .mainContentInner .rightSidebar .block--quicktabs-events h2 {
+        margin-top: 0px !important;
+    }
+}
+
+.footerWarp {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.footerWarp .footerInner .footerTop {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+.footerWarp .footerInner .footerBottom {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+}
+
+@media (min-width:768px) and (max-width:1039px) {
+    .footerWarp .footerInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+    }
+
+    .footerWarp .footerInner .footerTop {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+
+    .footerWarp .footerInner .footerBottom {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+}
+
+@media (min-width:0px) and (max-width:767px) {
+    .footerWarp .footerInner {
+        width: 94.91525%;
+        float: left;
+        margin-right: -100%;
+        margin-left: 2.54237%;
+        clear: none;
+        padding: 0px !important;
+    }
+
+    .footerWarp .footerInner .footerTop {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .footerWarp .footerInner .footerTop a img {
+        height: 40px !important;
+        width: 55px !important;
+    }
+
+    .footerWarp .footerInner .footerBottom {
+        width: 100%;
+        float: right;
+        margin-left: 0;
+        margin-right: 0;
+        clear: none;
+    }
+}
+
+.logged-in.section-users .mainContentInner,
+.logged-in.section-user .mainContentInner {
+    width: 100%;
+    float: right;
+    margin-left: 0;
+    margin-right: 0;
+    clear: none;
+    padding: 0px;
+}

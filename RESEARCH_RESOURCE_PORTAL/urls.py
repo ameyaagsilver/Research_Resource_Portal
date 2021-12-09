@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-# from LOGIN import views
-from testDB import views
+from testDB import views as v1
+from LOGIN import views as v2
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('login_firebase/', views.login_firebase),
-    path('', views.insertRecord)
+    path('', v1.insertRecord),
+    path('login/', v2.login),
+    path('home/', v2.home)
 ]

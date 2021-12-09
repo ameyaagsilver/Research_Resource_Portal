@@ -1,6 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
-def login_firebase(request):
-    return render(request, "login_firebase.html")
-    
+
+
+def login(request):
+    return render(request, "signin.html")
+
+
+def home(request):
+    return render(request, "index-2.html")

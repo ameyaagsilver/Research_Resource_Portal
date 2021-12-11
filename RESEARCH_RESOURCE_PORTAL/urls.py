@@ -19,9 +19,13 @@ from testDB import views as v1
 from LOGIN import views as v2
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('login_firebase/', views.login_firebase),
-    path('', v1.insertRecord),
-    path('login/', v2.login),
-    path('home/', v2.home)
+     path('admin/', admin.site.urls),
+    #  path('login_firebase/', views.login_firebase),
+     path('', v1.insertRecord),
+     #path('login/', v2.login),
+    path('home/', v2.home),
+     path('books-media-list-view/', v2.resources, name="books-media-list-view"),
+     path('signin/', v2.signin, name="signin"),
+     path('services/', v2.services, name="services"),
+     
 ]

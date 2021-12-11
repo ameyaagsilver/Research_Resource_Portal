@@ -1,7 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="zxx">
-    
-
 <head>        
 
         <!-- Meta -->
@@ -12,22 +11,22 @@
         <title>..:: LIBRARIA ::..</title>
 
         <!-- Favicon -->
-        <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
+        <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/x-icon" />
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
         
         <!-- Mobile Menu -->
-        <link href="css/mmenu.css" rel="stylesheet" type="text/css" />
-        <link href="css/mmenu.positioning.css" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/mmenu.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/mmenu.positioning.css' %}" rel="stylesheet" type="text/css" />
         
         <!-- Accordion Stylesheet -->
-        <link rel="stylesheet" type="text/css" href="css/jquery.accordion.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.accordion.css' %}">
         
         <!-- Stylesheet -->
-        <link href="style.css" rel="stylesheet" type="text/css" />
-
+        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+        
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -38,9 +37,8 @@
     </head>
 
     <body>
-
         <!-- Start: Header Section -->
-        <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper">
+        <header id="header-v1" class="navbar-wrapper">
             <div class="container">
                 <div class="row">
                     <nav class="navbar navbar-default">
@@ -50,7 +48,7 @@
                                     <div class="navbar-brand">
                                         <h1>
                                             <a href="index-2.html">
-                                                <img src="images/libraria-logo-v1.png" alt="LIBRARIA" />
+                                                <img src="https://rvce.edu.in/sites/default/files/logo_0.png" alt="rvce logo" />
                                             </a>
                                         </h1>
                                     </div>
@@ -62,21 +60,20 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="topbar-info">
-                                                <a href="tel:+61-3-8376-6284"><i class="fa fa-phone"></i>+61-3-8376-6284</a>
+                                                <a href="tel:+91 9876543210"><i class="fa fa-phone"></i>+91 9876543210</a>
                                                 <span>/</span>
-                                                <a href="mailto:support@libraria.com"><i class="fa fa-envelope"></i>support@libraria.com</a>
+                                                <a href="mailto:support@rrp.com"><i class="fa fa-envelope"></i>support@rrp.com</a>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="topbar-links">
                                                 <a href="signin.html"><i class="fa fa-lock"></i>Login / Register</a>
-                                                <span>|</span>
                                                 <div class="header-cart dropdown">
-                                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                                    <!-- <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                                         <i class="fa fa-shopping-cart"></i>
                                                         <small>0</small>
-                                                    </a>
-                                                    <div class="dropdown-menu cart-dropdown">
+                                                    </a> -->
+                                                    <!-- <div class="dropdown-menu cart-dropdown">
                                                         <ul>
                                                             <li class="clearfix">
                                                                 <img src="images/header-cart-image-01.jpg" alt="cart item" />
@@ -120,7 +117,7 @@
                                                             <a href="cart.html" class="btn btn-dark-gray">View Cart</a>
                                                             <a href="checkout.html" class="btn btn-primary">Checkout</a>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -130,44 +127,21 @@
                                     <ul class="nav navbar-nav">
                                         <li class="dropdown active">
                                             <a data-toggle="dropdown" class="dropdown-toggle disabled" href="index-2.html">Home</a>
-                                            <ul class="dropdown-menu">
+                                            <!-- <ul class="dropdown-menu">
                                                 <li><a href="index-2.html">Home V1</a></li>
                                                 <li><a href="home-v2.html">Home V2</a></li>
                                                 <li><a href="home-v3.html">Home V3</a></li>
-                                            </ul>
+                                            </ul> -->
                                         </li>
                                         <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="books-media-list-view.html">Books &amp; Media</a>
-                                            <ul class="dropdown-menu">
+                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'books-media-list-view' %}">Resources</a>
+                                            <!-- <ul class="dropdown-menu">
                                                 <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
                                                 <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
                                                 <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                                 <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
                                                 <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="news-events-list-view.html">News &amp; Events</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="news-events-list-view.html">News &amp; Events List View</a></li>
-                                                <li><a href="news-events-detail.html">News &amp; Events Detail</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="#">Pages</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="cart.html">Cart</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="signin.html">Signin/Register</a></li>
-                                                <li><a href="404.html">404/Error</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="blog.html">Blog</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="blog.html">Blog Grid View</a></li>
-                                                <li><a href="blog-detail.html">Blog Detail</a></li>
-                                            </ul>
+                                            </ul> -->
                                         </li>
                                         <li><a href="services.html">Services</a></li>
                                         <li><a href="contact.html">Contact</a></li>
@@ -185,44 +159,44 @@
                                     </li>
                                     <li>
                                         <a href="index-2.html">Home</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="index-2.html">Home V1</a></li>
                                             <li><a href="home-v2.html">Home V2</a></li>
                                             <li><a href="home-v3.html">Home V3</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
-                                        <a href="books-media-list-view.html">Books &amp; Media</a>
-                                        <ul>
+                                        <a href="books-media-list-view.html">Resources</a>
+                                        <!-- <ul>
                                             <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
                                             <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
                                             <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                             <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
                                             <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="news-events-list-view.html">News &amp; Events</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="news-events-list-view.html">News &amp; Events List View</a></li>
                                             <li><a href="news-events-detail.html">News &amp; Events Detail</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="#">Pages</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="cart.html">Cart</a></li>
                                             <li><a href="checkout.html">Checkout</a></li>
                                             <li><a href="signin.html">Signin/Register</a></li>
                                             <li><a href="404.html">404/Error</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="blog.html">Blog</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="blog.html">Blog Grid View</a></li>
                                             <li><a href="blog-detail.html">Blog Detail</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li><a href="services.html">Services</a></li>
                                     <li><a href="contact.html">Contact</a></li>
@@ -239,14 +213,14 @@
         <section class="page-banner services-banner">
             <div class="container">
                 <div class="banner-header">
-                    <h2>Books & Media Listing</h2>
+                    <h2>Resources</h2>
                     <span class="underline center"></span>
-                    <p class="lead">Proin ac eros pellentesque dolor pharetra tempo.</p>
+                    <p class="lead">Find all the resources available here . </p>
                 </div>
                 <div class="breadcrumb">
                     <ul>
                         <li><a href="index-2.html">Home</a></li>
-                        <li>Books & Media</li>
+                        <li>Resources</li>
                     </ul>
                 </div>
             </div>
@@ -336,7 +310,7 @@
                                             <div class="single-book-box">                                                
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon yellow-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="images/books-media/list-view/book-media-01.jpg" /></a>                                                                 </div>
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="{% static 'images/books-media/list-view/book-media-01.jpg' %}" /></a>                                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
                                                         <ul>
@@ -418,7 +392,7 @@
                                             <div class="single-book-box">
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon light-green-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="images/books-media/list-view/book-media-02.jpg" /></a>                                                    
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="{% static 'images/books-media/list-view/book-media-02.jpg' %}" /></a>                                                    
                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
@@ -498,7 +472,7 @@
                                             <div class="single-book-box">
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon blue-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="images/books-media/list-view/book-media-03.jpg" /></a>
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="{% static 'images/books-media/list-view/book-media-03.jpg' %}" /></a>
                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
@@ -578,7 +552,7 @@
                                             <div class="single-book-box">
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon red-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="images/books-media/list-view/book-media-04.jpg" /></a>                                             
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="{% static 'images/books-media/list-view/book-media-04.jpg' %}" /></a>                                             
                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
@@ -658,7 +632,7 @@
                                             <div class="single-book-box">
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon red-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="images/books-media/list-view/book-media-05.jpg" /></a>                                                 
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="{% static 'images/books-media/list-view/book-media-05.jpg' %}" /></a>                                                 
                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
@@ -738,7 +712,7 @@
                                             <div class="single-book-box">
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon green-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="images/books-media/list-view/book-media-06.jpg" /></a>
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src="{% static 'images/books-media/list-view/book-media-06.jpg' %}" /></a>
                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
@@ -977,7 +951,7 @@
                                             <ul>
                                                 <li>
                                                     <figure>
-                                                        <img src="images/order-item-01.jpg" alt="product" />
+                                                        <img src="{% static 'images/order-item-01.jpg' %}" alt="product" />
                                                     </figure>
                                                     <a href="#">The Sonic Boom</a>
                                                     <span class="price"><strong>Author:</strong> F. Scott Fitzgerald</span>
@@ -993,7 +967,7 @@
                                                 </li>
                                                 <li>
                                                     <figure>
-                                                        <img src="images/order-item-02.jpg" alt="product" />
+                                                        <img src="{% static 'images/order-item-02.jpg' %}" alt="product" />
                                                     </figure>
                                                     <a href="#">The Sonic Boom</a>
                                                     <span class="price"><strong>Author:</strong> F. Scott Fitzgerald</span>
@@ -1009,7 +983,7 @@
                                                 </li>
                                                 <li>
                                                     <figure>
-                                                        <img src="images/order-item-03.jpg" alt="product" />
+                                                        <img src="{% static 'images/order-item-03.jpg' %}" alt="product" />
                                                     </figure>
                                                     <a href="#">The Sonic Boom</a>
                                                     <span class="price"><strong>Author:</strong> F. Scott Fitzgerald</span>
@@ -1042,12 +1016,12 @@
                                 <div class="team-list">
                                     <div class="team-member">
                                         <figure>
-                                            <img src="images/books-media/staff-pick/staff-picks-01.jpg" alt="Staff Pick" />
+                                            <img src="{% static 'images/books-media/staff-pick/staff-picks-01.jpg' %}" alt="Staff Pick" />
                                         </figure>
                                         <div class="content-block">
                                             <div class="member-info">
                                                 <div class="member-thumb">
-                                                    <img src="images/books-media/staff-pick/gail.jpg" alt="Katherine">
+                                                    <img src="{% static 'images/books-media/staff-pick/gail.jpg' %}" alt="Katherine">
                                                 </div>
                                                 <div class="member-content">
                                                     <span class="designation">Downtown & Business</span>
@@ -1082,12 +1056,12 @@
                                     </div>
                                     <div class="team-member">
                                         <figure>
-                                            <img src="images/books-media/staff-pick/staff-picks-02.jpg" alt="Staff Pick" />
+                                            <img src="{% static 'images/books-media/staff-pick/staff-picks-02.jpg' %}" alt="Staff Pick" />
                                         </figure>
                                         <div class="content-block">
                                             <div class="member-info">
                                                 <div class="member-thumb">
-                                                    <img src="images/books-media/staff-pick/katherine.jpg" alt="Katherine">
+                                                    <img src="{% static 'images/books-media/staff-pick/katherine.jpg' %}" alt="Katherine">
                                                 </div>
                                                 <div class="member-content">
                                                     <span class="designation">Katherine, West End</span>
@@ -1122,12 +1096,12 @@
                                     </div>
                                     <div class="team-member">
                                         <figure>
-                                            <img src="images/books-media/staff-pick/staff-picks-03.jpg" alt="Staff Pick" />
+                                            <img src="{% static 'images/books-media/staff-pick/staff-picks-03.jpg' %}" alt="Staff Pick" />
                                         </figure>
                                         <div class="content-block">
                                             <div class="member-info">
                                                 <div class="member-thumb">
-                                                    <img src="images/books-media/staff-pick/chris.jpg" alt="Katherine">
+                                                    <img src="{% static 'images/books-media/staff-pick/chris.jpg' %}" alt="Katherine">
                                                 </div>
                                                 <div class="member-content">
                                                     <span class="designation">Chris, East Liberty</span>
@@ -1331,55 +1305,55 @@
         <!-- End: Footer -->
 
         <!-- jQuery Latest Version 1.x -->
-        <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
         
         <!-- jQuery UI -->
-        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
         
         <!-- jQuery Easing -->
-        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.easing.1.3.js' %}"></script>
 
         <!-- Bootstrap -->
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
         
         <!-- Mobile Menu -->
-        <script type="text/javascript" src="js/mmenu.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/mmenu.min.js' %}"></script>
         
         <!-- Harvey - State manager for media queries -->
-        <script type="text/javascript" src="js/harvey.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/harvey.min.js' %}"></script>
         
         <!-- Waypoints - Load Elements on View -->
-        <script type="text/javascript" src="js/waypoints.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/waypoints.min.js' %}"></script>
 
         <!-- Facts Counter -->
-        <script type="text/javascript" src="js/facts.counter.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/facts.counter.min.js' %}"></script>
 
         <!-- MixItUp - Category Filter -->
-        <script type="text/javascript" src="js/mixitup.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/mixitup.min.js' %}"></script>
 
         <!-- Owl Carousel -->
-        <script type="text/javascript" src="js/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
         
         <!-- Accordion -->
-        <script type="text/javascript" src="js/accordion.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/accordion.min.js' %}"></script>
         
         <!-- Responsive Tabs -->
-        <script type="text/javascript" src="js/responsive.tabs.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/responsive.tabs.min.js' %}"></script>
         
         <!-- Responsive Table -->
-        <script type="text/javascript" src="js/responsive.table.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/responsive.table.min.js' %}"></script>
         
         <!-- Masonry -->
-        <script type="text/javascript" src="js/masonry.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/masonry.min.js' %}"></script>
         
         <!-- Carousel Swipe -->
-        <script type="text/javascript" src="js/carousel.swipe.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/carousel.swipe.min.js' %}"></script>
         
         <!-- bxSlider -->
-        <script type="text/javascript" src="js/bxslider.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/bxslider.min.js' %}"></script>
         
         <!-- Custom Scripts -->
-        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
     </body>
 

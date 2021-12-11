@@ -12,30 +12,33 @@
         
         <!-- Favicon -->
         <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
-        
+        <!-- <link href="{% static 'js/bootstrap.min.css' %}" rel="stylesheet"> -->
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
         
         <!-- Mobile Menu -->
-        <link href="css/mmenu.css" rel="stylesheet" type="text/css" />
-        <link href="css/mmenu.positioning.css" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/mmenu.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/mmenu.positioning.css' %}" rel="stylesheet" type="text/css" />
         
         <!-- Stylesheet -->
-        <link href="{% static 'style.css' %}" rel="stylesheet">
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
         <![endif]-->
+        <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+        
     </head>
 
 
     <body>
         
         <!-- Start: Header Section -->
-        <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper">
+        <header id="header-v1" class="navbar-wrapper">
             <div class="container">
                 <div class="row">
                     <nav class="navbar navbar-default">
@@ -45,7 +48,7 @@
                                     <div class="navbar-brand">
                                         <h1>
                                             <a href="index-2.html">
-                                                <img src="images/libraria-logo-v1.png" alt="LIBRARIA" />
+                                                <img src="https://rvce.edu.in/sites/default/files/logo_0.png" alt="rvce logo" />
                                             </a>
                                         </h1>
                                     </div>
@@ -57,21 +60,20 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="topbar-info">
-                                                <a href="tel:+61-3-8376-6284"><i class="fa fa-phone"></i>+61-3-8376-6284</a>
+                                                <a href="tel:+91 9876543210"><i class="fa fa-phone"></i>+91 9876543210</a>
                                                 <span>/</span>
-                                                <a href="mailto:support@libraria.com"><i class="fa fa-envelope"></i>support@libraria.com</a>
+                                                <a href="mailto:support@rrp.com"><i class="fa fa-envelope"></i>support@rrp.com</a>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="topbar-links">
                                                 <a href="signin.html"><i class="fa fa-lock"></i>Login / Register</a>
-                                                <span>|</span>
                                                 <div class="header-cart dropdown">
-                                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                                    <!-- <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                                         <i class="fa fa-shopping-cart"></i>
                                                         <small>0</small>
-                                                    </a>
-                                                    <div class="dropdown-menu cart-dropdown">
+                                                    </a> -->
+                                                    <!-- <div class="dropdown-menu cart-dropdown">
                                                         <ul>
                                                             <li class="clearfix">
                                                                 <img src="images/header-cart-image-01.jpg" alt="cart item" />
@@ -115,7 +117,7 @@
                                                             <a href="cart.html" class="btn btn-dark-gray">View Cart</a>
                                                             <a href="checkout.html" class="btn btn-primary">Checkout</a>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -125,44 +127,21 @@
                                     <ul class="nav navbar-nav">
                                         <li class="dropdown active">
                                             <a data-toggle="dropdown" class="dropdown-toggle disabled" href="index-2.html">Home</a>
-                                            <ul class="dropdown-menu">
+                                            <!-- <ul class="dropdown-menu">
                                                 <li><a href="index-2.html">Home V1</a></li>
                                                 <li><a href="home-v2.html">Home V2</a></li>
                                                 <li><a href="home-v3.html">Home V3</a></li>
-                                            </ul>
+                                            </ul> -->
                                         </li>
                                         <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="books-media-list-view.html">Books &amp; Media</a>
-                                            <ul class="dropdown-menu">
+                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'books-media-list-view' %}">Resources</a>
+                                            <!-- <ul class="dropdown-menu">
                                                 <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
                                                 <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
                                                 <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                                 <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
                                                 <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="news-events-list-view.html">News &amp; Events</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="news-events-list-view.html">News &amp; Events List View</a></li>
-                                                <li><a href="news-events-detail.html">News &amp; Events Detail</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="#">Pages</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="cart.html">Cart</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="signin.html">Signin/Register</a></li>
-                                                <li><a href="404.html">404/Error</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="blog.html">Blog</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="blog.html">Blog Grid View</a></li>
-                                                <li><a href="blog-detail.html">Blog Detail</a></li>
-                                            </ul>
+                                            </ul> -->
                                         </li>
                                         <li><a href="services.html">Services</a></li>
                                         <li><a href="contact.html">Contact</a></li>
@@ -180,44 +159,44 @@
                                     </li>
                                     <li>
                                         <a href="index-2.html">Home</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="index-2.html">Home V1</a></li>
                                             <li><a href="home-v2.html">Home V2</a></li>
                                             <li><a href="home-v3.html">Home V3</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
-                                        <a href="books-media-list-view.html">Books &amp; Media</a>
-                                        <ul>
+                                        <a href="books-media-list-view.html">Resources</a>
+                                        <!-- <ul>
                                             <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
                                             <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
                                             <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                             <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
                                             <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="news-events-list-view.html">News &amp; Events</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="news-events-list-view.html">News &amp; Events List View</a></li>
                                             <li><a href="news-events-detail.html">News &amp; Events Detail</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="#">Pages</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="cart.html">Cart</a></li>
                                             <li><a href="checkout.html">Checkout</a></li>
                                             <li><a href="signin.html">Signin/Register</a></li>
                                             <li><a href="404.html">404/Error</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="blog.html">Blog</a>
-                                        <ul>
+                                        <!-- <ul>
                                             <li><a href="blog.html">Blog Grid View</a></li>
                                             <li><a href="blog-detail.html">Blog Detail</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li><a href="services.html">Services</a></li>
                                     <li><a href="contact.html">Contact</a></li>
@@ -307,24 +286,77 @@
                                                             <!-- <p>If no barcode has been assigned for your account, please contact the library.</p> -->
                                                         </div>
                                                         <form class="login" method="post">
+                                                            {% csrf_token %}
                                                             <p class="form-row form-row-first input-required">
                                                                 <label>
                                                                     <span class="first-letter">Email ID</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label>
-                                                                <input type="text" id="username1" name="username" class="input-text">
+                                                                <input type="text" id="useremail" name="username" class="input-text">
                                                             </p>
                                                             <p class="form-row input-required">
                                                                 <label>
                                                                     <span class="first-letter">Password</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label>
-                                                                <input type="password" id="password1" name="password" class="input-text">
+                                                                <input type="password" id="userpass" name="password" class="input-text">
                                                             </p>                                                                                
                                                             <div class="clear"></div>
-                                                            <input type="submit" value="Signup" name="signup" class="button btn btn-default">
+                                                            <input type="submit" value="Signup" name="signup" id="signupbtn" class="button btn btn-default">
                                                             <div class="clear"></div>
-                                                        </form> 
+                                                        </form>
+                                                        <script>
+                                                            // Your web app's Firebase configuration
+                                                            const firebaseConfig = {
+                                                                apiKey: "AIzaSyDnv29NZQkHU-As77bePEse5V_AYIunIOI",
+                                                                authDomain: "research-resource-portal.firebaseapp.com",
+                                                                projectId: "research-resource-portal",
+                                                                storageBucket: "research-resource-portal.appspot.com",
+                                                                messagingSenderId: "437072985389",
+                                                                appId: "1:437072985389:web:a66b365ddb3aed9fa0e7a4",
+                                                                measurementId: "${config.measurementId}"
+                                                            };
+                                                            // Initialize Firebase
+                                                            firebase.initializeApp(firebaseConfig);
+                                                            firebase.analytics();
+                                                          
+                                                            var signupbtn=document.getElementById("signupbtn");
+                                                            var emailsignup=document.getElementById("useremail");
+                                                            var passswordsignup=document.getElementById("userpass");
+                                                          
+                                                          
+                                                            //================Signup With Email and Password==========================
+                                                            signupbtn.onclick=function(){
+                                                                signupbtn.disabled=true;
+                                                                signupbtn.textContent="Registering Your Account! Please Wait";
+                                                                firebase.auth().createUserWithEmailAndPassword(emailsignup.value,passswordsignup.value).then(function(response){
+                                                                  sendingVerifyEmail(signupbtn);
+                                                                      console.log(response);
+                                                                })
+                                                                .catch(function(error){
+                                                                  signupbtn.disabled=false;
+                                                                  signupbtn.textContent="Sign Up";
+                                                                    console.log(error);
+                                                                })
+                                                          
+                                                          
+                                                            };
+                                                          
+                                                            function sendingVerifyEmail(button){
+                                                               firebase.auth().currentUser.sendEmailVerification().then(function(response){
+                                                                          signupbtn.disabled=false;
+                                                                  signupbtn.textContent="Sign Up S";
+                                                          
+                                                                  console.log(response);
+                                                               })
+                                                               .catch(function(error){
+                                                                          signupbtn.disabled=false;
+                                                                  signupbtn.textContent="Sign Up S";
+                                                          
+                                                                   console.log(error);
+                                                               })
+                                                            }
+                                                        </script> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -549,6 +581,11 @@
         
         <!-- Custom Scripts -->
         <script type="text/javascript" src="js/main.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
 
     </body>
 

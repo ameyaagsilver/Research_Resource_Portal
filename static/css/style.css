@@ -309,7 +309,7 @@ th {
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('fonts/glyphicons-halflings-regular.eot');
-  src: url('fonts/glyphicons-halflings-regulard41d.eot?#iefix') format('embedded-opentype'), url('fonts/glyphicons-halflings-regular.html') format('woff2'), url('fonts/glyphicons-halflings-regular.woff') format('woff'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('fonts/glyphicons-halflings-regulard41d.eot?#iefix') format('embedded-opentype'), url('/static/fonts/glyphicons-halflings-regular.html') format('woff2'), url('fonts/glyphicons-halflings-regular.woff') format('woff'), url('fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -7154,6 +7154,8 @@ body .btn.btn-dark-gray {
   border-color: #3e3e3e;
   color: #fff;
 }
+
+
 .btn-primary {
   border: 0;
 }
@@ -7314,7 +7316,7 @@ th {
   width: 100%;
 }
 .underline {
-  background-image: url(images/underline.png);
+  background-image: url("/static/images/underline.png");
   background-repeat: no-repeat;
   float: left;
   height: 1px;
@@ -7331,7 +7333,7 @@ th {
   background-position: right top;
 }
 .layout-v2 .underline {
-  background-image: url(images/green-underline.png);
+  background-image: url("/static/images/green-underline.png");
 }
 .rating {
   display: block;
@@ -9227,7 +9229,7 @@ a:focus {
   z-index: -1;
 }
 .mm-list > li .close {
-  background: url(images/close_icon.png) no-repeat;
+  background: url("/static/images/close_icon.png") no-repeat;
   border: 0px;
   cursor: pointer;
   float: right;
@@ -9249,7 +9251,7 @@ a:focus {
   background-color: transparent;
 }
 .mm-list > li.mm-selected > a.close:not(.mm-subopen) {
-  background: url(images/close_icon.png) no-repeat;
+  background: url("/static/images/close_icon.png") no-repeat;
 }
 .mobile-top-head {
   background-color: rgba(255, 255, 255, 0.94);
@@ -9406,7 +9408,7 @@ a:focus {
   position: relative;
 }
 .welcome-section .welcome-image {
-  background-image: url(images/welcome-img-home-v1.jpg);
+  background-image: url("/static/images/welcome-img-home-v1.jpg");
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
@@ -9517,7 +9519,7 @@ a:focus {
   width: 64px;
 }
 .facts-counter ul li .fact-item .fact-icon i {
-  background-image: url(images/facts-count-icons-v1.png);
+  background-image: url("/static/images/facts-count-icons-v1.png");
   background-position: 300px 300px;
   background-repeat: no-repeat;
   display: inline-block;
@@ -9824,7 +9826,7 @@ a:focus {
   }
 }
 .features ul li .feature-box i {
-  background-image: url(images/features-icons-home-v1.png);
+  background-image: url("/static/images/features-icons-home-v1.png");
   background-position: 500px 500px;
   background-repeat: no-repeat;
   display: inline-block;
@@ -10863,7 +10865,7 @@ a:focus {
   }
 }
 .latest-blog .tabs-container .tabs-menu ul li a i {
-  background-image: url(images/features-icons-home-v1.png);
+  background-image: url("/static/images/features-icons-home-v1.png");
   background-position: 500px 500px;
   background-repeat: no-repeat;
   display: inline-block;
@@ -11974,7 +11976,7 @@ a:focus {
   color: #282828;
 }
 .layout-v2 .category-filter {
-  background-image: url(images/project-filter-bg-home-v2.jpg);
+  background-image: url("/static/images/project-filter-bg-home-v2.jpg");
 }
 .layout-v2 .category-filter .filter-buttons .btn.active,
 .layout-v2 .category-filter .filter-buttons .btn:hover {
@@ -13644,7 +13646,7 @@ a:focus {
   background-image: url(images/page-banners/product-banner.jpg);
 }
 .page-banner.services-banner {
-  background-image: url(images/page-banners/services-banner.jpg);
+  background-image: url("/static/images/page-banners/services-banner.jpg");
 }
 .page-banner.signin-banner {
   background-image: url(images/page-banners/signin-banner.jpg);
@@ -16607,7 +16609,7 @@ a:focus {
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
 }
 .book-list-icon {
-  background-image: url("images/book-list-icons.png");
+  background-image: url("/static/images/book-list-icons.png");
   background-repeat: no-repeat;
   height: 55px;
   left: -10px;
@@ -16662,7 +16664,7 @@ a:focus {
 }
 .staff-picks {
   background-attachment: fixed;
-  background-image: url("images/staff-picks-bg.jpg");
+  background-image: url("/static/images/staff-picks-bg.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -18430,7 +18432,7 @@ a:focus {
   left: 0;
   height: 1px;
   width: 72px;
-  background: url('images/underline.png') center center no-repeat;
+  background: url("/static/images/underline.png") center center no-repeat;
 }
 .sidebar .widget-sub-title {
   border-bottom: 1px solid #f4f4f4;

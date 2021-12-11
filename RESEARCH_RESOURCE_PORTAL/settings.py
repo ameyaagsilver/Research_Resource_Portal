@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'testdb',
-        'USER': 'amg',
-        'PASSWORD': '123456',
+        'USER': 'root',
+        'PASSWORD': '@12Apr2001',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
@@ -128,9 +128,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    BASE_DIR / "static",
 ]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type

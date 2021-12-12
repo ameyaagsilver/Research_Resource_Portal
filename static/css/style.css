@@ -19763,6 +19763,9 @@ a:focus {
 /*--------------------------------------------------------------
 13.1.6. Books & Media --- List View
 --------------------------------------------------------------*/
+
+
+
 .single-book-box {
   border: 10px solid #f3f3f3;
   margin-bottom: 90px;
@@ -19783,7 +19786,7 @@ a:focus {
 }
 
 .single-book-box img {
-  width: 100%;
+  width: 40%
 }
 
 .single-book-box .books-social-sharing {
@@ -19946,6 +19949,7 @@ a:focus {
 .single-book-box .post-thumbnail {
   display: inline-block;
   margin: -40px 0 -40px -10px;
+  height: 50px;
 }
 
 @media (max-width: 767px) {

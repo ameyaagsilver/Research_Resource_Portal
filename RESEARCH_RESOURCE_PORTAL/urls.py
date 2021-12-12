@@ -14,18 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from testDB import views as v1
 from LOGIN import views as v2
+from USERVIEW import views as v3
+# from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
+from django.conf.urls.static import static
+# from RESEARCH_RESOURCE_PORTAL import settings
+import RESEARCH_RESOURCE_PORTAL.settings as settings
 
 urlpatterns = [
-     path('admin/', admin.site.urls),
-    #  path('login_firebase/', views.login_firebase),
-     path('', v1.insertRecord),
-     #path('login/', v2.login),
-    path('home/', v2.home),
-     path('books-media-list-view/', v2.resources, name="books-media-list-view"),
-     path('signin/', v2.signin, name="signin"),
-     path('services/', v2.services, name="services"),
-     
+    path('admin/', admin.site.urls),
+    path('', v1.insertRecord),
+    path('home/', v2.home, name="home"),
+    path('books-media-list-view/', v3.resources, name="books-media-list-view"),
+    path('signin/', v2.signin, name="signin"),
+    path('signup/', v2.signup, name="signup"),
+    path('services/', v2.services, name="services"),
+    path('logout/', v2.logout, name="logout"),
 ]
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

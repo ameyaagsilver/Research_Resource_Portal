@@ -14541,9 +14541,10 @@ a:focus {
   display: inline-block;
   float: right;
   text-align: right;
+  color: white;
 }
 .lost_password a:hover {
-  color: #fff;
+  color: white;
 }
 /*--------------------------------------------------------------
 13.1.2. News Listing

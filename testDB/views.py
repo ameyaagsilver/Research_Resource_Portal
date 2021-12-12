@@ -1,15 +1,18 @@
 from django.shortcuts import render
-from .models import emp
+from USERVIEW.models import test
+
 
 def insertRecord(request):
+    print("hello")
     if request.method == "POST":
-        if request.POST.get('name') and request.POST.get('country') and request.POST.get('emailID'):
-            record = emp()
-            record.country = request.POST.get('country')
-            record.emailID = request.POST.get('emailID')
+        if request.POST.get('name'):
+            print("HHHHH")
+            record = test()
             record.name = request.POST.get('name')
-            record.save()
+            print(request.FILES)
+            record.image = request.FILES['image']
+            print("***", record.save())
             messages = "Record inserted successfully..."
 
-            return render(request, 'testDB/index.html', {'mssg':messages})
+            return render(request, 'testDB/index.html', {'mssg': messages})
     return render(request, 'testDB/index.html')

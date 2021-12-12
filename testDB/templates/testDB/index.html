@@ -12,11 +12,10 @@
     <body>
         <h1>Creating tuples in MySQL</h1>
 
-        <form action="/" method="POST">
+        <form action="/" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             Employee name: <input type="name" name="name"><br>
-            Email ID: <input type="email" name="emailID"><br>
-            Country: <input type="name" name="country"><br>
+            Image : <input type="file" name="image"><br>
             <input type="submit" value="Submit">
         </form>
     </body>

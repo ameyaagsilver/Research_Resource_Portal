@@ -1,3 +1,4 @@
+from USERVIEW.models import resources as res
 from django.shortcuts import redirect, render
 import firebase_admin
 from firebase_admin import credentials
@@ -69,14 +70,16 @@ def signin(request):
                 return render(request, "signin.html", {"message": message})
             try:
                 user = auth.sign_in_with_email_and_password(email, password)
+                print(user)
             except:
                 message = "Invalid credentials!!! Try again"
                 return render(request, 'signin.html', {"message": message})
-            print(user)
+
+            # print(user)
             session_id = user['localId']
             request.session['uid'] = str(session_id)
             request.session['username'] = str(email.split('@')[0])
-            print(request.session['username'])
+            # print(request.session['username'])
             return redirect('home')
     return render(request, "signin.html")
 
@@ -104,10 +107,20 @@ def home(request):
     # r.OEM = "HPE"
     # r.adminId = "ergh3reu3r"
     # r.save()
+
     try:
         username = request.session['username']
+        print(username)
         print(request.session['uid'])
-        return render(request, "index-2.html", {"username": username})
+        user_id = request.session['uid']
+        admins = list(models.admins.objects.raw(
+            'SELECT user_id FROM admins WHERE user_id = "%s"' % user_id))
+        # print(admins, '**')
+        if(len(admins) == 1):
+            print("It is admin")
+            return render(request, "index-2.html", {"username": username, "admin": "YES"})
+        else:
+            return render(request, "index-2.html", {"username": username})
     except:
         pass
 
@@ -116,3 +129,20 @@ def home(request):
 
 def services(request):
     return render(request, "services.html")
+
+
+def resources(request):    # DISPLAYs all the resources in the database
+    resource_list = res.objects.all()
+    print("*************", resource_list)
+    try:
+        username = request.session['username']
+        print("((((", resource_list)
+        return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username})
+    except:
+        pass
+    return render(request, "generic-resources-list-view.html", {"resources": resource_list})
+
+
+def checkIfAdmin(user_id):
+    admins = models.admins.objects.raw('SELECT * FROM admins')
+    print(admins)

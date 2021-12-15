@@ -1,3 +1,4 @@
+from enum import auto
 from django.db import models
 
 
@@ -28,6 +29,14 @@ class admins(models.Model):
         db_table = "admins"
 
 
+class committee(models.Model):
+    committee_id = models.IntegerField(primary_key=True)
+    committee_name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "committee"
+
+
 class committee_members(models.Model):
     user_id = models.CharField(max_length=100, primary_key=True)
     first_name = models.CharField(max_length=50)
@@ -35,18 +44,10 @@ class committee_members(models.Model):
     last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=15)
     emailID = models.EmailField(max_length=100)
-    committee_id = models.IntegerField()
+    committee_id = models.ForeignKey(committee, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "committee_members"
-
-
-class committee(models.Model):
-    committee_id = models.IntegerField(primary_key=True)
-    committee_name = models.CharField(max_length=100)
-
-    class Meta:
-        db_table = "committee"
 
 
 class resources(models.Model):
@@ -61,7 +62,7 @@ class resources(models.Model):
     quantity = models.IntegerField()
     image = models.ImageField(upload_to="hello/")
     about = models.CharField(max_length=400)
-    adminId = models.CharField(max_length=100)
+    # adminId = models.ForeignKey(admins, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "resources"
@@ -70,15 +71,16 @@ class resources(models.Model):
 class test(models.Model):
     name = models.CharField(max_length=100)
     image = models.FileField(upload_to="hello/")
+
     class Meta:
         db_table = "test"
 
 
 class resource_logbook(models.Model):
     log_id = models.IntegerField(primary_key=True)
-    member_id = models.CharField(max_length=100)
-    admin_id = models.CharField(max_length=100)
-    resource_id = models.IntegerField()
+    member_id = models.ForeignKey(users, on_delete=models.CASCADE)
+    admin_id = models.ForeignKey(admins, on_delete=models.CASCADE)
+    resource_id = models.ForeignKey(resources, on_delete=models.CASCADE)
     issue_date = models.DateField()
     return_date = models.DateField()
 
@@ -95,8 +97,8 @@ class tender(models.Model):
     tender_issue_date = models.DateField()
     quantity = models.IntegerField()
     about = models.CharField(max_length=400)
-    admin_id = models.CharField(max_length=100)
-    committee_id = models.IntegerField()
+    admin_id = models.ForeignKey(admins, on_delete=models.CASCADE)
+    committee_id = models.ForeignKey(committee, on_delete=models.CASCADE)
     approval_date = models.DateField()
 
     class Meta:

@@ -16,3 +16,5 @@ def insertRecord(request):
 
             return render(request, 'testDB/index.html', {'mssg': messages})
     return render(request, 'testDB/index.html')
+
+

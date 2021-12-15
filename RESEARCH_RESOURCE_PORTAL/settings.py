@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'RESEARCH_RESOURCE_PORTAL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rrp_db_v1',
+        'NAME': 'rrp_db2',
         'USER': 'amg',
         'PASSWORD': '123456',
         'HOST': 'localhost',

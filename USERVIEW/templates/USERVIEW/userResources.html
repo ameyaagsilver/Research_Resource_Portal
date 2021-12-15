@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
 
         <!-- Title -->
-        <title>..:: LIBRARIA ::..</title>
+        <title>..:: RESEARCH RESOURCE PORTAL ::..</title>
 
         <!-- Favicon -->
         <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/x-icon" />
@@ -47,7 +47,7 @@
                                 <div class="navbar-header">
                                     <div class="navbar-brand">
                                         <h1>
-                                            <a href="index-2.html">
+                                            <a href="{% url 'home' %}">
                                                 <img src="https://rvce.edu.in/sites/default/files/logo_0.png" alt="rvce logo" />
                                             </a>
                                         </h1>
@@ -67,57 +67,49 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="topbar-links">
-                                                <a href="signin.html"><i class="fa fa-lock"></i>Login / Register</a>
                                                 <div class="header-cart dropdown">
-                                                    <!-- <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                                        <i class="fa fa-shopping-cart"></i>
-                                                        <small>0</small>
-                                                    </a> -->
-                                                    <!-- <div class="dropdown-menu cart-dropdown">
-                                                        <ul>
-                                                            <li class="clearfix">
-                                                                <img src="images/header-cart-image-01.jpg" alt="cart item" />
-                                                                <div class="item-info">
-                                                                    <div class="name">
-                                                                        <a href="#">The Great Gatsby</a>
+                                                    {% if username %}
+                                                        <a href="#"><i class="fa fa-user"></i>Hi, {{username}}
+                                                        {% if admin %}
+                                                         (ADMIN)
+                                                        {% endif %}
+                                                        </a>
+
+                                                        <div class="dropdown-menu cart-dropdown">
+                                                            <ul>
+                                                                <li><a href="{% url 'user-resources' %}">Borrowed resources</a></li>
+
+                                                                <!-- <li class="clearfix">
+                                                                    <img src="images/header-cart-image-03.jpg" alt="cart item" />
+                                                                    <div class="item-info">
+                                                                        <div class="name">
+                                                                            <a href="#">The Great Gatsby</a>
+                                                                        </div>
+                                                                        <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
+                                                                        <div class="price">1 X $10.00</div>
                                                                     </div>
-                                                                    <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
-                                                                    <div class="price">1 X $10.00</div>
-                                                                </div>
-                                                                <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
-                                                            </li>
-                                                            <li class="clearfix">
-                                                                <img src="images/header-cart-image-02.jpg" alt="cart item" />
-                                                                <div class="item-info">
-                                                                    <div class="name">
-                                                                        <a href="#">The Great Gatsby</a>
-                                                                    </div>
-                                                                    <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
-                                                                    <div class="price">1 X $10.00</div>
-                                                                </div>
-                                                                <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
-                                                            </li>
-                                                            <li class="clearfix">
-                                                                <img src="images/header-cart-image-03.jpg" alt="cart item" />
-                                                                <div class="item-info">
-                                                                    <div class="name">
-                                                                        <a href="#">The Great Gatsby</a>
-                                                                    </div>
-                                                                    <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
-                                                                    <div class="price">1 X $10.00</div>
-                                                                </div>
-                                                                <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
-                                                            </li>
-                                                        </ul>
-                                                        <div class="cart-total">
-                                                            <div class="title">SubTotal</div>
-                                                            <div class="price">$30.00</div>
+                                                                    <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
+                                                                </li> -->
+                                                            </ul>
+                                                            <!-- <div class="cart-total">
+                                                                <div class="title">SubTotal</div>
+                                                                <div class="price">$30.00</div>
+                                                            </div> -->
+                                                            
+                                                            <div class="cart-buttons">
+                                                                <a href="cart.html" class="btn btn-dark-gray">View Cart</a>
+                                                                <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+                                                            </div>
                                                         </div>
-                                                        <div class="cart-buttons">
-                                                            <a href="cart.html" class="btn btn-dark-gray">View Cart</a>
-                                                            <a href="checkout.html" class="btn btn-primary">Checkout</a>
-                                                        </div>
-                                                    </div> -->
+
+                                                    {% else %}
+
+                                                        <a href="{%  url 'signin' %}"><i class="fa fa-lock"></i>Login / Register</a>
+                                                        <!-- <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                                            <i class="fa fa-shopping-cart"></i> 
+                                                            <small>0</small> 
+                                                        </a> -->
+                                                    {% endif %}       
                                                 </div>
                                             </div>
                                         </div>
@@ -126,15 +118,15 @@
                                 <div class="navbar-collapse hidden-sm hidden-xs">
                                     <ul class="nav navbar-nav">
                                         <li class="dropdown active">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="index-2.html">Home</a>
+                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{% url 'home' %}">Home</a>
                                             <!-- <ul class="dropdown-menu">
-                                                <li><a href="index-2.html">Home V1</a></li>
+                                                <li><a href="{% url 'home' %}">Home V1</a></li>
                                                 <li><a href="home-v2.html">Home V2</a></li>
                                                 <li><a href="home-v3.html">Home V3</a></li>
                                             </ul> -->
                                         </li>
                                         <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'books-media-list-view' %}">Resources</a>
+                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'generic-resources-list-view' %}">Resources</a>
                                             <!-- <ul class="dropdown-menu">
                                                 <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
                                                 <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
@@ -158,9 +150,9 @@
                                         <a href="#" class="close"></a>
                                     </li>
                                     <li>
-                                        <a href="index-2.html">Home</a>
+                                        <a href="{% url 'home' %}">Home</a>
                                         <!-- <ul>
-                                            <li><a href="index-2.html">Home V1</a></li>
+                                            <li><a href="{% url 'home' %}">Home V1</a></li>
                                             <li><a href="home-v2.html">Home V2</a></li>
                                             <li><a href="home-v3.html">Home V3</a></li>
                                         </ul> -->
@@ -219,7 +211,7 @@
                 </div>
                 <div class="breadcrumb">
                     <ul>
-                        <li><a href="index-2.html">Home</a></li>
+                        <li><a href="{% url 'home' %}">Home</a></li>
                         <li>Resources</li>
                     </ul>
                 </div>
@@ -305,52 +297,19 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br><br><br><br>
                                     <div class="books-list">
                                         {% for resource in resources %}
                                         <article> 
                                             <div class="single-book-box">                                                
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon yellow-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src='{{ resource.image.url }}' class = "prod-image"/></a>   
+                                                    <a href="books-media-detail-v1.html"><img alt="Book" src='{{ resource.image.url }}' class = "prod-image" style="object-fit:scale-down;
+                                                        width:300px;
+                                                        height:auto;
+                                                        border: solid 1px #CCC"></a>   
                                                 </div>
                                                 <div class="post-detail">
-                                                    <div class="books-social-sharing">
-                                                        <ul>
-                                                            <li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                                                            <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                                                            <li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-                                                            <li><a href="#" target="_blank"><i class="fa fa-rss"></i></a></li>
-                                                            <li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="optional-links">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Add TO CART">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Like">
-                                                                    <i class="fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Mail"><i class="fa fa-envelope"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Search">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Print">
-                                                                    <i class="fa fa-print"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
                                                     <header class="entry-header">
                                                         <div class="row">
                                                             <div class="col-sm-6">
@@ -385,6 +344,8 @@
                                                 <div class="clear"></div>
                                             </div>
                                         </article>
+                                        <hr>
+                                        <br><br><br><br><br><br><br><br><br><br><br><br>
                                         {% endfor %}
                                     </div>
                                     <nav class="navigation pagination text-center">
@@ -886,7 +847,7 @@
                         </div>
                         <div class="col-md-9 pull-right">
                             <ul>
-                                <li><a href="index-2.html">Home</a></li>
+                                <li><a href="{% url 'home' %}">Home</a></li>
                                 <li><a href="books-media-list-view.html">Books &amp; Media</a></li>
                                 <li><a href="news-events-list-view.html">News &amp; Events</a></li>
                                 <li><a href="#">Kids &amp; Teens</a></li>

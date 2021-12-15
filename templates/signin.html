@@ -7,17 +7,18 @@
 <!DOCTYPE html>
 <html lang="zxx">
 
-<head>        
+    <head>        
+        
         <!-- Meta -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
         
         <!-- Title -->
-        <title>..:: LIBRARIA ::..</title>
+        <title>..:: RESEARCH RESOURCE PORTAL ::..</title>
         
         <!-- Favicon -->
         <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/x-icon" />
-        <link href="{% static 'js/bootstrap.min.js' %}" rel="stylesheet">
+        <!-- <link href="{% static 'js/bootstrap.min.css' %}" rel="stylesheet"> -->
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
         <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
@@ -27,10 +28,8 @@
         <link href="{% static 'css/mmenu.positioning.css' %}" rel="stylesheet" type="text/css" />
         
         <!-- Stylesheet -->
-        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
-        
-    </head>
-
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
 
     <body>
         
@@ -131,9 +130,9 @@
                                             </ul> -->
                                         </li>
                                         <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'books-media-list-view' %}">Resources</a>
+                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'generic-resources-list-view' %}">Resources</a>
                                             <!-- <ul class="dropdown-menu">
-                                                <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
+                                                <li><a href="generic-resources-list-view.html">Books &amp; Media List View</a></li>
                                                 <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
                                                 <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                                 <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
@@ -163,9 +162,9 @@
                                         </ul> -->
                                     </li>
                                     <li>
-                                        <a href="books-media-list-view.html">Resources</a>
+                                        <a href="generic-resources-list-view.html">Resources</a>
                                         <!-- <ul>
-                                            <li><a href="books-media-list-view.html">Books &amp; Media List View</a></li>
+                                            <li><a href="generic-resources-list-view.html">Books &amp; Media List View</a></li>
                                             <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
                                             <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                             <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
@@ -556,7 +555,7 @@
                         <div class="col-md-9 pull-right">
                             <ul>
                                 <li><a href="index-2.html">Home</a></li>
-                                <li><a href="books-media-list-view.html">Books &amp; Media</a></li>
+                                <li><a href="generic-resources-list-view.html">Books &amp; Media</a></li>
                                 <li><a href="news-events-list-view.html">News &amp; Events</a></li>
                                 <li><a href="#">Kids &amp; Teens</a></li>
                                 <li><a href="services.html">Services</a></li>

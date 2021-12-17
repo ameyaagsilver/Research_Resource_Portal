@@ -68,6 +68,7 @@
                                         <div class="col-sm-6">
                                             <div class="topbar-links">
                                                 <div class="header-cart dropdown">
+                                                    
                                                     {% if username %}
                                                         <a href="#"><i class="fa fa-user"></i>Hi, {{username}}
                                                         {% if admin %}
@@ -78,10 +79,18 @@
                                                         <div class="dropdown-menu cart-dropdown">
                                                             <ul>
                                                                 <li><a href="{% url 'user-resources' %}">Borrowed resources</a></li>
-
-                                                            </ul>                                                            
+                                                            </ul>           
+                                                            {% if admin %}
+                                                            <ul>
+                                                                <li><a href="{% url 'borrowed-resources' %}">Resource Logbook</a></li>
+                                                            </ul>  
+                                                            {% endif%}                                                 
                                                             <div class="cart-buttons">
-                                                                <a href="cart.html" class="btn btn-dark-gray">View Cart</a>
+                                                                {% if admin %}
+                                                                <a href="{% url 'downloadLogs' %}" class="btn btn-dark-gray"><i class="fa fa-bars"></i> Logs</a>
+                                                                {% else %}
+                                                                <a href="cart.html" class="btn btn-dark-gray">View Profile</a>
+                                                                {% endif %}
                                                                 <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
                                                             </div>
                                                         </div>
@@ -96,18 +105,11 @@
                                     </div>
                                 </div>
                                 <div class="navbar-collapse hidden-sm hidden-xs">
-                                    <ul class="nav navbar-nav">
-                                        <li class="dropdown active">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{% url 'home' %}">Home</a>
-                                            <!-- <ul class="dropdown-menu">
-                                                <li><a href="{% url 'home' %}">Home V1</a></li>
-                                                <li><a href="home-v2.html">Home V2</a></li>
-                                                <li><a href="home-v3.html">Home V3</a></li>
-                                            </ul> -->
+                                    <ul class="nav navbar-nav ml-auto">
+                                        <li>
+                                            <a class="nav-link" href="{% url 'home' %}">Home</a>
                                         </li>
-                                        <li class="dropdown">
-                                            <a data-toggle="dropdown" class="dropdown-toggle disabled" href="{%  url 'generic-resources-list-view' %}">Resources</a>
-                                        </li>
+                                        <li><a class="nav-link page2" href="{%  url 'generic-resources-list-view' %}">Resources</a></li>
                                         <li><a href="{% url 'services' %}">Services</a></li>
                                         <li><a href="contact.html">Contact</a></li>
                                     </ul>
@@ -138,22 +140,6 @@
                                             <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
                                             <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
                                             <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
-                                        </ul> -->
-                                    </li>
-                                    <li>
-                                        <a href="news-events-list-view.html">News &amp; Events</a>
-                                        <!-- <ul>
-                                            <li><a href="news-events-list-view.html">News &amp; Events List View</a></li>
-                                            <li><a href="news-events-detail.html">News &amp; Events Detail</a></li>
-                                        </ul> -->
-                                    </li>
-                                    <li>
-                                        <a href="#">Pages</a>
-                                        <!-- <ul>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="signin.html">Signin/Register</a></li>
-                                            <li><a href="404.html">404/Error</a></li>
                                         </ul> -->
                                     </li>
                                     <li>
@@ -203,43 +189,31 @@
                                 <section class="search-filters">
                                     <div class="container">
                                         <div class="filter-box">
-                                            <h3>What are you looking for at the library?</h3>
-                                            <form action="http://libraria.demo.presstigers.com/index.html" method="get">
+                                            <h3>What are you looking for at the Portal?</h3>
+                                            <form action="/generic-resources-list-view/" method="post">
+                                                {% csrf_token %}
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
                                                         <label class="sr-only" for="keywords">Search by Keyword</label>
                                                         <input class="form-control" placeholder="Search by Keyword" id="keywords" name="keywords" type="text">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-6">
+                                                <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
-                                                        <select name="catalog" id="catalog" class="form-control">
-                                                            <option>Search the Catalog</option>
-                                                            <option>Catalog 01</option>
-                                                            <option>Catalog 02</option>
-                                                            <option>Catalog 03</option>
-                                                            <option>Catalog 04</option>
-                                                            <option>Catalog 05</option>
-                                                        </select>
+                                                        <label class="sr-only" for="keywords">Search by Resource ID</label>
+                                                        <input class="form-control" placeholder="Search by Resource ID" id="keywords" name="resourceID" type="text">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <div class="form-group">
-                                                        <select name="category" id="category" class="form-control">
-                                                            <option>All Categories</option>
-                                                            <option>Category 01</option>
-                                                            <option>Category 02</option>
-                                                            <option>Category 03</option>
-                                                            <option>Category 04</option>
-                                                            <option>Category 05</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="col-md-2 col-sm-6">
                                                     <div class="form-group">
                                                         <input class="form-control" type="submit" value="Search">
                                                     </div>
                                                 </div>
+                                                <br><br><br><br>
+                                                {% if searchedQuery %}
+                                                {{searchedQuery}}
+                                                {% endif %}
                                             </form>
                                         </div>
                                     </div>
@@ -260,7 +234,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 col-sm-4">
-                                                <div class="filter-result">Showing items 1 to 9 of 19 total</div>
+                                                <!-- <div class="filter-result">Showing items 1 to 9 of 19 total
+                                                </div> -->
                                             </div>
                                             <div class="col-md-3 col-sm-3 pull-right">
                                                 <div class="filter-toggle">
@@ -308,17 +283,28 @@
                                                     </header>
                                                     <div class="entry-content">
                                                         <p><strong>Location</strong> {{resource.location}}, {{resource.department_name}}</p>
-                                                        <p>{{resource.about}}</p>
+                                                        
+                                                        <p>{{resource.about|truncatechars:200}}</p>
                                                     </div>
                                                     <footer class="entry-footer">
                                                         <a class="btn btn-dark-gray" href="books-media-detail-v1.html">Read More</a>
+                                                        <hr>
+                                                        {% if admin %}
+                                                        <form action="/issue-resource/" method="post">
+                                                            {% csrf_token %}
+                                                            <input class="btn btn-dark-gray" type="submit" value="Issue"></input>
+                                                            <input type="hidden" value={{resource.resource_id}} name="resourceID">
+                                                            <input type="text" name="emailID"></input>
+                                                        </form>                                                        
+                                                        <!-- Issue <i class="fa fa-long-arrow-right"></i> -->
+                                                        {% endif %}
                                                     </footer>
                                                 </div>
                                                 <div class="clear"></div>
                                             </div>
                                         </article>
                                         <hr>
-                                        <br><br><br><br><br><br><br><br><br><br><br><br>
+                                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                                         {% endfor %}
                                     </div>
                                     <nav class="navigation pagination text-center">
@@ -536,140 +522,6 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Start: Staff Picks -->
-                        <section class="team staff-picks">
-                            <div class="container">
-                                <div class="center-content">
-                                    <h2 class="section-title">Staff Picks</h2>
-                                    <span class="underline center"></span>
-                                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                                <div class="team-list">
-                                    <div class="team-member">
-                                        <figure>
-                                            <img src="{% static 'images/books-media/staff-pick/staff-picks-01.jpg' %}" alt="Staff Pick" />
-                                        </figure>
-                                        <div class="content-block">
-                                            <div class="member-info">
-                                                <div class="member-thumb">
-                                                    <img src="{% static 'images/books-media/staff-pick/gail.jpg' %}" alt="Katherine">
-                                                </div>
-                                                <div class="member-content">
-                                                    <span class="designation">Downtown & Business</span>
-                                                    <h4>The Collector</h4>
-                                                    <ul class="social">
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-linkedin"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-facebook-f"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-twitter"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-skype"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here...</p>
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="team-member">
-                                        <figure>
-                                            <img src="{% static 'images/books-media/staff-pick/staff-picks-02.jpg' %}" alt="Staff Pick" />
-                                        </figure>
-                                        <div class="content-block">
-                                            <div class="member-info">
-                                                <div class="member-thumb">
-                                                    <img src="{% static 'images/books-media/staff-pick/katherine.jpg' %}" alt="Katherine">
-                                                </div>
-                                                <div class="member-content">
-                                                    <span class="designation">Katherine, West End</span>
-                                                    <h4>Mongolia</h4>
-                                                    <ul class="social">
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-linkedin"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-facebook-f"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-twitter"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-skype"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here...</p>
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="team-member">
-                                        <figure>
-                                            <img src="{% static 'images/books-media/staff-pick/staff-picks-03.jpg' %}" alt="Staff Pick" />
-                                        </figure>
-                                        <div class="content-block">
-                                            <div class="member-info">
-                                                <div class="member-thumb">
-                                                    <img src="{% static 'images/books-media/staff-pick/chris.jpg' %}" alt="Katherine">
-                                                </div>
-                                                <div class="member-content">
-                                                    <span class="designation">Chris, East Liberty</span>
-                                                    <h4>The Revolution</h4>
-                                                    <ul class="social">
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-linkedin"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-facebook-f"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-twitter"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" target="_blank">
-                                                                <i class="fa fa-skype"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here...</p>
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <!-- End: Staff Picks -->
                     </div>
                 </main>
             </div>

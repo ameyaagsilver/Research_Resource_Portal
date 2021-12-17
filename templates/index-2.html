@@ -91,7 +91,11 @@
                                                             </div> -->
                                                             
                                                             <div class="cart-buttons">
+                                                                {% if admin %}
+                                                                <a href="{% url 'downloadLogs' %}" class="btn btn-dark-gray"><i class="fa fa-bars"></i> Logs</a>
+                                                                {% else %}
                                                                 <a href="cart.html" class="btn btn-dark-gray">View Cart</a>
+                                                                {% endif %}
                                                                 <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
                                                             </div>
                                                         </div>
@@ -218,7 +222,7 @@
                 </div>
                 <div class="item">
                     <figure>
-                        <img alt="Home Slide" src="{% static 'images/header-slider/home-v1/rvceGarden.jpeg' %}" />
+                        <img alt="Home Slide" src="{% static 'images/header-slider/home-v1/rvceGate.jpg' %}" />
                     </figure>
                     <div class="container">
                         <div class="carousel-caption">

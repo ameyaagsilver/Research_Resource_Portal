@@ -337,65 +337,13 @@
                                                                     <span class="first-letter">Email ID</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label> -->
-                                                                <input type="tel" name="phone_number" placeholder="Phone Number *" required>
+                                                                <input type="tel" name="phone_number" placeholder="10-digit Phone Number *" pattern="[56789][0-9]{9}" required>
                                                             </p>
                                                                                                                          
                                                             <div class="clear"></div>
                                                             <input type="submit" value="Signup" name="signup" id="signupbtn" class="button btn btn-default">
                                                             <div class="clear"></div>
                                                         </form>
-                                                        <!-- <script>
-                                                            // Your web app's Firebase configuration
-                                                            const firebaseConfig = {
-                                                                apiKey: "AIzaSyDnv29NZQkHU-As77bePEse5V_AYIunIOI",
-                                                                authDomain: "research-resource-portal.firebaseapp.com",
-                                                                projectId: "research-resource-portal",
-                                                                storageBucket: "research-resource-portal.appspot.com",
-                                                                messagingSenderId: "437072985389",
-                                                                appId: "1:437072985389:web:a66b365ddb3aed9fa0e7a4",
-                                                                measurementId: "${config.measurementId}"
-                                                            };
-                                                            // Initialize Firebase
-                                                            firebase.initializeApp(firebaseConfig);
-                                                            firebase.analytics();
-                                                          
-                                                            var signupbtn=document.getElementById("signupbtn");
-                                                            var emailsignup=document.getElementById("useremail");
-                                                            var passswordsignup=document.getElementById("userpass");
-                                                          
-                                                          
-                                                            //================Signup With Email and Password==========================
-                                                            signupbtn.onclick=function(){
-                                                                signupbtn.disabled=true;
-                                                                signupbtn.textContent="Registering Your Account! Please Wait";
-                                                                firebase.auth().createUserWithEmailAndPassword(emailsignup.value,passswordsignup.value).then(function(response){
-                                                                  sendingVerifyEmail(signupbtn);
-                                                                      console.log(response);
-                                                                })
-                                                                .catch(function(error){
-                                                                  signupbtn.disabled=false;
-                                                                  signupbtn.textContent="Sign Up";
-                                                                    console.log(error);
-                                                                })
-                                                          
-                                                          
-                                                            };
-                                                          
-                                                            function sendingVerifyEmail(button){
-                                                               firebase.auth().currentUser.sendEmailVerification().then(function(response){
-                                                                          signupbtn.disabled=false;
-                                                                  signupbtn.textContent="Sign Up S";
-                                                          
-                                                                  console.log(response);
-                                                               })
-                                                               .catch(function(error){
-                                                                          signupbtn.disabled=false;
-                                                                  signupbtn.textContent="Sign Up S";
-                                                          
-                                                                   console.log(error);
-                                                               })
-                                                            }
-                                                        </script>  -->
                                                     </div>
                                                 </div>
                                             </div>

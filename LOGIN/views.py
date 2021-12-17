@@ -37,7 +37,7 @@ def signup(request):
                 message = "Not a RVCE email ID!!! Try again"
                 return render(request, "signin.html", {"message": message})
             if password != re_entered_password:
-                message = "Password re-entry is incorrect!!! Try again"
+                message = "Password does not match with re-entered password!!! Try again"
                 return render(request, "signin.html", {"message": message})
             try:
                 user = auth.create_user_with_email_and_password(
@@ -74,12 +74,9 @@ def signin(request):
             except:
                 message = "Invalid credentials!!! Try again"
                 return render(request, 'signin.html', {"message": message})
-
-            # print(user)
             session_id = user['localId']
             request.session['uid'] = str(session_id)
             request.session['username'] = str(email.split('@')[0])
-            # print(request.session['username'])
             return redirect('home')
     return render(request, "signin.html")
 
@@ -113,11 +110,14 @@ def home(request):
         print(username)
         print(request.session['uid'])
         user_id = request.session['uid']
+        request.session['isAdmin'] = False
+
         admins = list(models.admins.objects.raw(
             'SELECT user_id FROM admins WHERE user_id = "%s"' % user_id))
-        # print(admins, '**')
+
         if(len(admins) == 1):
             print("It is admin")
+            request.session['isAdmin'] = True
             return render(request, "index-2.html", {"username": username, "admin": "YES"})
         else:
             return render(request, "index-2.html", {"username": username})
@@ -132,11 +132,46 @@ def services(request):
 
 
 def resources(request):    # DISPLAYs all the resources in the database
+    
+    # SEARCH IN THE SAME URL= 'GENERIC-RES-LIST-VIEW'
+    if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID')):
+        isAdmin = False
+        isUser = False
+        resource_list = res.objects.none()  # declaring an empty querysert
+        try:
+            isAdmin = request.session['isAdmin']
+            username = request.session['username']
+            isUser = True
+        except:
+            pass
+        searchedQuery = "Showing results for "
+        if request.POST.get('keywords'):
+            keywords_list = request.POST.get('keywords').split(' ')
+            searchedQuery += "keyword(s)="
+            for keyword in keywords_list:
+                resource_list = resource_list | res.objects.filter(
+                    resource_name__icontains=keyword)
+                searchedQuery += keyword+","
+        if request.POST.get('resourceID'):
+            resourceID = request.POST.get('resourceID')
+            searchedQuery += " Resource ID = "+resourceID
+            resource_list = resource_list | res.objects.filter(
+                resource_id__contains=resourceID)
+        print(resource_list)
+        if isAdmin:
+            return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
+        elif isUser:
+            return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "searchedQuery": searchedQuery})
+        else:
+            return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
+
+
     resource_list = res.objects.all()
-    print("*************", resource_list)
     try:
         username = request.session['username']
-        print("((((", resource_list)
+        isAdmin = request.session['isAdmin']
+        if isAdmin:
+            return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": "YES"})
         return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username})
     except:
         pass

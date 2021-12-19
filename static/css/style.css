@@ -10342,7 +10342,7 @@ a:focus {
   display: none;
   left: -138px;
   margin-top: 28px;
-  padding: 0 20px 20px;
+  padding: 0px 20px 20px;
   position: absolute;
   width: 320px;
   z-index: 99;
@@ -10455,7 +10455,7 @@ a:focus {
 }
 
 .cart-dropdown ul li:hover {
-  background-color: transparent;
+  background-color: #eb7134;
 }
 
 .cart-dropdown .cart-total {
@@ -19777,12 +19777,43 @@ a:focus {
   -webkit-transition: all 0.3s ease-in-out;
 }
 
+input[type="date"]:valid {
+  background-color: white;
+}
+
 @media (max-width: 767px) {
   .single-book-box {
     border-width: 5px;
     margin-bottom: 50px;
     padding-bottom: 60px;
   }
+}
+
+.edit-button {}
+
+.circle {
+  border-radius: 0%;
+  border: 0.25em solid black;
+  height: 50px;
+  width: 50px;
+}
+
+.glyphicon.glyphicon-edit {
+  font-size: 28px;
+  padding: 8px 3px 0 8px;
+}
+
+.submit-with-icon {
+  background: transparent;
+  border: 0px;
+  padding: 0;
+  outline: 0;
+}
+
+.circle:active {
+  content: '';
+  background-color: rgb(235, 235, 235);
+  border-color: rgb(173, 173, 173);
 }
 
 .single-book-box img {

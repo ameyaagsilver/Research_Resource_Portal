@@ -1,4 +1,9 @@
 {% load static %}
+{% if message %}
+<script>
+    alert('{{message}}');
+</script>
+{% endif %}
 <!DOCTYPE html>
 <html lang="zxx">
 <head>        
@@ -211,10 +216,23 @@
                                                     </div>
                                                 </div>
                                                 <br><br><br><br>
-                                                {% if searchedQuery %}
+                                                <!-- {% if searchedQuery %}
                                                 {{searchedQuery}}
-                                                {% endif %}
+                                                {% endif %} -->
+                                                <br>
+                                                <!-- <a href="{% url 'print-searched-query' %}">Print</a> -->
+                                                
                                             </form>
+                                            {% if admin %}
+                                            <form action="/print-searched-query" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="query" value={{resources}}>
+                                                <!-- {{resources}} -->
+                                                <input class="form-control" value="{{searchedQuery.resourceID}}" name="resourceID" type="hidden">
+                                                <input class="form-control" value="{{searchedQuery.keywords}}" name="keywords" type="hidden">
+                                                <input type="submit" value="Print"></input>
+                                            </form>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </section>
@@ -245,7 +263,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <br><br><br><br><br><br><br>
+                                    <br><br><br><br><br><br><br><br><br><br>
                                     <div class="books-list">
                                         {% for resource in resources %}
                                         <article> 
@@ -254,8 +272,7 @@
                                                     <div class="book-list-icon yellow-icon"></div>
                                                     <a href="books-media-detail-v1.html"><img alt="Book" src='{{ resource.image.url }}' class = "prod-image" style="object-fit:scale-down;
                                                         width:300px;
-                                                        height:auto;
-                                                        border: solid 1px #CCC"></a>   
+                                                        height:auto;"></a>   
                                                 </div>
                                                 <div class="post-detail">
                                                     <header class="entry-header">
@@ -286,7 +303,7 @@
                                                         
                                                         <p>{{resource.about|truncatechars:200}}</p>
                                                     </div>
-                                                    <footer class="entry-footer">
+                                                    <!-- <footer class="entry-footer"> -->
                                                         <a class="btn btn-dark-gray" href="books-media-detail-v1.html">Read More</a>
                                                         <hr>
                                                         {% if admin %}
@@ -295,8 +312,12 @@
                                                             <input class="btn btn-dark-gray" type="submit" value="Issue"></input>
                                                             <input type="hidden" value={{resource.resource_id}} name="resourceID">
                                                             <input type="text" name="emailID"></input>
-                                                        </form>                                                        
-                                                        <!-- Issue <i class="fa fa-long-arrow-right"></i> -->
+                                                        </form>    
+                                                        <form action="/update-resource/" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="toUpdatePage" value="YES">
+                                                            <input type="hidden" value={{resource.resource_id}} name="resourceID">
+                                                            <button type="submit" class="btn pull-right"><i class="fa fa-edit" aria-hidden="true"></i></button>                                                         </form>
                                                         {% endif %}
                                                     </footer>
                                                 </div>
@@ -304,7 +325,7 @@
                                             </div>
                                         </article>
                                         <hr>
-                                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                                         {% endfor %}
                                     </div>
                                     <nav class="navigation pagination text-center">

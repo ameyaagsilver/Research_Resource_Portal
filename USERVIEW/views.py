@@ -1,8 +1,11 @@
 from django.shortcuts import redirect, render
 from .models import resources as res
 
+recentSearchedQuery = None
 
-def resources(request):  # DISPLAYs all resources a user taken resources
+
+
+def resources(request):  # DISPLAYs all resources a specific user taken resources
     try:
         user_id = request.session['uid']
         username = request.session['username']
@@ -12,6 +15,7 @@ def resources(request):  # DISPLAYs all resources a user taken resources
                                     join resource_logbook on users.user_id=resource_logbook.member_id
                                     join resources on resource_logbook.resource_id=resources.resource_id
                                     where users.user_id="%s"
+                                    order by return_date
                                     ''' % user_id)
         print("User Borrowed resources are", resource_list)
         if isAdmin:
@@ -23,6 +27,9 @@ def resources(request):  # DISPLAYs all resources a user taken resources
     return render(request, "USERVIEW/userResources.html")
 
 
+
+def returnRecentQuery():
+    return redirect('generic-resources-list-view')
 # searches for resource searched w.r.t a keyword or the resourceID provided
 # def searchResources(request):
 #     isAdmin = False

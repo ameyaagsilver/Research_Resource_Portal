@@ -33,10 +33,13 @@ urlpatterns = [
     path('issue-resource/', adminVIEW.issueResource, name="issue-resource"),
     path('borrowed-resources/', adminVIEW.borrowedResources,
          name="borrowed-resources"),
-     path('return-resource/', adminVIEW.returnResource, name="return-resource"),
+    path('return-resource/', adminVIEW.returnResource, name="return-resource"),
+    path('add-resource/', adminVIEW.addResource, name="add-resource"),
+    path('update-resource/', adminVIEW.updateResource, name="update-resource"),
 
     # REPORT app paths
-    path('downloadLogs', reportVIEW.downloadLogs, name="downloadLogs")
+    path('downloadLogs', reportVIEW.downloadLogs, name="downloadLogs"),
+    path('print-searched-query', reportVIEW.downloadRecentSearchedQuery, name="print-searched-query")
 
 ]
 urlpatterns += staticfiles_urlpatterns()

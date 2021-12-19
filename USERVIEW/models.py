@@ -70,7 +70,7 @@ class resources(models.Model):
     image = models.ImageField(upload_to="hello/")
     about = models.CharField(max_length=1000)
     admin_id = models.ForeignKey(
-        admins, on_delete=models.CASCADE, default="r0Fi0ITEUSMcLPxf2JXUxL3VNK03", db_column="admin_id")
+        admins, on_delete=models.CASCADE, default=None, db_column="admin_id")
 
     class Meta:
         db_table = "resources"

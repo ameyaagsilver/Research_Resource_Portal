@@ -132,39 +132,43 @@ def services(request):
 
 
 def resources(request):    # DISPLAYs all the resources in the database
-    
+    global recentSearchedQuery
     # SEARCH IN THE SAME URL= 'GENERIC-RES-LIST-VIEW'
     if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID')):
         isAdmin = False
         isUser = False
-        resource_list = res.objects.none()  # declaring an empty querysert
         try:
             isAdmin = request.session['isAdmin']
             username = request.session['username']
             isUser = True
         except:
             pass
-        searchedQuery = "Showing results for "
+        searchedQuery = {}
+        resource_list1 = res.objects.none()  # declaring an empty querysert
         if request.POST.get('keywords'):
             keywords_list = request.POST.get('keywords').split(' ')
-            searchedQuery += "keyword(s)="
+            searchedQuery['keywords'] = request.POST.get('keywords')
             for keyword in keywords_list:
-                resource_list = resource_list | res.objects.filter(
+                resource_list1 = resource_list1 | res.objects.filter(
                     resource_name__icontains=keyword)
-                searchedQuery += keyword+","
+
+        resource_list2 = res.objects.none()  # declaring an empty querysert
         if request.POST.get('resourceID'):
             resourceID = request.POST.get('resourceID')
-            searchedQuery += " Resource ID = "+resourceID
-            resource_list = resource_list | res.objects.filter(
+            searchedQuery['resourceID'] = resourceID
+            resource_list2 = resource_list2 | res.objects.filter(
                 resource_id__contains=resourceID)
-        print(resource_list)
+
+        if not request.POST.get('keywords') or not request.POST.get('resourceID'):
+            resource_list = resource_list1 | resource_list2
+        else:
+            resource_list = resource_list1 & resource_list2
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
         elif isUser:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "searchedQuery": searchedQuery})
         else:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
-
 
     resource_list = res.objects.all()
     try:
@@ -176,8 +180,3 @@ def resources(request):    # DISPLAYs all the resources in the database
     except:
         pass
     return render(request, "generic-resources-list-view.html", {"resources": resource_list})
-
-
-def checkIfAdmin(user_id):
-    admins = models.admins.objects.raw('SELECT * FROM admins')
-    print(admins)

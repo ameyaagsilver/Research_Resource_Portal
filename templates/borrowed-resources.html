@@ -293,6 +293,7 @@
                                                         <form action="/return-resource/" method="post">
                                                             {% csrf_token %}
                                                             <input class="btn btn-dark-gray" type="submit" value="Returned"></input>
+                                                            <input type="hidden" value={{resource.resource_id}} name="resourceID">
                                                             <input type="hidden" value={{resource.log_id}} name="logID">
                                                         </form>                                                        
                                                         {% endif %}

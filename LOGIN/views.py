@@ -6,12 +6,14 @@ from firebase_admin import firestore
 from firebase_admin import auth
 from pyasn1.type.univ import Null
 import pyrebase
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.templatetags.static import static
 from django.urls import reverse
 from RESEARCH_RESOURCE_PORTAL.settings import STATIC_ROOT
 from USERVIEW import models
 from django.contrib import auth as djAuth
+from USERVIEW import models as userviewMODELS
+
 
 firebaseConfig = {
     "apiKey": "AIzaSyDnv29NZQkHU-As77bePEse5V_AYIunIOI",
@@ -131,10 +133,11 @@ def services(request):
     return render(request, "services.html")
 
 
-def resources(request):    # DISPLAYs all the resources in the database
+# DISPLAYs all the resources in the database (for admin as well as to user views)
+def resources(request):
     global recentSearchedQuery
-    # SEARCH IN THE SAME URL= 'GENERIC-RES-LIST-VIEW'
-    if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID')):
+    # SEARCH REDIRECTS BACK TO THE SAME URL= 'GENERIC-RES-LIST-VIEW'
+    if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID') or request.POST.get('departmentName') or request.POST.get('costUpperBound') or request.POST.get('purchaseDate') or request.POST.get('costLowerBound')):
         isAdmin = False
         isUser = False
         try:
@@ -145,24 +148,69 @@ def resources(request):    # DISPLAYs all the resources in the database
             pass
         searchedQuery = {}
         resource_list1 = res.objects.none()  # declaring an empty querysert
+        resource_list2 = res.objects.none()
+        resource_list3 = res.objects.none()
+        resource_list4 = res.objects.none()
+        resource_list5 = res.objects.none()
+        resource_list6 = res.objects.none()
+
         if request.POST.get('keywords'):
             keywords_list = request.POST.get('keywords').split(' ')
             searchedQuery['keywords'] = request.POST.get('keywords')
             for keyword in keywords_list:
                 resource_list1 = resource_list1 | res.objects.filter(
                     resource_name__icontains=keyword)
+        else:
+            resource_list1 = res.objects.all()
 
-        resource_list2 = res.objects.none()  # declaring an empty querysert
         if request.POST.get('resourceID'):
             resourceID = request.POST.get('resourceID')
             searchedQuery['resourceID'] = resourceID
-            resource_list2 = resource_list2 | res.objects.filter(
-                resource_id__contains=resourceID)
-
-        if not request.POST.get('keywords') or not request.POST.get('resourceID'):
-            resource_list = resource_list1 | resource_list2
+            resource_list2 = res.objects.filter(resource_id__iexact=resourceID)
         else:
-            resource_list = resource_list1 & resource_list2
+            resource_list2 = res.objects.all()
+
+        if request.POST.get('departmentName') != "All departments":
+            departmentName = request.POST.get('departmentName')
+            searchedQuery['departmentName'] = departmentName
+            resource_list3 = res.objects.filter(
+                department_name__icontains=departmentName)
+        else:
+            resource_list3 = res.objects.all()
+        if True:
+            print("Hllo this is admin")
+            resource_list4 = res.objects.all()  # declaring an empty querysert
+            # if request.POST.get('departmentName'):
+            #     deptName = request.POST.get('departmentName')
+            #     searchedQuery['departmentName'] = deptName
+            #     resource_list4 = res.objects.filter(department_name__contains=deptName)
+            # else:
+            #     resource_list4 = res.objects.all()
+
+            if request.POST.get('costUpperBound'):
+                costUpperBound = request.POST.get('costUpperBound')
+                print("*******", costUpperBound)
+                searchedQuery['costUpperBound'] = costUpperBound
+                resource_list5 = res.objects.filter(
+                    unit_cost__lte=costUpperBound)
+            else:
+                resource_list5 = res.objects.all()
+            if request.POST.get('costLowerBound'):
+                costLowerBound = request.POST.get('costLowerBound')
+                searchedQuery['costLowerBound'] = costLowerBound
+                resource_list6 = res.objects.filter(
+                    unit_cost__gte=costLowerBound)
+            else:
+                resource_list6 = res.objects.all()
+        # print("List 1:::", resource_list1)
+        # print("List 2:::", resource_list2)
+        # print("List 3:::", resource_list3)
+        # print("List 4:::", resource_list4)
+        # print("List 5:::", resource_list5)
+        # print("List 6:::", resource_list6)
+        resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
+        resource_list = resource_list[:5]
+        print(resource_list[0:2])
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
         elif isUser:
@@ -171,6 +219,8 @@ def resources(request):    # DISPLAYs all the resources in the database
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
 
     resource_list = res.objects.all()
+    resource_list = resource_list[:50]
+    print(resource_list[0:2])
     try:
         username = request.session['username']
         isAdmin = request.session['isAdmin']
@@ -180,3 +230,63 @@ def resources(request):    # DISPLAYs all the resources in the database
     except:
         pass
     return render(request, "generic-resources-list-view.html", {"resources": resource_list})
+
+
+def contact(request):
+    isAdmin = False
+    isUser = False
+    try:
+        isAdmin = request.session['isAdmin']
+        username = request.session['username']
+        isUser = True
+    except:
+        pass
+    if isAdmin:
+        return render(request, "contact.html", {"username": username, "admin": 'YES'})
+    elif isUser:
+        return render(request, "contact.html", {"username": username})
+    else:
+        return render(request, "contact.html")
+# return the READ MORE section of a resource selected
+
+
+def readMoreAboutResource(request):
+    isAdmin = False
+    isUser = False
+    try:
+        isAdmin = request.session['isAdmin']
+        username = request.session['username']
+        isUser = True
+    except:
+        pass
+    if request.method == 'POST':
+        resourceID = request.POST.get('resourceID')
+        print(resourceID)
+        resource_instance = get_resource_instance_by_id(resourceID)
+        print(resource_instance)
+
+        if isAdmin:
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "username": username, "admin": 'YES'})
+        elif isUser:
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "username": username})
+        else:
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance})
+
+    else:
+        return redirect('generic-resources-list-view')
+
+
+def get_user_instance_by_email(email_id):
+    user = userviewMODELS.users.objects.filter(emailID=email_id).first()
+    return user
+
+
+def get_admin_instance_by_id(adminID):
+    admin = userviewMODELS.admins.objects.filter(user_id=adminID).first()
+    return admin
+
+
+def get_resource_instance_by_id(resourceID):
+    resource = userviewMODELS.resources.objects.filter(
+        resource_id=resourceID).first()
+    return resource

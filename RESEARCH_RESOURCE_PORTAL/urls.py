@@ -17,7 +17,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', loginVIEW.home, name=""),
 
-    # LOGIN paths included
+    # LOGIN and some GENERAL paths included
     path('home/', loginVIEW.home, name="home"),
     path('generic-resources-list-view/', loginVIEW.resources,
          name="generic-resources-list-view"),
@@ -25,6 +25,8 @@ urlpatterns = [
     path('signup/', loginVIEW.signup, name="signup"),
     path('services/', loginVIEW.services, name="services"),
     path('logout/', loginVIEW.logout, name="logout"),
+    path('read-more-about-resource/', loginVIEW.readMoreAboutResource, name="read-more-about-resource"),
+    path('contact/', loginVIEW.contact, name="contact"),
 
     # USERVIEW paths included
     path('user/', include('USERVIEW.urls')),

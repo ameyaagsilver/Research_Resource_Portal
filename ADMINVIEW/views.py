@@ -1,7 +1,7 @@
 from datetime import date
 from django.shortcuts import redirect, render
 from USERVIEW import models as userviewMODELS
-
+from django.contrib import messages
 # recentSearchedQuery = None
 
 
@@ -19,6 +19,9 @@ def issueResource(request):
         resource_id = request.POST.get('resourceID')
         user_mail_id = request.POST.get('emailID')
         user = get_user_instance_by_email(user_mail_id)
+        if user == None:
+            messages.info(request, 'Email ID does not exist!!! Try again')
+            return redirect('generic-resources-list-view')
         admin = get_admin_instance_by_id(adminID)
         resource = get_resource_instance_by_id(resource_id)
         print("res_id", resource_id)
@@ -102,8 +105,11 @@ def addResource(request):
         new_resource_instance.location = request.POST.get('location')
         new_resource_instance.purchase_date = request.POST.get('purchaseDate')
         new_resource_instance.quantity = request.POST.get('quantity')
-        new_resource_instance.image = request.FILES['resImage']
-        new_resource_instance.about = request.POST.get('about')
+        try:
+            new_resource_instance.image = request.FILES['resImage']
+        except:
+            pass
+        new_resource_instance.about = request.POST.get('about')[0:1000]
         new_resource_instance.admin_id = get_admin_instance_by_id(adminID)
         new_resource_instance.save()
         message = "Resource "+new_resource_instance.resource_name+" added successfully"

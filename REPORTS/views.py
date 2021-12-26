@@ -14,7 +14,8 @@ from USERVIEW.models import resources as res
 def downloadLogs(request):
     buf = io.BytesIO()
     c = canvas.Canvas(buf, bottomup=0)
-    c.setPageSize(size=(600, 2500))
+    # c.setPageSize(size=(600, 2500))
+    rows = 50
     textob = c.beginText()
     textob.setTextOrigin(inch, inch)
     textob.setFont("Helvetica", 14)
@@ -23,13 +24,15 @@ def downloadLogs(request):
     logs = resources.objects.raw('''
     select * from users
     join resource_logbook on users.user_id=resource_logbook.member_id
-    join resources on resource_logbook.resource_id=resources.resource_id;
+    join resources on resource_logbook.resource_id=resources.resource_id
+    order by issue_date asc
     ''')
-    lines.append("*********Log Book entry for Resources*********")
-    lines.append("")
-    lines.append("")
+    # lines.append("*********Log Book entry for Resources*********")
+    # lines.append("")
+    # lines.append("")
     for log in logs:
-        # lines.append(str(log.user_id))
+        rows += 225
+        c.setPageSize(size=(600, rows))
         lines.append("Name: "+str(log.first_name)+" "+str(log.middle_name) +
                      " "+str(log.last_name)+"("+str(log.USN)+")")
         lines.append("Department: "+str(log.department_name))
@@ -62,48 +65,109 @@ def downloadRecentSearchedQuery(request):
 def export_users_xls(request):
     rows = None
     resource_list = res.objects.none()  # declaring an empty querysert
-    if request.method == 'POST':
-        # try:
-        #     isAdmin = request.session['isAdmin']
-        #     username = request.session['username']
-        #     isUser = True
-        # except:
-        #     pass
+    if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID') or request.POST.get('departmentName') or request.POST.get('costUpperBound') or request.POST.get('purchaseDate') or request.POST.get('costLowerBound')):
+        isAdmin = False
+        isUser = False
+        try:
+            isAdmin = request.session['isAdmin']
+            username = request.session['username']
+            isUser = True
+        except:
+            pass
         searchedQuery = {}
         resource_list1 = res.objects.none()  # declaring an empty querysert
+        resource_list2 = res.objects.none()
+        resource_list3 = res.objects.none()
+        resource_list4 = res.objects.none()
+        resource_list5 = res.objects.none()
+        resource_list6 = res.objects.none()
+
         if request.POST.get('keywords'):
             keywords_list = request.POST.get('keywords').split(' ')
             searchedQuery['keywords'] = request.POST.get('keywords')
             for keyword in keywords_list:
                 resource_list1 = resource_list1 | res.objects.filter(
                     resource_name__icontains=keyword)
+        else:
+            resource_list1 = res.objects.all()
 
-        resource_list2 = res.objects.none()  # declaring an empty querysert
         if request.POST.get('resourceID'):
             resourceID = request.POST.get('resourceID')
             searchedQuery['resourceID'] = resourceID
-            resource_list2 = resource_list2 | res.objects.filter(
-                resource_id__contains=resourceID)
-
-        if not request.POST.get('keywords') or not request.POST.get('resourceID'):
-            resource_list = resource_list1 | resource_list2
+            resource_list2 = res.objects.filter(resource_id__iexact=resourceID)
         else:
-            resource_list = resource_list1 & resource_list2
+            resource_list2 = res.objects.all()
+
+        if request.POST.get('departmentName'):
+
+            departmentName = request.POST.get('departmentName')
+            print("departmentName = ", departmentName)
+            searchedQuery['departmentName'] = departmentName
+            resource_list3 = res.objects.filter(
+                department_name__icontains=departmentName)
+        else:
+            resource_list3 = res.objects.all()
+        if isAdmin:
+            print("Hllo this is admin")
+            resource_list4 = res.objects.all()  # declaring an empty querysert
+            # if request.POST.get('departmentName'):
+            #     deptName = request.POST.get('departmentName')
+            #     searchedQuery['departmentName'] = deptName
+            #     resource_list4 = res.objects.filter(department_name__contains=deptName)
+            # else:
+            #     resource_list4 = res.objects.all()
+
+            if request.POST.get('costUpperBound'):
+                costUpperBound = request.POST.get('costUpperBound')
+                print("*******", costUpperBound)
+                searchedQuery['costUpperBound'] = costUpperBound
+                resource_list5 = res.objects.filter(
+                    unit_cost__lte=costUpperBound)
+            else:
+                resource_list5 = res.objects.all()
+            if request.POST.get('costLowerBound'):
+                costLowerBound = request.POST.get('costLowerBound')
+                searchedQuery['costLowerBound'] = costLowerBound
+                resource_list6 = res.objects.filter(
+                    unit_cost__gte=costLowerBound)
+            else:
+                resource_list6 = res.objects.all()
+        # print("List 1:::", resource_list1)
+        # print("List 2:::", resource_list2)
+        # print("List 3:::", resource_list3)
+        # print("List 4:::", resource_list4)
+        # print("List 5:::", resource_list5)
+        # print("List 6:::", resource_list6)
+        resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
+        # resource_list1 = res.objects.none()  # declaring an empty querysert
         # if request.POST.get('keywords'):
         #     keywords_list = request.POST.get('keywords').split(' ')
         #     searchedQuery['keywords'] = request.POST.get('keywords')
         #     for keyword in keywords_list:
-        #         resource_list = resource_list | res.objects.filter(
+        #         resource_list1 = resource_list1 | res.objects.filter(
         #             resource_name__icontains=keyword)
+        # else:
+        #     resource_list1 = res.objects.all()
+
+        # resource_list2 = res.objects.none()  # declaring an empty querysert
         # if request.POST.get('resourceID'):
         #     resourceID = request.POST.get('resourceID')
         #     searchedQuery['resourceID'] = resourceID
-        #     resource_list = resource_list | res.objects.filter(
+        #     resource_list2 = resource_list2 | res.objects.filter(
         #         resource_id__contains=resourceID)
-        # if not request.POST.get('resourceID') and not request.POST.get('keywords'):
-        #     print("GGGGGGG")
-            # resource_list = res.objects.all()
-    print(resource_list)
+        # else:
+        #     resource_list2 = res.objects.all()
+
+        # resource_list = resource_list1 & resource_list2
+        # if not request.POST.get('keywords') and not request.POST.get('resourceID'):
+        #     resource_list = res.objects.all()
+        # elif not request.POST.get('keywords') or not request.POST.get('resourceID'):
+        #     resource_list = resource_list1 | resource_list2
+        # else:
+        #     resource_list = resource_list1 & resource_list2
+    else:
+        resource_list = res.objects.all()
+    # print("Final list = ", resource_list)
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="research-resource-data.xls"'
 

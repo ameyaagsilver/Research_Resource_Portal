@@ -67,7 +67,7 @@ class resources(models.Model):
     location = models.CharField(max_length=250)
     purchase_date = models.DateField(null=True, blank=True)
     quantity = models.IntegerField()
-    image = models.ImageField(upload_to="hello/")
+    image = models.ImageField(upload_to="hello/", default="")
     about = models.CharField(max_length=1000)
     admin_id = models.ForeignKey(
         admins, on_delete=models.CASCADE, default=None, db_column="admin_id")
@@ -97,7 +97,7 @@ class resource_logbook(models.Model):
     resource_id = models.ForeignKey(
         resources, on_delete=models.CASCADE, db_column="resource_id")
     issue_date = models.DateField()
-    return_date = models.DateField(null=True)
+    return_date = models.DateField(null=True, blank=True)
 
     class Meta:
         db_table = "resource_logbook"

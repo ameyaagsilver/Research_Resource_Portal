@@ -4,7 +4,6 @@ from .models import resources as res
 recentSearchedQuery = None
 
 
-
 def resources(request):  # DISPLAYs all resources a specific user taken resources
     try:
         user_id = request.session['uid']
@@ -14,8 +13,9 @@ def resources(request):  # DISPLAYs all resources a specific user taken resource
         resource_list = res.objects.raw('''select * from users 
                                     join resource_logbook on users.user_id=resource_logbook.member_id
                                     join resources on resource_logbook.resource_id=resources.resource_id
-                                    where users.user_id="%s"
+                                    where users.user_id="%s" and return_date is null
                                     order by return_date
+
                                     ''' % user_id)
         print("User Borrowed resources are", resource_list)
         if isAdmin:
@@ -25,7 +25,6 @@ def resources(request):  # DISPLAYs all resources a specific user taken resource
         pass
 
     return render(request, "USERVIEW/userResources.html")
-
 
 
 def returnRecentQuery():

@@ -48,7 +48,7 @@
                                     <div class="navbar-brand">
                                         <h1>
                                             <a href="{% url 'home' %}">
-                                                <img src="https://rvce.edu.in/sites/default/files/logo_0.png" alt="rvce logo" />
+                                                <img src="{% static 'images/rvce_logo.png' %}" alt="rvce logo" />
                                             </a>
                                         </h1>
                                     </div>
@@ -178,7 +178,7 @@
         </section>
         <!-- End: Page Banner -->
 
-        <!-- Start: Book & Media Section -->
+        <!-- Start: Resources Section -->
         <div id="content" class="site-content">
             <div id="primary" class="content-area">
                 <main id="main" class="site-main">
@@ -204,7 +204,6 @@
                                                         <input class="form-control" placeholder="Search by Resource ID" id="keywords" name="resourceID" type="text">
                                                     </div>
                                                 </div>
-                                                
                                                 <div class="col-md-2 col-sm-6">
                                                     <div class="form-group">
                                                         <input class="form-control" type="submit" value="Search">
@@ -239,8 +238,8 @@
                                             </div>
                                             <div class="col-md-3 col-sm-3 pull-right">
                                                 <div class="filter-toggle">
-                                                    <a href="books-media-gird-view-v1.html"><i class="glyphicon glyphicon-th-large"></i></a>
-                                                    <a href="generic-resources-list-view.html" class="active"><i class="glyphicon glyphicon-th-list"></i></a>
+                                                    <!-- <a href="books-media-gird-view-v1.html"><i class="glyphicon glyphicon-th-large"></i></a> -->
+                                                    <a href="{% url 'generic-resources-list-view' %}" class="active"><i class="glyphicon glyphicon-th-list"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,7 +281,7 @@
                                                         </div>
                                                     </header>
                                                     <div class="entry-content">
-                                                        <p><strong>Issued by</strong> {{resource.first_name}} {{resource.last_name}}({{resource.USN}}) on <strong>{{resource.issue_date}}</strong> </p>
+                                                        <p><strong>Issued to</strong> {{resource.first_name}} {{resource.last_name}}({{resource.USN}}) on <strong>{{resource.issue_date}}</strong> </p>
                                                         
                                                         <p>{{resource.about|truncatechars:200}}</p>
                                                     </div>
@@ -588,25 +587,25 @@
             <div class="container">
                 <div id="footer-widgets">
                     <div class="row">
-                        <div class="col-md-4 col-sm-6 widget-container">
+                        <div class="col-md-6 col-sm-6 widget-container">
                             <div id="text-2" class="widget widget_text">
-                                <h3 class="footer-widget-title">About Libraria</h3>
+                                <h3 class="footer-widget-title">About Reasearch Resoucre portal</h3>
                                 <span class="underline left"></span>
                                 <div class="textwidget">
-                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking.
+                                    Students and teachers who are interested in research often don't have proper knowledge about the resources college possesses, thereby people have trouble locating down any kind of software tools or hardware components which will be required by them in their research work.
                                 </div>
                                 <address>
                                     <div class="info">
                                         <i class="fa fa-location-arrow"></i>
-                                        <span>21 King Street, Melbourne, Victoria 3000 Australia</span>
+                                        <span>Mysore Rd, RV Vidyaniketan, Post, Bengaluru, Karnataka 560059</span>
                                     </div>
                                     <div class="info">
                                         <i class="fa fa-envelope"></i>
-                                        <span><a href="mailto:support@libraria.com">support@libraria.com</a></span>
+                                        <span><a href="mailto:support@rrp.com">support@rrp.com</a></span>
                                     </div>
                                     <div class="info">
                                         <i class="fa fa-phone"></i>
-                                        <span><a href="tel:012-345-6789">+ 012-345-6789</a></span>
+                                        <span><a href="tel:+91 9876543210">+91 9876543210</a></span>
                                     </div>
                                 </address>
                             </div>
@@ -617,12 +616,9 @@
                                 <span class="underline left"></span>
                                 <div class="menu-quick-links-container">
                                     <ul id="menu-quick-links" class="menu">
-                                        <li><a href="#">Library News</a></li>
-                                        <li><a href="#">History</a></li>
-                                        <li><a href="#">Meet Our Staff</a></li>
-                                        <li><a href="#">Board of Trustees</a></li>
-                                        <li><a href="#">Budget</a></li>
-                                        <li><a href="#">Annual Report</a></li>
+                                        <li><a href="/generic-resources-list-view/">Resources</a></li>
+                                        <li><a href="https://www.rvce.edu.in//feedback-grievance">Calender of Events</a></li>
+                                        <li><a href="https://www.rvce.edu.in//calendar-of-events">Feedback/ Grievance</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -633,18 +629,15 @@
                                 <h3 class="footer-widget-title">Timing</h3>
                                 <span class="underline left"></span>
                                 <div class="timming-text-widget">
-                                    <time datetime="2017-02-13">Mon - Thu: 9 am - 9 pm</time>
-                                    <time datetime="2017-02-13">Fri: 9 am - 6 pm</time>
-                                    <time datetime="2017-02-13">Sat: 9 am - 5 pm</time>
-                                    <time datetime="2017-02-13">Sun: 1 pm - 6 pm</time>
-                                    <ul>
+                                    <time datetime="2017-02-13">Mon - Thu: 9 am - 6 pm</time>
+                                    <!-- <ul>
                                         <li><a href="#">Closings</a></li>
                                         <li><a href="#">Branches</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>			
                         </div>
-                        <div class="col-md-4 col-sm-6 widget-container">
+                        <!-- <div class="col-md-4 col-sm-6 widget-container">
                             <div class="widget twitter-widget">
                                 <h3 class="footer-widget-title">Latest Tweets</h3>
                                 <span class="underline left"></span>
@@ -659,7 +652,7 @@
                                     </ul>
                                 </div>
                             </div>			
-                        </div>
+                        </div> -->
                     </div>
                 </div>                
             </div>
@@ -667,18 +660,13 @@
                 <div class="container">
                     <div class="row">
                         <div class="footer-text col-md-3">
-                            <p><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></p>
                         </div>
                         <div class="col-md-9 pull-right">
                             <ul>
-                                <li><a href="{% url 'home' %}">Home</a></li>
-                                <li><a href="generic-resources-list-view.html">Books &amp; Media</a></li>
-                                <li><a href="news-events-list-view.html">News &amp; Events</a></li>
-                                <li><a href="#">Kids &amp; Teens</a></li>
-                                <li><a href="services.html">Services</a></li>
-                                <li><a href="#">Research</a></li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="/home/">Home</a></li>
+                                <li><a href="/generic-resources-list-view/">Resources</a></li>
+                                <li><a href="/services/">Services</a></li>
+    
                             </ul>
                         </div>
                     </div>

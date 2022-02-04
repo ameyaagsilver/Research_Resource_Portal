@@ -207,7 +207,9 @@ def updateResource(request):
             new_resourceUpdateLogbook_instance.location = request.POST.get('location')
             resource_instance.location = request.POST.get('location')
 
-        if resource_instance.purchase_date != request.POST.get('purchaseDate'):
+        if str(resource_instance.purchase_date) != request.POST.get('purchaseDate'):
+            print(request.POST.get('purchaseDate'), type(request.POST.get('purchaseDate')))
+            print(str(resource_instance.purchase_date), type(resource_instance.purchase_date))
             new_resourceUpdateLogbook_instance.purchase_date = request.POST.get('purchaseDate')
             resource_instance.purchase_date = request.POST.get('purchaseDate')
 

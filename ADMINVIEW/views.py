@@ -1,9 +1,14 @@
+from concurrent.futures import thread
 from datetime import date
+from threading import Thread
 from django.shortcuts import redirect, render
 from USERVIEW import models as userviewMODELS
 from django.contrib import messages
-# recentSearchedQuery = None
+from os import link
+from time import sleep
+import requests, bs4 , sys
 
+import USERVIEW
 
 def issueResource(request):
     adminID = None
@@ -85,6 +90,32 @@ def returnResource(request):
     return redirect('borrowed-resources')
 
 
+def webScrapperForAddNewResource(keyword, resource_id):
+    sleep(10)
+    print("Web scrapping for Resources")
+    print('Googling...for r_id=', resource_id)
+    res = requests.get('https://google.com/search?q=' + keyword) 
+
+    soup = bs4.BeautifulSoup(res.text, "html.parser")
+    linkElems = soup.select('div#main > div > div > div > a')  
+    numOpen = min(25, len(linkElems))
+    linkCount = 0
+    for i in range(numOpen):
+        if len(linkElems[i].select('h3'))!=0 and linkCount<5:
+            print("*********************************************************************")
+            heading = "".join(linkElems[i].select('h3')[0].select('div')[0].strings)
+            url = 'http://google.com' + linkElems[i].get("href")
+            if url and heading:
+                newResourceRelatedLinksInstance = userviewMODELS.resourceRelatedLinks()
+                newResourceRelatedLinksInstance.url = url
+                newResourceRelatedLinksInstance.heading = heading
+                newResourceRelatedLinksInstance.resource_id = get_resource_instance_by_id(resource_id)
+                newResourceRelatedLinksInstance.save()
+                print(heading)
+                print(url)
+                linkCount+=1
+
+
 def addResource(request):
     isdmin = False
     username = None
@@ -113,6 +144,12 @@ def addResource(request):
         new_resource_instance.admin_id = get_admin_instance_by_id(adminID)
         new_resource_instance.save()
         message = "Resource "+new_resource_instance.resource_name+" added successfully"
+
+        print("*********************")
+        threadAddResource = Thread(target=webScrapperForAddNewResource, args=(new_resource_instance.resource_name, new_resource_instance.resource_id))
+        threadAddResource.start()
+        print("*********************")
+
         return render(request, 'add-resource.html', {"username": username, "message": message, "admin": "YES"})
     if isAdmin:
         return render(request, 'add-resource.html', {"username": username, "admin": "YES"})
@@ -125,10 +162,12 @@ def updateResource(request):
     try:
         isAdmin = request.session['isAdmin']
         username = request.session['username']
+        adminID = request.session['uid']
+        print(username, isAdmin, adminID)
     except:
         return redirect('')
 
-    if request.method == 'POST' and isAdmin and request.POST.get('toUpdatePage'):
+    if request.method == 'POST' and isAdmin and request.POST.get('toUpdatePage'): # loads the web page where you can enter updated values
         resourceID = request.POST.get('resourceID')
         resource_instance = get_resource_instance_by_id(resourceID)
         resource_instance.purchase_date = resource_instance.purchase_date.strftime(
@@ -137,23 +176,64 @@ def updateResource(request):
         print(resource_instance.image)
         return render(request, 'update-resource.html', {"resource": resource_instance, "username": username, "admin": "YES"})
 
-    if request.method == 'POST' and isAdmin and request.POST.get('toUpdate'):
+    if request.method == 'POST' and isAdmin and request.POST.get('toUpdate'): # on submit in the web-page of update-resource, this saves the changes in the database
         resourceID = request.POST.get('resourceID')
         resource_instance = get_resource_instance_by_id(resourceID)
-        resource_instance.resource_name = request.POST.get('resourceName')
-        resource_instance.OEM = request.POST.get('OEM')
-        resource_instance.resource_type = request.POST.get('resourceType')
-        resource_instance.department_name = request.POST.get(
-            'resourceDeptName')
-        resource_instance.unit_cost = request.POST.get('unitCost')
-        resource_instance.location = request.POST.get('location')
-        resource_instance.purchase_date = request.POST.get(
-            'purchaseDate')
-        resource_instance.quantity = request.POST.get('quantity')
-        # resource_instance.image = request.FILES['resImage']
-        resource_instance.about = request.POST.get('about')
-        resource_instance.save()
+        new_resourceUpdateLogbook_instance = userviewMODELS.resourceUpdateLogbook()
+        new_resourceUpdateLogbook_instance.admin_id = get_admin_instance_by_id(adminID)
+        new_resourceUpdateLogbook_instance.resource_id = resource_instance
+        # Checking if any changes and logging the updated values into resourceUpdateLogbook table in database
+        if resource_instance.resource_name != request.POST.get('resourceName'):
+            new_resourceUpdateLogbook_instance.resource_name = request.POST.get('resourceName')
+            resource_instance.resource_name = request.POST.get('resourceName')
 
+        if resource_instance.OEM != request.POST.get('OEM'):
+            new_resourceUpdateLogbook_instance.OEM = request.POST.get('OEM')
+            resource_instance.OEM = request.POST.get('OEM')
+
+        if resource_instance.resource_type != request.POST.get('resourceType'):
+            new_resourceUpdateLogbook_instance.resource_type = request.POST.get('resourceType')
+            resource_instance.resource_type = request.POST.get('resourceType')
+
+        if resource_instance.department_name != request.POST.get('resourceDeptName'):
+            new_resourceUpdateLogbook_instance.department_name = request.POST.get('resourceDeptName')
+            resource_instance.department_name = request.POST.get('resourceDeptName')
+        
+        if resource_instance.unit_cost != int(request.POST.get('unitCost')):
+            new_resourceUpdateLogbook_instance.unit_cost = request.POST.get('unitCost')
+            resource_instance.unit_cost = request.POST.get('unitCost')
+        
+        if resource_instance.location != request.POST.get('location'):
+            new_resourceUpdateLogbook_instance.location = request.POST.get('location')
+            resource_instance.location = request.POST.get('location')
+
+        if resource_instance.purchase_date != request.POST.get('purchaseDate'):
+            new_resourceUpdateLogbook_instance.purchase_date = request.POST.get('purchaseDate')
+            resource_instance.purchase_date = request.POST.get('purchaseDate')
+
+        if resource_instance.quantity != int(request.POST.get('quantity')):
+            # print(type(request.POST.get('quantity')))
+            new_resourceUpdateLogbook_instance.quantity = request.POST.get('quantity')
+            resource_instance.quantity = request.POST.get('quantity')
+
+        if resource_instance.about != request.POST.get('about'):
+            new_resourceUpdateLogbook_instance.about = request.POST.get('about')
+            resource_instance.about = request.POST.get('about')
+        
+        # resource_instance.resource_name = request.POST.get('resourceName')
+        # resource_instance.OEM = request.POST.get('OEM')
+        # resource_instance.resource_type = request.POST.get('resourceType')
+        # resource_instance.department_name = request.POST.get(
+        #     'resourceDeptName')
+        # resource_instance.unit_cost = request.POST.get('unitCost')
+        # resource_instance.location = request.POST.get('location')
+        # resource_instance.purchase_date = request.POST.get(
+        #     'purchaseDate')
+        # resource_instance.quantity = request.POST.get('quantity')
+        # # resource_instance.image = request.FILES['resImage']
+        # resource_instance.about = request.POST.get('about')
+        resource_instance.save()
+        new_resourceUpdateLogbook_instance.save()
         message = "Resource "+resource_instance.resource_name+" updated successfully"
         return redirect('generic-resources-list-view')
     return redirect('')
@@ -175,5 +255,5 @@ def get_resource_instance_by_id(resourceID):
     return resource
 
 
-def returnRecentQuery():
-    return recentSearchedQuery
+# def returnRecentQuery():
+#     return recentSearchedQuery

@@ -1,5 +1,0 @@
-Name of different projects in Django Main Directory:
--LOGIN
--Issue/Return 
--Adding/Deleting resources
--

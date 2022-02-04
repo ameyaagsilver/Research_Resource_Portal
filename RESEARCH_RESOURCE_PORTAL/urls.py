@@ -27,6 +27,9 @@ urlpatterns = [
     path('logout/', loginVIEW.logout, name="logout"),
     path('read-more-about-resource/', loginVIEW.readMoreAboutResource, name="read-more-about-resource"),
     path('contact/', loginVIEW.contact, name="contact"),
+    path('generic-resources-list-view/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
+    path('search-component/', loginVIEW.searchComponent),
+    path('search-component/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
 
     # USERVIEW paths included
     path('user/', include('USERVIEW.urls')),

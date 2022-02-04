@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from USERVIEW.models import resources as res
 from django.shortcuts import redirect, render
 import firebase_admin
@@ -94,19 +95,6 @@ def logout(request):
 
 
 def home(request):
-    # r = models.resources()
-    # r.about = "dddd"
-    # r.department_name = "ISe"
-    # r.resource_name = "Arduino"
-    # r.resource_type = "SO"
-    # r.location = "Room 120 si"
-    # r.image = "r.png"
-    # r.quantity = 1
-    # r.unit_cost = 0
-    # r.OEM = "HPE"
-    # r.adminId = "ergh3reu3r"
-    # r.save()
-
     try:
         username = request.session['username']
         print(username)
@@ -135,7 +123,6 @@ def services(request):
 
 # DISPLAYs all the resources in the database (for admin as well as to user views)
 def resources(request):
-    global recentSearchedQuery
     # SEARCH REDIRECTS BACK TO THE SAME URL= 'GENERIC-RES-LIST-VIEW'
     if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID') or request.POST.get('departmentName') or request.POST.get('costUpperBound') or request.POST.get('purchaseDate') or request.POST.get('costLowerBound')):
         isAdmin = False
@@ -154,7 +141,7 @@ def resources(request):
         resource_list5 = res.objects.none()
         resource_list6 = res.objects.none()
 
-        if request.POST.get('keywords'):
+        if request.POST.get('keywords'): # searching for list of keywords in the database
             keywords_list = request.POST.get('keywords').split(' ')
             searchedQuery['keywords'] = request.POST.get('keywords')
             for keyword in keywords_list:
@@ -177,7 +164,7 @@ def resources(request):
                 department_name__icontains=departmentName)
         else:
             resource_list3 = res.objects.all()
-        if True:
+        if isAdmin:
             print("Hllo this is admin")
             resource_list4 = res.objects.all()  # declaring an empty querysert
             # if request.POST.get('departmentName'):
@@ -202,15 +189,8 @@ def resources(request):
                     unit_cost__gte=costLowerBound)
             else:
                 resource_list6 = res.objects.all()
-        # print("List 1:::", resource_list1)
-        # print("List 2:::", resource_list2)
-        # print("List 3:::", resource_list3)
-        # print("List 4:::", resource_list4)
-        # print("List 5:::", resource_list5)
-        # print("List 6:::", resource_list6)
         resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
-        resource_list = resource_list[:5]
-        print(resource_list[0:2])
+        # resource_list = resource_list[:5]
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
         elif isUser:
@@ -219,8 +199,8 @@ def resources(request):
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
 
     resource_list = res.objects.all()
-    resource_list = resource_list[:50]
-    print(resource_list[0:2])
+    # resource_list = resource_list[:50]
+    # print(resource_list)
     try:
         username = request.session['username']
         isAdmin = request.session['isAdmin']
@@ -247,9 +227,9 @@ def contact(request):
         return render(request, "contact.html", {"username": username})
     else:
         return render(request, "contact.html")
+
+
 # return the READ MORE section of a resource selected
-
-
 def readMoreAboutResource(request):
     isAdmin = False
     isUser = False
@@ -264,16 +244,27 @@ def readMoreAboutResource(request):
         print(resourceID)
         resource_instance = get_resource_instance_by_id(resourceID)
         print(resource_instance)
-
+        relatedLinks = userviewMODELS.resourceRelatedLinks.objects.filter(resource_id=resourceID)
+        print(relatedLinks)
         if isAdmin:
-            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "username": username, "admin": 'YES'})
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "username": username, "admin": 'YES'})
         elif isUser:
-            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "username": username})
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "username": username})
         else:
-            return render(request, "read-more-about-resource.html", {"resource": resource_instance})
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks})
 
     else:
         return redirect('generic-resources-list-view')
+
+
+def searchAutoCompleteEmailID(request):
+    partialEmailID = request.GET.get('emailID')
+    allEmails = []
+    if partialEmailID:
+        allEmailIDs = userviewMODELS.users.objects.filter(emailID__icontains=partialEmailID)
+        for email in allEmailIDs:
+            allEmails.append(email.emailID)
+    return JsonResponse({'status':200, 'data':allEmails[0:3]})
 
 
 def get_user_instance_by_email(email_id):
@@ -290,3 +281,6 @@ def get_resource_instance_by_id(resourceID):
     resource = userviewMODELS.resources.objects.filter(
         resource_id=resourceID).first()
     return resource
+
+def searchComponent(request):
+    return render(request, "searchComponent.html")

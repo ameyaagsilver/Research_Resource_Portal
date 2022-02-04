@@ -1,0 +1,127 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Component</title>
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+
+    <!-- Title -->
+    <title>..:: RESEARCH RESOURCE PORTAL ::..</title>
+
+    <!-- Favicon -->
+    <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/x-icon" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i"
+        rel="stylesheet" />
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Mobile Menu -->
+    <link href="{% static 'css/mmenu.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/mmenu.positioning.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Accordion Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.accordion.css' %}">
+
+    <!-- Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Autocomplete linkage -->
+    <link href="{% static 'css/autocomplete.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form action="/issue-resource/" method="post">
+        {% csrf_token %}
+        <br><br>
+        <div style="padding-left: 10px;" id="autocomplete{{resource.resource_id}}" class="autocomplete">
+            <input type="email" name="emailID" id="autocomplete"
+                autocomplete="off" placeholder="Email ID for searching" required></input>
+            <ul class="autocomplete-result-list"></ul>
+        </div>
+        <br>
+
+        <script src="https://unpkg.com/@trevoreyre/autocomplete-js">
+        </script>
+        <script>
+            new Autocomplete('#autocomplete{{resource.resource_id}}', {
+                search: input => {
+                    console.log(input)
+                    const url =
+                        `search-email-ids/?emailID=${input}`
+                    return new Promise(resolve => {
+                        fetch(url)
+                            .then(response => {
+                                console.log(
+                                    response)
+                                return response
+                                    .json()
+                            })
+                            .then(data => {
+                                console.log(data)
+                                resolve(data.data)
+                            })
+                    })
+                }
+            })
+        </script>
+    </form>
+
+
+
+    <!-- jQuery Latest Version 1.x -->
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+
+    <!-- jQuery UI -->
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+
+    <!-- jQuery Easing -->
+    <script type="text/javascript" src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Mobile Menu -->
+    <script type="text/javascript" src="{% static 'js/mmenu.min.js' %}"></script>
+
+    <!-- Harvey - State manager for media queries -->
+    <script type="text/javascript" src="{% static 'js/harvey.min.js' %}"></script>
+
+    <!-- Waypoints - Load Elements on View -->
+    <script type="text/javascript" src="{% static 'js/waypoints.min.js' %}"></script>
+
+    <!-- Facts Counter -->
+    <script type="text/javascript" src="{% static 'js/facts.counter.min.js' %}"></script>
+
+    <!-- MixItUp - Category Filter -->
+    <script type="text/javascript" src="{% static 'js/mixitup.min.js' %}"></script>
+
+    <!-- Owl Carousel -->
+    <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+
+    <!-- Accordion -->
+    <script type="text/javascript" src="{% static 'js/accordion.min.js' %}"></script>
+
+    <!-- Responsive Tabs -->
+    <script type="text/javascript" src="{% static 'js/responsive.tabs.min.js' %}"></script>
+
+    <!-- Responsive Table -->
+    <script type="text/javascript" src="{% static 'js/responsive.table.min.js' %}"></script>
+
+    <!-- Masonry -->
+    <script type="text/javascript" src="{% static 'js/masonry.min.js' %}"></script>
+
+    <!-- Carousel Swipe -->
+    <script type="text/javascript" src="{% static 'js/carousel.swipe.min.js' %}"></script>
+
+    <!-- bxSlider -->
+    <script type="text/javascript" src="{% static 'js/bxslider.min.js' %}"></script>
+
+    <!-- Custom Scripts -->
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

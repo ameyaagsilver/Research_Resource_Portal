@@ -179,144 +179,107 @@
         <!-- End: Page Banner -->
 
         <!-- Start: Book & Media Section -->
-        <div id="content" class="site-content">
-            <div id="primary" class="content-area">
-                <main id="main" class="site-main">
-                    <div class="books-media-list">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-9 col-md-push-3">
-                                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                                    <div class="books-list">
-                                        {% if resource %}
-                                        <article> 
-                                            <div class="single-book-box">                                                
-                                                <div class="post-thumbnail">
-                                                    <div class="book-list-icon yellow-icon"></div>
-                                                    <a href="books-media-detail-v1.html"><img alt="Book" src='{{ resource.image.url }}' class = "prod-image" style="object-fit:scale-down;
-                                                        width:300px;
-                                                        height:auto;"></a>   
-                                                </div>
-                                                <div class="post-detail">
-                                                    <header class="entry-header">
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <h3 class="entry-title">
-                                                                    <a href="books-media-detail-v1.html">{{resource.resource_name}}</a>
-                                                                    <hr>
-                                                                </h3>
-                                                                <ul>
-                                                                    <li><strong>OEM</strong> {{resource.OEM}}</li>
-                                                                    <li><strong>Resource ID:</strong> {{resource.resource_id}}</li>
-                                                                    {% if admin %}
-                                                                    <li><strong>Unit cost:</strong> <i class="fa fa-rupee"></i> {{resource.unit_cost}}</li>
-                                                                    {% endif %}
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <ul>
-                                                                    <br><br><br>
-                                        
-                                                                    <li><strong>Quantity</strong> {{resource.quantity}}</li>
-                                                                    <li><strong>Type </strong> {{resource.resource_type}}</li> 
-                                                                    <li><strong>Department </strong> {{resource.department_name}}</li>                                            
-                                                                </ul>                                                                
-                                                            </div>
-                                                        </div>
-                                                    </header>
-                                                    <div class="entry-content">
-                                                        <p><strong>Location</strong> {{resource.location}}, {{resource.department_name}}</p>
-                                                        
-                                                        <p>{{resource.about}}</p>
-                                                    </div>
-                                                    <!-- <footer class="entry-footer"> -->
-                                                        <hr>
-                                                        {% if admin %}
-                                                        <form action="/issue-resource/" method="post">
-                                                            {% csrf_token %}
-                                                            <input class="btn btn-dark-gray" type="submit" value="Issue"></input>
-                                                            <input type="hidden" value={{resource.resource_id}} name="resourceID">
-                                                            <input type="text" name="emailID"></input>
-                                                        </form>    
-                                                        <form action="/update-resource/" method="post">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" name="toUpdatePage" value="YES">
-                                                            <input type="hidden" value={{resource.resource_id}} name="resourceID">
-                                                            <button type="submit" class="btn pull-right"><i class="fa fa-edit" aria-hidden="true"></i></button>                                                         </form>
-                                                        {% endif %}
-                                                    </footer>
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-                                        </article>
-                                        <hr>
+        <section>
+            <div id="content" class="site-content">
+                <div id="primary" class="content-area">
+                    <main id="main" class="site-main">
+                        <div class="books-media-list">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-9 col-md-push-3">
                                         <br><br><br><br><br><br><br><br><br><br><br><br><br>
-                                        {% endif %}
+                                        <div class="books-list">
+                                            {% if resource %}
+                                            <article> 
+                                                <div class="single-book-box">                                                
+                                                    <div class="post-thumbnail">
+                                                        <div class="book-list-icon yellow-icon"></div>
+                                                        <a href="books-media-detail-v1.html"><img alt="Book" src='{{ resource.image.url }}' class = "prod-image" style="object-fit:scale-down;
+                                                            width:300px;
+                                                            height:auto;"></a>   
+                                                    </div>
+                                                    <div class="post-detail">
+                                                        <header class="entry-header">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <h3 class="entry-title">
+                                                                        <a href="books-media-detail-v1.html">{{resource.resource_name}}</a>
+                                                                        <hr>
+                                                                    </h3>
+                                                                    <ul>
+                                                                        <li><strong>OEM</strong> {{resource.OEM}}</li>
+                                                                        <li><strong>Resource ID:</strong> {{resource.resource_id}}</li>
+                                                                        {% if admin %}
+                                                                        <li><strong>Unit cost:</strong> <i class="fa fa-rupee"></i> {{resource.unit_cost}}</li>
+                                                                        {% endif %}
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <ul>
+                                                                        <br><br><br>
+                                            
+                                                                        <li><strong>Quantity</strong> {{resource.quantity}}</li>
+                                                                        <li><strong>Type </strong> {{resource.resource_type}}</li> 
+                                                                        <li><strong>Department </strong> {{resource.department_name}}</li>                                            
+                                                                    </ul>                                                                
+                                                                </div>
+                                                            </div>
+                                                        </header>
+                                                        <div class="entry-content">
+                                                            <p><strong>Location</strong> {{resource.location}}, {{resource.department_name}}</p>
+                                                            
+                                                            <p>{{resource.about}}</p>
+                                                        </div>
+                                                        <!-- <footer class="entry-footer"> -->
+                                                            <hr>
+                                                            {% if admin %}
+                                                            <form action="/issue-resource/" method="post">
+                                                                {% csrf_token %}
+                                                                <input class="btn btn-dark-gray" type="submit" value="Issue"></input>
+                                                                <input type="hidden" value={{resource.resource_id}} name="resourceID">
+                                                                <input type="text" name="emailID"></input>
+                                                            </form>    
+                                                            <form action="/update-resource/" method="post">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="toUpdatePage" value="YES">
+                                                                <input type="hidden" value={{resource.resource_id}} name="resourceID">
+                                                                <button type="submit" class="btn pull-right"><i class="fa fa-edit" aria-hidden="true"></i></button>                                                         </form>
+                                                            {% endif %}
+                                                        </footer>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                            </article>
+                                            <hr>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </main>
-            </div>
-        </div>
-        <!-- End: Books & Media Section -->
-
-        <!-- Start: Social Network -->
-        <!-- <section class="social-network section-padding">
-            <div class="container">
-                <div class="center-content">
-                    <h2 class="section-title">Follow Us</h2>
-                    <span class="underline center"></span>
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </main>
                 </div>
-                <ul>
-                    <li>
-                        <a class="facebook" href="#" target="_blank">
-                            <span>
-                                <i class="fa fa-facebook-f"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="twitter" href="#" target="_blank">
-                            <span>
-                                <i class="fa fa-twitter"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="google" href="#" target="_blank">
-                            <span>
-                                <i class="fa fa-google-plus"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="rss" href="#" target="_blank">
-                            <span>
-                                <i class="fa fa-rss"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="linkedin" href="#" target="_blank">
-                            <span>
-                                <i class="fa fa-linkedin"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="youtube" href="#" target="_blank">
-                            <span>
-                                <i class="fa fa-youtube"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
             </div>
-        </section> -->
-        <!-- End: Social Network -->
+    </section>
+        <!-- End: Books & Media Section -->
+        <div class="row">
+            <section>
+                <div class="center-content">
+                    <h2 class="section-title">Related Links</h2>
+                    <span class="underline center"></span>
+                    <p class="lead">Tutorials, documentations and links related to the resource</p>
+                    {% if relatedLinks %}
+                        {% for link in relatedLinks %}
+                            <a href={{link.url}} target="_blank"><h3><i class="fa fa-link"></i>  {{link.heading}} </h3></a>
+                            <br>
+                        {% endfor %}
+                    {% else %}
+                    <h3>NO RELATED SEARCH LINKS FOR THIS RESOURCE!!!</h3>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+        <br><br>
 
         <!-- Start: Footer -->
         <footer class="site-footer">

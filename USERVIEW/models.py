@@ -1,4 +1,6 @@
 from enum import auto
+from statistics import median_grouped
+from turtle import heading
 from django.db import models
 
 
@@ -28,9 +30,6 @@ class admins(models.Model):
     class Meta:
         db_table = "admins"
 
-    # def __str__(self):
-    #     return self.name
-
 
 class committee(models.Model):
     committee_id = models.AutoField(primary_key=True, default=None)
@@ -38,10 +37,6 @@ class committee(models.Model):
 
     class Meta:
         db_table = "committee"
-
-    # def __str__(self):
-    #     return self.name
-
 
 class committee_members(models.Model):
     user_id = models.CharField(max_length=100, primary_key=True)
@@ -53,8 +48,8 @@ class committee_members(models.Model):
     committee_id = models.ForeignKey(
         committee, on_delete=models.CASCADE, db_column="committee_id")
 
-    # class Meta:
-    #     db_table = "committee_members"
+    class Meta:
+        db_table = "committee_members"
 
 
 class resources(models.Model):
@@ -78,6 +73,14 @@ class resources(models.Model):
     # def __str__(self):
     #     return self.name
 
+class resourceRelatedLinks(models.Model):
+    link_id = models.AutoField(primary_key=True)
+    url = models.CharField(max_length=400, default="")
+    heading = models.CharField(max_length=100, default="")
+    resource_id = models.ForeignKey(resources, on_delete=models.CASCADE, default=None, db_column="resource_id")
+
+    class Meta:
+        db_table = "resourceRelatedLinks"
 
 class test(models.Model):
     test_id = models.AutoField(primary_key=True, default=None)
@@ -126,3 +129,27 @@ class tender(models.Model):
 
     # def __str__(self):
     #     return self.name
+
+
+class resourceUpdateLogbook(models.Model):
+    update_id = models.AutoField(primary_key=True)
+    dateTime = models.DateTimeField(auto_now_add=True)
+    # updated values if any, otherwise will be stored as null
+    resource_name = models.CharField(max_length=250, null=True, blank=True)
+    OEM = models.CharField(max_length=100, null=True, blank=True)
+    resource_type = models.CharField(max_length=50, null=True, blank=True)
+    department_name = models.CharField(max_length=100, null=True, blank=True)
+    unit_cost = models.IntegerField(null=True, blank=True)
+    location = models.CharField(max_length=250, null=True, blank=True)
+    purchase_date = models.DateField(null=True, blank=True)
+    quantity = models.IntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to="hello/", default="", null=True, blank=True)
+    about = models.CharField(max_length=1000, null=True, blank=True)
+
+    resource_id = models.ForeignKey(
+        resources, on_delete=models.CASCADE, db_column="resource_id")
+    admin_id = models.ForeignKey(
+        admins, on_delete=models.CASCADE, db_column="admin_id")
+
+    class Meta:
+        db_table = "resourceUpdateLogbook"

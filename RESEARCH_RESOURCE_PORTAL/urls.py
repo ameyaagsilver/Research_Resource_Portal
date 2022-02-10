@@ -30,6 +30,7 @@ urlpatterns = [
     path('generic-resources-list-view/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
     path('search-component/', loginVIEW.searchComponent),
     path('search-component/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
+    path('read-more-about-resource/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
 
     # USERVIEW paths included
     path('user/', include('USERVIEW.urls')),
@@ -41,8 +42,10 @@ urlpatterns = [
     path('return-resource/', adminVIEW.returnResource, name="return-resource"),
     path('add-resource/', adminVIEW.addResource, name="add-resource"),
     path('update-resource/', adminVIEW.updateResource, name="update-resource"),
+    path('resource-history/', adminVIEW.resourceHistory, name="resource-history"),
 
     # REPORT app paths
+
     path('downloadLogs', reportVIEW.downloadLogs, name="downloadLogs"),
     path('print-searched-query', reportVIEW.downloadRecentSearchedQuery, name="print-searched-query")
 

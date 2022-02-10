@@ -7,8 +7,11 @@ from django.contrib import messages
 from os import link
 from time import sleep
 import requests, bs4 , sys
-
 import USERVIEW
+from django.forms.models import model_to_dict
+from django.db import connection
+
+
 
 def issueResource(request):
     adminID = None
@@ -218,7 +221,7 @@ def updateResource(request):
             new_resourceUpdateLogbook_instance.quantity = request.POST.get('quantity')
             resource_instance.quantity = request.POST.get('quantity')
 
-        if resource_instance.about != request.POST.get('about'):
+        if resource_instance.about.strip() != request.POST.get('about').strip():
             new_resourceUpdateLogbook_instance.about = request.POST.get('about')
             resource_instance.about = request.POST.get('about')
         
@@ -240,6 +243,51 @@ def updateResource(request):
         return redirect('generic-resources-list-view')
     return redirect('')
 
+
+def resourceHistory(request):
+    adminID = None
+    isAdmin = False
+    try:
+        isAdmin = request.session['isAdmin']
+        username = request.session['username']
+        if isAdmin:
+            adminID = request.session['uid']
+    except:
+        return redirect('')
+    if isAdmin and request.method == "POST" and request.POST.get('resourceID'):
+        resourceID = request.POST.get('resourceID')
+        updated_resources_table = userviewMODELS.resources.objects.raw('''
+        select * from resourceUpdateLogbook
+        inner join admins on admins.user_id = resourceUpdateLogbook.admin_id
+        where resourceUpdateLogbook.resource_id = %s
+        '''%resourceID)
+        # print(updated_resources_table[0].name)
+        # print(model_to_dict(updated_resources_table[2]))
+        # print(list(updated_resources_table))
+        # data = None
+        # with connection.cursor() as cursor:
+        #     cursor.execute('''
+        # select * from resourceUpdateLogbook
+        # inner join admins on admins.user_id = resourceUpdateLogbook.admin_id
+        # where resourceUpdateLogbook.resource_id = %s
+        # '''%resourceID)
+        #     data = dictfetchall(cursor)
+        #     # print(cursor.description)
+        #     # print(data)
+        #     # print(len(data))
+        #     # print(cursor)
+        #     columns = [col[0] for col in cursor.description]
+        #     print(columns)
+        return render(request, "resource-history-page.html", {"updatedResourceTable": updated_resources_table, "username": username, "admin": "YES"})
+    return redirect('')
+
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 def get_user_instance_by_email(email_id):
     user = userviewMODELS.users.objects.filter(emailID=email_id).first()

@@ -1,0 +1,669 @@
+{% load static %}
+{% if messages %}
+{% for message in messages %}
+<script>
+    alert('{{message}}');
+</script>
+{% endfor %}
+{% endif %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+
+    <!-- Title -->
+    <title>..:: RESEARCH RESOURCE PORTAL ::..</title>
+
+    <!-- Favicon -->
+    <link href="{% static 'images/favicon.ico' %}" rel="icon" type="image/x-icon" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i"
+        rel="stylesheet" />
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Mobile Menu -->
+    <link href="{% static 'css/mmenu.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/mmenu.positioning.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Accordion Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.accordion.css' %}">
+
+    <!-- Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Autocomplete linkage -->
+    <link href="{% static 'css/autocomplete.css' %}" rel="stylesheet" type="text/css" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+        <![endif]-->
+
+</head>
+
+<body>
+    <!-- Start: Header Section -->
+    <header id="header-v1" class="navbar-wrapper">
+        <div class="container">
+            <div class="row">
+                <nav class="navbar navbar-default">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="navbar-header">
+                                <div class="navbar-brand">
+                                    <h1>
+                                        <a href="{% url 'home' %}">
+                                            <img src="{% static 'images/rvce_logo.png' %}" alt="rvce logo" />
+                                        </a>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <!-- Header Topbar -->
+                            <div class="header-topbar hidden-sm hidden-xs">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="topbar-info">
+                                            <a href="tel:+91 9876543210"><i class="fa fa-phone"></i>+91 9876543210</a>
+                                            <span>/</span>
+                                            <a href="mailto:support@rrp.com"><i
+                                                    class="fa fa-envelope"></i>support@rrp.com</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="topbar-links">
+                                            <div class="header-cart dropdown">
+
+                                                {% if username %}
+                                                <a href="#"><i class="fa fa-user"></i>Hi, {{username}}
+                                                    {% if admin %}
+                                                    (ADMIN)
+                                                    {% endif %}
+                                                </a>
+
+                                                <div class="dropdown-menu cart-dropdown">
+                                                    <ul>
+                                                        <li><a href="{% url 'user-resources' %}">Borrowed resources</a>
+                                                        </li>
+                                                    </ul>
+                                                    {% if admin %}
+                                                    <ul>
+                                                        <li><a href="{% url 'borrowed-resources' %}">Resource
+                                                                Logbook</a></li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li><a href="{% url 'add-resource' %}">Add a new resource</a>
+                                                        </li>
+                                                    </ul>
+                                                    {% endif%}
+                                                    <div class="cart-buttons">
+                                                        {% if admin %}
+                                                        <a href="{% url 'downloadLogs' %}" class="btn btn-dark-gray"><i
+                                                                class="fa fa-bars"></i> Logs</a>
+                                                        {% else %}
+                                                        <a href="cart.html" class="btn btn-dark-gray">View Profile</a>
+                                                        {% endif %}
+                                                        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+                                                    </div>
+                                                </div>
+
+                                                {% else %}
+
+                                                <a href="{%  url 'signin' %}"><i class="fa fa-lock"></i>Login /
+                                                    Register</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="navbar-collapse hidden-sm hidden-xs">
+                                <ul class="nav navbar-nav ml-auto">
+                                    <li>
+                                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                                    </li>
+                                    <li><a class="nav-link page2"
+                                            href="{%  url 'generic-resources-list-view' %}">Resources</a></li>
+                                    <li><a href="{% url 'services' %}">Services</a></li>
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mobile-menu hidden-lg hidden-md">
+                        <a href="#mobile-menu"><i class="fa fa-navicon"></i></a>
+                        <div id="mobile-menu">
+                            <ul>
+                                <li class="mobile-title">
+                                    <h4>Navigation</h4>
+                                    <a href="#" class="close"></a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'home' %}">Home</a>
+                                    <!-- <ul>
+                                            <li><a href="{% url 'home' %}">Home V1</a></li>
+                                            <li><a href="home-v2.html">Home V2</a></li>
+                                            <li><a href="home-v3.html">Home V3</a></li>
+                                        </ul> -->
+                                </li>
+                                <li>
+                                    <a href="generic-resources-list-view.html">Resources</a>
+                                    <!-- <ul>
+                                            <li><a href="generic-resources-list-view.html">Books &amp; Media List View</a></li>
+                                            <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
+                                            <li><a href="books-media-gird-view-v2.html">Books &amp; Media Grid View V2</a></li>
+                                            <li><a href="books-media-detail-v1.html">Books &amp; Media Detail V1</a></li>
+                                            <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
+                                        </ul> -->
+                                </li>
+                                <li>
+                                    <a href="blog.html">Blog</a>
+                                    <!-- <ul>
+                                            <li><a href="blog.html">Blog Grid View</a></li>
+                                            <li><a href="blog-detail.html">Blog Detail</a></li>
+                                        </ul> -->
+                                </li>
+                                <li><a href="services.html">Services</a></li>
+                                <li><a href="{% url 'contact' %}">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- End: Header Section -->
+
+    <!-- Start: Page Banner -->
+    <section class="page-banner services-banner">
+        <div class="container">
+            <div class="banner-header">
+                <h2>Resources</h2>
+                <span class="underline center"></span>
+                <p class="lead">Find all the resources available here . </p>
+            </div>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li>Resource history</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- End: Page Banner -->
+
+    <!-- Start: Book & Media Section -->
+    <div id="content" class="site-content">
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <div class="books-media-list">
+                    <div class="container">
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- End: Books & Media Section -->
+
+
+    <!-- styling for tables section -->
+    <style>
+            caption{
+                text-align:center;
+                color: #000;
+            }
+            table {
+            border-collapse: separate;
+            border-spacing: 0;
+            color: #4a4a4d;
+            font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding: 2% 5% 2% 5%;
+            
+            }
+            th,
+            td {
+            padding: 10px 15px;
+            vertical-align: middle;
+            }
+            thead {
+            background: #ff7236;
+            background: linear-gradient(#f7611b, #f7851b);
+            color: #fff;
+            font-size: 11px;
+            text-transform: uppercase;
+            }
+            th:first-child {
+            border-top-left-radius: 5px;
+            text-align: left;
+            }
+            th:last-child {
+            border-top-right-radius: 5px;
+            }
+            tbody tr:nth-child(even) {
+            background: #f0f0f2;
+            }
+            td {
+            border-bottom: 1px solid #cecfd5;
+            border-right: 1px solid #cecfd5;
+            }
+            td:first-child {
+            border-left: 1px solid #cecfd5;
+            }
+            .book-title {
+            color: #395870;
+            display: block;
+            }
+            .text-offset {
+            color: #7c7c80;
+            font-size: 12px;
+            }
+            .item-stock,
+            .item-qty {
+            text-align: center;
+            }
+            .item-price {
+            text-align: right;
+            }
+            .item-multiple {
+            display: block;
+            }
+            tfoot {
+            text-align: right;
+            }
+            tfoot tr:last-child {
+            background: #f0f0f2;
+            color: #395870;
+            font-weight: bold;
+            }
+            tfoot tr:last-child td:first-child {
+            border-bottom-left-radius: 5px;
+            }
+            tfoot tr:last-child td:last-child {
+            border-bottom-right-radius: 5px;
+            }
+            .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            }
+
+            .active, .accordion:hover {
+            background-color: #ccc;
+            }
+
+            .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            }
+    </style>
+    
+    <section>
+        <div class="table-responsive">
+            <table>
+                <caption><h3>Resource history for resource id {{ updatedResourceTable.0.resource_id }}</h3></caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col">Resource Name</th>
+                    <th scope="col">OEM</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Dept name</th>
+                    <th scope="col">Cost</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Purchase Date</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">About</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+
+                <tbody>
+                    {% for resource in updatedResourceTable %}
+                        <tr>
+                            <td>
+                                <strong class="resource-name">{{ resource.dateTime.date }}</strong><br>
+                
+                                <span class="text-offset">{{ resource.dateTime.time }}</span>
+                            </td>
+                            <td>
+                                <strong class="resource-name">{{ resource.first_name }} {{ resource.middle_name }} {{ resource.last_name }}</strong><br>
+                
+                                <span class="text-offset">{{ resource.emailID }}</span>
+                            </td>
+                            <td>{{ resource.resource_name }}</td>
+                            <td>{{ resource.OEM }}</td>
+                            <td>{{ resource.resource_type }}</td>
+                            <td>{{ resource.department_name }}</td>
+                            <td>{{ resource.unit_cost }}</td>
+                            <td>{{ resource.location }}</td>
+                            <td>{{ resource.purchase_date }}</td>
+                            <td>{{ resource.quantity }}</td>
+                            <td>{{ resource.about | truncatechars:100 }}</td>
+                            <td>
+                                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{resource.update_id}}"> -->
+                                    <a><i class="fa fa-link fa-2x" data-toggle="modal" data-target="#exampleModalCenter{{resource.update_id}}"></i></a>
+                                  <!-- </button> -->
+                                  
+                                  <!-- Modal Content -->
+                                  <div class="modal fade" id="exampleModalCenter{{resource.update_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4>Admin details</h4>
+                                            <strong>Name</strong> {{resource.first_name}} {{resource.middle_name}} {{resource.last_name}}
+                                            <strong>Email id</strong> {{resource.emailID}} <br>
+                                            <strong>Location</strong> {{resource.admin_location}}
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="post-detail">
+                                                <header class="entry-header">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <h3 class="entry-title">
+                                                                Resource Update id {{resource.update_id}}
+                                                                <hr>
+                                                            </h3>
+                                                            <ul>
+                                                                <li><strong>Name</strong> {% if resource.resource_name %}{{resource.resource_name}}{% else %}No changes{% endif %} </li>
+                                                                <li><strong>OEM</strong> {% if resource.OEM %}{{resource.OEM}}{% else %}No changes{% endif %}</li>
+                                                                <li><strong>Unit cost:</strong> {% if resource.unit_cost %}<i class="fa fa-rupee"></i> {{resource.unit_cost}}{% else %}No changes{% endif %}</li> 
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <ul>
+                                                                <br><br><br>
+
+                                                                <li><strong>Quantity/Licenses </strong>{% if resource.quantity %}{{resource.quantity}}{% else %}No changes{% endif %}</li>
+                                                                <li><strong>Type </strong>{% if resource.resource_type %}{{resource.resource_type}}{% else %}No changes{% endif %}</li>
+                                                                <li><strong>Department </strong>{% if resource.department_name %}{{resource.department_name}}{% else %}No changes{% endif %}</li>
+                                                                <li><strong>Purchase date </strong>{% if resource.purchase_date %}{{resource.purchase_date}}{% else %}No changes{% endif %}</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </header>
+                                                <div class="entry-content">
+                                                    <p><strong>Location </strong>{% if resource.location %}{{resource.location}}{% else %}No changes{% endif %} </p>
+                                                    <p><strong>About the resource </strong> {% if resource.about %}{{resource.about}}{% else %}No changes{% endif %}</p>
+                                                    <hr>
+                                                    <p>The above mentioned changes are done by <strong>{{resource.first_name}} {{resource.middle_name}} {{resource.last_name}} ({{resource.emailID}})</strong> </p>
+                                                    <p><strong>Note:</strong> "No changes" signifies that the admin has not changed the value of the that attribute, only those attributes are changed by the admin which have proper value corresponding to their attribute names.</p>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div> -->
+                                      </div>
+                                    </div>
+                                  </div>
+                            </td>
+                        </tr>
+                    
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3">Total no. of changes</td>
+                    <td>{{updatedResourceTable | length}}</td>
+                  </tr>
+                </tfoot>
+              </table>
+        </div>
+    </section>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+        
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+          });
+        }
+    </script>
+    <!-- Start: Social Network -->
+    <section class="social-network section-padding">
+        <div class="container">
+            <div class="center-content">
+                <h2 class="section-title">Follow Us</h2>
+                <span class="underline center"></span>
+                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <ul>
+                <li>
+                    <a class="facebook" href="#" target="_blank">
+                        <span>
+                            <i class="fa fa-facebook-f"></i>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="twitter" href="#" target="_blank">
+                        <span>
+                            <i class="fa fa-twitter"></i>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="google" href="#" target="_blank">
+                        <span>
+                            <i class="fa fa-google-plus"></i>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="rss" href="#" target="_blank">
+                        <span>
+                            <i class="fa fa-rss"></i>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="linkedin" href="#" target="_blank">
+                        <span>
+                            <i class="fa fa-linkedin"></i>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="youtube" href="#" target="_blank">
+                        <span>
+                            <i class="fa fa-youtube"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- End: Social Network -->
+
+    <!-- Start: Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div id="footer-widgets">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 widget-container">
+                        <div id="text-2" class="widget widget_text">
+                            <h3 class="footer-widget-title">About Reasearch Resoucre portal</h3>
+                            <span class="underline left"></span>
+                            <div class="textwidget">
+                                Students and teachers who are interested in research often don't have proper knowledge
+                                about the resources college possesses, thereby people have trouble locating down any
+                                kind of software tools or hardware components which will be required by them in their
+                                research work.
+                            </div>
+                            <address>
+                                <div class="info">
+                                    <i class="fa fa-location-arrow"></i>
+                                    <span>Mysore Rd, RV Vidyaniketan, Post, Bengaluru, Karnataka 560059</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fa fa-envelope"></i>
+                                    <span><a href="mailto:support@rrp.com">support@rrp.com</a></span>
+                                </div>
+                                <div class="info">
+                                    <i class="fa fa-phone"></i>
+                                    <span><a href="tel:+91 9876543210">+91 9876543210</a></span>
+                                </div>
+                            </address>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6 widget-container">
+                        <div id="nav_menu-2" class="widget widget_nav_menu">
+                            <h3 class="footer-widget-title">Quick Links</h3>
+                            <span class="underline left"></span>
+                            <div class="menu-quick-links-container">
+                                <ul id="menu-quick-links" class="menu">
+                                    <li><a href="/generic-resources-list-view/">Resources</a></li>
+                                    <li><a href="https://www.rvce.edu.in//feedback-grievance">Calender of Events</a>
+                                    </li>
+                                    <li><a href="https://www.rvce.edu.in//calendar-of-events">Feedback/ Grievance</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix hidden-lg hidden-md hidden-xs tablet-margin-bottom"></div>
+                    <div class="col-md-2 col-sm-6 widget-container">
+                        <div id="text-4" class="widget widget_text">
+                            <h3 class="footer-widget-title">Timing</h3>
+                            <span class="underline left"></span>
+                            <div class="timming-text-widget">
+                                <time datetime="2017-02-13">Mon - Thu: 9 am - 6 pm</time>
+                                <!-- <ul>
+                                        <li><a href="#">Closings</a></li>
+                                        <li><a href="#">Branches</a></li>
+                                    </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-4 col-sm-6 widget-container">
+                            <div class="widget twitter-widget">
+                                <h3 class="footer-widget-title">Latest Tweets</h3>
+                                <span class="underline left"></span>
+                                <div id="twitter-feed">
+                                    <ul>
+                                        <li>
+                                            <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a></p>
+                                        </li>
+                                        <li>
+                                            <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>			
+                        </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="sub-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-text col-md-3">
+                    </div>
+                    <div class="col-md-9 pull-right">
+                        <ul>
+                            <li><a href="/home/">Home</a></li>
+                            <li><a href="/generic-resources-list-view/">Resources</a></li>
+                            <li><a href="#">Tenders</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End: Footer -->
+
+    <!-- jQuery Latest Version 1.x -->
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+
+    <!-- jQuery UI -->
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+
+    <!-- jQuery Easing -->
+    <script type="text/javascript" src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Mobile Menu -->
+    <script type="text/javascript" src="{% static 'js/mmenu.min.js' %}"></script>
+
+    <!-- Harvey - State manager for media queries -->
+    <script type="text/javascript" src="{% static 'js/harvey.min.js' %}"></script>
+
+    <!-- Waypoints - Load Elements on View -->
+    <script type="text/javascript" src="{% static 'js/waypoints.min.js' %}"></script>
+
+    <!-- Facts Counter -->
+    <script type="text/javascript" src="{% static 'js/facts.counter.min.js' %}"></script>
+
+    <!-- MixItUp - Category Filter -->
+    <script type="text/javascript" src="{% static 'js/mixitup.min.js' %}"></script>
+
+    <!-- Owl Carousel -->
+    <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+
+    <!-- Accordion -->
+    <script type="text/javascript" src="{% static 'js/accordion.min.js' %}"></script>
+
+    <!-- Responsive Tabs -->
+    <script type="text/javascript" src="{% static 'js/responsive.tabs.min.js' %}"></script>
+
+    <!-- Responsive Table -->
+    <script type="text/javascript" src="{% static 'js/responsive.table.min.js' %}"></script>
+
+    <!-- Masonry -->
+    <script type="text/javascript" src="{% static 'js/masonry.min.js' %}"></script>
+
+    <!-- Carousel Swipe -->
+    <script type="text/javascript" src="{% static 'js/carousel.swipe.min.js' %}"></script>
+
+    <!-- bxSlider -->
+    <script type="text/javascript" src="{% static 'js/bxslider.min.js' %}"></script>
+
+    <!-- Custom Scripts -->
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+
+    <!-- Autocomplete scripts -->
+
+
+</body>
+
+
+</html>

@@ -1,8 +1,10 @@
 {% load static %}
-{% if message %}
+{% if messages %}
+{% for message in messages %}
 <script>
-    alert('{{ message }}');
+    alert('{{message}}');
 </script>
+{% endfor %}
 {% endif %}
 <!DOCTYPE html>
 <html lang="zxx">

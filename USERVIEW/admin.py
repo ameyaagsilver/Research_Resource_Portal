@@ -16,3 +16,5 @@ admin.site.register(committee)
 admin.site.register(committee_members)
 
 admin.site.register(resourceRelatedLinks)
+
+admin.site.register(resourceUpdateLogbook)

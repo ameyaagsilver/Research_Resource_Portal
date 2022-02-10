@@ -23,7 +23,7 @@ class admins(models.Model):
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    location = models.CharField(max_length=250)
+    admin_location = models.CharField(max_length=250)
     phone_number = models.CharField(max_length=15)
     emailID = models.EmailField(max_length=100)
 
@@ -37,6 +37,7 @@ class committee(models.Model):
 
     class Meta:
         db_table = "committee"
+
 
 class committee_members(models.Model):
     user_id = models.CharField(max_length=100, primary_key=True)

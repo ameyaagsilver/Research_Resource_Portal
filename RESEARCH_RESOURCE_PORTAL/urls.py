@@ -31,6 +31,7 @@ urlpatterns = [
     path('search-component/', loginVIEW.searchComponent),
     path('search-component/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
     path('read-more-about-resource/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
+    path('user-profile/', loginVIEW.userProfile, name="user-profile"),
 
     # USERVIEW paths included
     path('user/', include('USERVIEW.urls')),

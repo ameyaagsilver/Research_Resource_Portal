@@ -281,6 +281,7 @@ def resourceHistory(request):
         return render(request, "resource-history-page.html", {"updatedResourceTable": updated_resources_table, "username": username, "admin": "YES"})
     return redirect('')
 
+
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
     columns = [col[0] for col in cursor.description]

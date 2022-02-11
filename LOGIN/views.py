@@ -1,3 +1,4 @@
+import re
 from django.http import JsonResponse
 from USERVIEW.models import resources as res
 from django.shortcuts import redirect, render
@@ -69,14 +70,14 @@ def signin(request):
             email = request.POST.get('emailID')
             password = request.POST.get('password')
             if email.split('@')[1] != "rvce.edu.in":
-                message = "Not a RVCE email ID!!! Try again"
-                return render(request, "signin.html", {"message": message})
+                messages.info(request, "Not a RVCE email ID!!! Try again")
+                return redirect('signin')
             try:
                 user = auth.sign_in_with_email_and_password(email, password)
                 print(user)
             except:
-                message = "Invalid credentials!!! Try again"
-                return render(request, 'signin.html', {"message": message})
+                messages.info(request, "Invalid credentials!!! Try again")
+                return redirect('signin')
             session_id = user['localId']
             request.session['uid'] = str(session_id)
             request.session['username'] = str(email.split('@')[0])
@@ -91,7 +92,7 @@ def logout(request):
         del request.session['username']
     except:
         pass
-    return redirect(reverse('home'))
+    return redirect(reverse('signin'))
 
 
 def home(request):
@@ -120,13 +121,13 @@ def home(request):
 def services(request):
     return render(request, "services.html")
 
-
-# DISPLAYs all the resources in the database (for admin as well as to user views)
+# DISPLAYs all the resources in the database (for admin as well as to user views) along with the search feature
 def resources(request):
     # SEARCH REDIRECTS BACK TO THE SAME URL= 'GENERIC-RES-LIST-VIEW'
     if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID') or request.POST.get('departmentName') or request.POST.get('costUpperBound') or request.POST.get('purchaseDate') or request.POST.get('costLowerBound')):
         isAdmin = False
         isUser = False
+        print("Yes")
         try:
             isAdmin = request.session['isAdmin']
             username = request.session['username']
@@ -143,6 +144,7 @@ def resources(request):
 
         if request.POST.get('keywords'): # searching for list of keywords in the database
             keywords_list = request.POST.get('keywords').split(' ')
+            print(keywords_list)
             searchedQuery['keywords'] = request.POST.get('keywords')
             for keyword in keywords_list:
                 resource_list1 = resource_list1 | res.objects.filter(
@@ -164,8 +166,8 @@ def resources(request):
                 department_name__icontains=departmentName)
         else:
             resource_list3 = res.objects.all()
-        if isAdmin:
-            print("Hllo this is admin")
+        if True:
+            # print("Hllo this is admin")
             resource_list4 = res.objects.all()  # declaring an empty querysert
             # if request.POST.get('departmentName'):
             #     deptName = request.POST.get('departmentName')
@@ -191,6 +193,7 @@ def resources(request):
                 resource_list6 = res.objects.all()
         resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
         # resource_list = resource_list[:5]
+        print(resource_list2)
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
         elif isUser:
@@ -199,8 +202,7 @@ def resources(request):
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
 
     resource_list = res.objects.all()
-    # resource_list = resource_list[:50]
-    # print(resource_list)
+    resource_list = resource_list[:10]
     try:
         username = request.session['username']
         isAdmin = request.session['isAdmin']
@@ -267,8 +269,70 @@ def searchAutoCompleteEmailID(request):
     return JsonResponse({'status':200, 'data':allEmails[0:3]})
 
 
+def userProfile(request):
+    isAdmin = False
+    isUser = False
+    try:
+        username = request.session['username']
+        isUser = True
+        isAdmin = request.session['isAdmin']
+    except:
+        pass
+
+    if request.method == "POST":
+        user_id = request.session['uid']
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name')
+        last_name = request.POST.get('last_name')
+        phone_no = request.POST.get('phone_no')
+        department_name = request.POST.get('department_name')
+        USN = request.POST.get('USN')
+        print(first_name, middle_name, last_name, phone_no, department_name, USN)
+        user_instance = get_user_instance_by_id(user_id)
+        print(user_instance)
+        user_instance.first_name = first_name
+        user_instance.middle_name = middle_name
+        user_instance.last_name = last_name
+        user_instance.phone_no = phone_no
+        user_instance.department_name = department_name
+        user_instance.USN = USN
+        user_instance.save()
+        messages.info(request, "New profile changes saved!!!")
+        return redirect(reverse('user-profile'))
+    user_profile = None
+    recent_issued_resources = None
+    if isUser:
+        userID = request.session['uid']
+        user_profile = userviewMODELS.users.objects.filter(user_id=userID).first()
+        recent_issued_resources = userviewMODELS.resources.objects.raw('''
+        select * from resource_logbook
+        join resources on resource_logbook.resource_id = resources.resource_id
+        where resource_logbook.member_id = "%s" and resource_logbook.return_date is null
+        limit 4
+        '''%userID)
+    if isAdmin:
+        userID = request.session['uid']
+        user_profile = userviewMODELS.admins.objects.filter(user_id=userID).first()
+        recent_issued_resources = userviewMODELS.resources.objects.raw('''
+        select * from resource_logbook
+        join resources on resource_logbook.resource_id = resources.resource_id
+        where resource_logbook.member_id = "%s" and resource_logbook.return_date is null
+        limit 4
+        '''%userID)
+    if isAdmin:
+            return render(request, "user-profile.html", {"recentIssuedResources":recent_issued_resources,"userprofile": user_profile, "username": username, "admin": 'YES'})
+    elif isUser:
+        return render(request, "user-profile.html", {"recentIssuedResources":recent_issued_resources, "userprofile": user_profile, "username": username})
+    else:
+        return redirect('signin')
+    
+
 def get_user_instance_by_email(email_id):
     user = userviewMODELS.users.objects.filter(emailID=email_id).first()
+    return user
+
+def get_user_instance_by_id(user_id):
+    user = userviewMODELS.users.objects.filter(user_id=user_id).first()
     return user
 
 

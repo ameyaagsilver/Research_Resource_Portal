@@ -9,7 +9,7 @@ def resources(request):  # DISPLAYs all resources a specific user taken resource
         user_id = request.session['uid']
         username = request.session['username']
         isAdmin = request.session['isAdmin']
-        print(isAdmin, user_id, username)
+        # print(isAdmin, user_id, username)
         resource_list = res.objects.raw('''select * from users 
                                     join resource_logbook on users.user_id=resource_logbook.member_id
                                     join resources on resource_logbook.resource_id=resources.resource_id
@@ -17,7 +17,7 @@ def resources(request):  # DISPLAYs all resources a specific user taken resource
                                     order by return_date
 
                                     ''' % user_id)
-        print("User Borrowed resources are", resource_list)
+        # print("User Borrowed resources are", resource_list)
         if isAdmin:
             return render(request, "USERVIEW/userResources.html", {"resources": resource_list, "username": username, "admin": 'YES'})
         return render(request, "USERVIEW/userResources.html", {"resources": resource_list, "username": username})

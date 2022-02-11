@@ -1,4 +1,5 @@
 from enum import auto
+from re import T
 from statistics import median_grouped
 from turtle import heading
 from django.db import models
@@ -24,8 +25,9 @@ class admins(models.Model):
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     admin_location = models.CharField(max_length=250)
-    phone_number = models.CharField(max_length=15)
+    phone_no = models.CharField(max_length=15)
     emailID = models.EmailField(max_length=100)
+    department_name = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         db_table = "admins"

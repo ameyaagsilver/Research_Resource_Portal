@@ -42,7 +42,7 @@
             </div>
             <div class="item">
                 <figure>
-                    <img alt="Home Slide" src="{% static 'images/header-slider/home-v1/ashwa.png' %}" />
+                    <img alt="Home Slide" src="{% static 'images/header-slider/home-v1/rvceGate.jpg' %}" />
                 </figure>
                 <div class="container">
                     <div class="carousel-caption">
@@ -64,53 +64,151 @@
     </div>
     <!-- End: Slider Section -->
 
-    <!-- Start: Search Section -->
-    <section class="search-filters">
-        <div class="container">
-            <div class="filter-box">
-                <h3>What are you looking for at the Portal?</h3>
-                <form action="http://libraria.demo.presstigers.com/index.html" method="get">
-                    <div class="col-md-4 col-sm-6">
-                        <div class="form-group">
-                            <label class="sr-only" for="keywords">Search by Keyword</label>
-                            <input class="form-control" placeholder="Search by Keyword" id="keywords" name="keywords"
-                                type="text">
+    <!-- <div class="row"> -->
+        <!-- Start: Search Section -->
+        <section class="search-filters">
+            <div class="container">
+                <div class="filter-box">
+                    <h3>What are you looking for at the Portal?</h3>
+                    <form action="/generic-resources-list-view/" method="post">
+                        {% csrf_token %}
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <!-- <label class="sr-only" for="keywords">Search by Keyword</label> -->
+                                <input class="form-control" placeholder="Search by Keyword"
+                                    id="keywords" name="keywords" type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="form-group">
-                            <select name="catalog" id="catalog" class="form-control">
-                                <option>Search the Catalog</option>
-                                <option>Catalog 01</option>
-                                <option>Catalog 02</option>
-                                <option>Catalog 03</option>
-                                <option>Catalog 04</option>
-                                <option>Catalog 05</option>
-                            </select>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <!-- <label class="sr-only" for="keywords">Search by Resource ID</label> -->
+                                <input class="form-control" placeholder="Search by Resource ID"
+                                    id="keywords" name="resourceID" type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="form-group">
-                            <select name="category" id="category" class="form-control">
-                                <option>All Categories</option>
-                                <option>Category 01</option>
-                                <option>Category 02</option>
-                                <option>Category 03</option>
-                                <option>Category 04</option>
-                                <option>Category 05</option>
-                            </select>
+                        <!-- <div class="col-md-4 col-sm-6">
+                            <div class="form-group"> -->
+                        <!-- <label class="sr-only" for="keywords">Search by Original Equipment manufacturer</label> -->
+                        <!-- <input class="form-control" placeholder="Search by Department"
+                                    id="keywords" name="departmentName" type="text">
+                            </div> -->
+                        <!-- </div> -->
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <select name="departmentName" required>
+                                    <option value="All departments">All departments</option>
+                                    <option value="ASE">Aerospace Engineering</option>
+                                    <option value="BT">Biotechnology</option>
+                                    <option value="CHE">Chemical Engineering</option>
+                                    <option value="CE">Civil Engineering</option>
+                                    <option value="CSE">Computer Science and Engineering</option>
+                                    <option value="EEE">Electrical and Electronics Engineering
+                                    </option>
+                                    <option value="ECE">Electronics and Communication Engineering
+                                    </option>
+                                    <option value="EIE">Electronics and Instrumentation Engineering
+                                    </option>
+                                    <option value="IEM">Industrial Engineering and Management
+                                    </option>
+                                    <option value="ISE">Information Science and Engineering</option>
+                                    <option value="MCA">Master of Computer Applications</option>
+                                    <option value="ME">Mechanical Engineering</option>
+                                    <option value="TE">Electronics and Telecommunication Engineering
+                                        (Telecommunication Engineering)</option>
+                                    <option value="BS">Basic Sciences</option>
+                                    <option value="AI&ML">Artificial Intelligence & Machine Learning
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-2 col-sm-6">
-                        <div class="form-group">
-                            <input class="form-control" type="submit" value="Search">
+
+                        {% if admin %}
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <!-- <label class="sr-only" for="keywords">Search by Resource ID</label> -->
+                                <input class="form-control" placeholder="Cost (Upper bound)"
+                                    id="keywords" name="costUpperBound" type="number">
+                            </div>
                         </div>
-                    </div>
-                </form>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <!-- <label class="sr-only" for="keywords">Search by Resource ID</label> -->
+                                <input class="form-control" placeholder="Cost (Lower bound)"
+                                    id="keywords" name="costLowerBound" type="number">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Purchase date"
+                                    id="keywords" name="purchaseDate" type="date">
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-2 col-sm-6">
+                            <div class="form-group">
+                                <input class="form-control" type="submit" value="Search">
+                            </div>
+                        </div>
+                        <br><br><br><br>
+                        {% if searchedQuery %}
+                        <strong>Showing results for</strong>
+                        {% if searchedQuery.keywords %}
+
+                        "{{searchedQuery.keywords}}"
+                        {% endif %}
+
+                        {% if searchedQuery.resourceID %}
+                        <strong>Resource ID =</strong> {{searchedQuery.resourceID}}
+                        {% endif %}
+
+                        {% if searchedQuery.departmentName %}
+                        <strong>Department Name as</strong> {{searchedQuery.departmentName}}
+                        {% endif %}
+
+                        {% if admin %}
+                        <br>
+                        {% if searchedQuery.costLowerBound %}
+                        <strong>Minimum cost</strong> = {{searchedQuery.costLowerBound}}
+                        {% endif %}
+
+                        {% if searchedQuery.costUpperBound %}
+                        <strong>Maximum cost</strong> = {{searchedQuery.costUpperBound}}
+                        {% endif %}
+
+                        {% endif %}
+                        <!-- {% if searchedQuery.resourceID %}
+                        Resource ID = {{searchedQuery.resourceID}}
+                        {% endif %} -->
+                        {% endif %}
+                        <br>
+                        <!-- <a href="{% url 'print-searched-query' %}">Print</a> -->
+
+                    </form>
+                    {% if admin %}
+                    <form action="/print-searched-query" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="query" value={{resources}}>
+                        <!-- {{resources}} -->
+                        <input class="form-control" value="{{searchedQuery.resourceID}}"
+                            name="resourceID" type="hidden">
+                        <input class="form-control" value="{{searchedQuery.keywords}}"
+                            name="keywords" type="hidden">
+                        <input class="form-control" value="{{searchedQuery.departmentName}}"
+                            name="departmentName" type="hidden">
+                        <input class="form-control" value="{{searchedQuery.costUpperBound}}"
+                            name="costUpperBound" type="hidden">
+                        <input class="form-control" value="{{searchedQuery.costLowerBound}}"
+                            name="costLowerBound" type="hidden">
+                        <input class="form-control" value="{{searchedQuery.purchaseDate}}"
+                            name="purchaseDate" type="hidden">
+                        <input type="submit" class="pull-right" value="Print"></input>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    </section>
-    <!-- End: Search Section -->
+        </section>
+        <!-- End: Search Section -->
+    <!-- </div> -->
 
     <!-- Start: Welcome Section -->
     <section class="welcome-section">
@@ -128,7 +226,7 @@
                                 research work. So to make things easier, an online portal dedicated solely for the
                                 purpose of storing and displaying data of all the resources in the college which might
                                 be required in the research work.</p>
-                            <a class="btn btn-primary" href="#">Read More</a>
+                            <a class="btn btn-dark-gray" href="#follow-us">Follow us</a>
                         </div>
                     </div>
                 </div>
@@ -140,7 +238,7 @@
                                     <div class="fact-icon">
                                         <i class="ebook"></i>
                                     </div>
-                                    <span>Users<strong class="fact-counter">2</strong></span>
+                                    <span>Users<strong class="fact-counter">{{portalGlobalInformation.users}}</strong></span>
                                 </div>
                             </li>
                             <li class="bg-green">
@@ -148,7 +246,7 @@
                                     <div class="fact-icon">
                                         <i class="eaudio"></i>
                                     </div>
-                                    <span>Resources<strong class="fact-counter">100</strong></span>
+                                    <span>Resources<strong class="fact-counter">{{portalGlobalInformation.resources}}</strong></span>
                                 </div>
                             </li>
                             <li class="bg-red">
@@ -162,9 +260,10 @@
                             <li class="bg-blue">
                                 <div class="fact-item">
                                     <div class="fact-icon">
-                                        <i class="videos"></i>
+                                        <!-- <i class="videos"></i> -->
+                                        <i class="fa fa-resource fa-3x"></i>
                                     </div>
-                                    <span>Admins<strong class="fact-counter">12</strong></span>
+                                    <span>Admins<strong class="fact-counter">{{portalGlobalInformation.admins}}</strong></span>
                                 </div>
                             </li>
                         </ul>

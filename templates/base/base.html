@@ -42,7 +42,17 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 </head>
-
+<script>
+    // window.onunload = function() {
+    //     window.open()
+    // }
+    // window.onclose = function() {
+    //     window.open()
+    // }
+    // window.onload = function() {
+    //     alert('Welcome to RRP!!!')
+    // }
+</script>
 <body>
     <!-- Start: Header Section -->
     <header id="header-v1" class="navbar-wrapper">
@@ -69,8 +79,8 @@
                                         <div class="topbar-info">
                                             <a href="tel:+91 9876543210"><i class="fa fa-phone"></i>+91 9876543210</a>
                                             <span>/</span>
-                                            <a href="mailto:support@rrp.com"><i
-                                                    class="fa fa-envelope"></i>support@rrp.com</a>
+                                            <a href="mailto:rvce.resource.portal@gmail.com"><i
+                                                    class="fa fa-envelope"></i>rvce.resource.portal@gmail.com</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -166,9 +176,8 @@
                                         (ADMIN)
                                         {% endif %}
                                         <div class="cart-buttons">
-                                            <button onclick="cart.html" class="btn btn-dark-gray">View Cart</button>
-                                            <button onclick="location.href = `{% url 'logout' %}`"
-                                                class="btn btn-primary">Logout</button>
+                                            <button onclick="location.href = `{% url 'user-profile' %}`" class="btn btn-dark-gray">View Profile</button>
+                                            <button onclick="location.href = `{% url 'logout' %}`" class="btn btn-primary">Logout</button>
                                         </div>
                                     </a>
                                     <hr>
@@ -176,7 +185,7 @@
 
                                 </li>
                                 <li>
-                                    <a href="index-2.html">Home</a>
+                                    <a href="{%  url '' %}">Home</a>
                                     <!-- <ul>
                                             <li><a href="index-2.html">Home V1</a></li>
                                             <li><a href="home-v2.html">Home V2</a></li>
@@ -188,7 +197,7 @@
 
 
                                 <li>
-                                    <a href="generic-resources-list-view.html">Books &amp; Media</a>
+                                    <a href="{%  url 'generic-resources-list-view' %}">Resources</a>
                                     <!-- <ul>
                                             <li><a href="generic-resources-list-view.html">Books &amp; Media List View</a></li>
                                             <li><a href="books-media-gird-view-v1.html">Books &amp; Media Grid View V1</a></li>
@@ -197,7 +206,6 @@
                                             <li><a href="books-media-detail-v2.html">Books &amp; Media Detail V2</a></li>
                                         </ul> -->
                                 </li>
-                                <li><a href="#">Tenders</a></li>
                                 <li><a href="{% url 'contact' %}">Contact</a></li>
                             </ul>
                         </div>
@@ -325,29 +333,9 @@
                         <span class="underline left"></span>
                         <div class="timming-text-widget">
                             <time datetime="2017-02-13">Mon - Thu: 9 am - 6 pm</time>
-                            <!-- <ul>
-                                    <li><a href="#">Closings</a></li>
-                                    <li><a href="#">Branches</a></li>
-                                </ul> -->
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-4 col-sm-6 widget-container">
-                        <div class="widget twitter-widget">
-                            <h3 class="footer-widget-title">Latest Tweets</h3>
-                            <span class="underline left"></span>
-                            <div id="twitter-feed">
-                                <ul>
-                                    <li>
-                                        <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a></p>
-                                    </li>
-                                    <li>
-                                        <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a></p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>			
-                    </div> -->
             </div>
         </div>
     </div>
@@ -361,7 +349,9 @@
                         <li><a href="/home/">Home</a></li>
                         <li><a href="/generic-resources-list-view/">Resources</a></li>
                         <li><a href="/contact/">Contact us</a></li>
-
+                        {% if username %}
+                        <li><a href="/user-profile/">Profile</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

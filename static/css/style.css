@@ -11421,7 +11421,7 @@ a:focus {
 }
 
 .welcome-section .welcome-image {
-  background-image: url("/static/images/welcome-img-home-v1.jpg");
+  background-image: url("/static/images/welcome-img-home-v11.jpg");
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
@@ -11430,7 +11430,7 @@ a:focus {
   position: absolute;
   right: 0;
   top: 0;
-  width: 48%;
+  width: 45%;
   z-index: -1;
 }
 
@@ -15614,7 +15614,7 @@ a:focus {
 }
 
 .layout-v3 .welcome-section .welcome-image {
-  background-image: url(images/welcome-img-home-v3.jpg);
+  background-image: url(images/welcome-img-home-v10.jpg);
 }
 
 .layout-v3 .welcome-section .btn {

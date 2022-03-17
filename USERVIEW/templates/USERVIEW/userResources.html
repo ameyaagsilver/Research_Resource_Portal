@@ -46,7 +46,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <br><br><br><br><br><br><br>
+                                    <br><br><br>
                                     <div class="books-list">
                                         {% for resource in resources %}
                                             <article> 
@@ -102,6 +102,9 @@
                                             <hr>
                                             <br><br><br><br><br><br><br><br><br><br><br><br>
                                         {% endfor %}
+                                        {% if not resources %}
+                                        <h3>You don't have any borrowed resources</h3>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-md-pull-9">

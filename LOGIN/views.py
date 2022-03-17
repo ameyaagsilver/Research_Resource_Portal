@@ -1,5 +1,8 @@
-import re
+import re, os, email, smtplib
+from email.message import EmailMessage
 from django.http import JsonResponse
+from numpy import rec
+from rsa import newkeys
 from USERVIEW.models import resources as res
 from django.shortcuts import redirect, render
 import firebase_admin
@@ -39,16 +42,19 @@ def signup(request):
             re_entered_password = request.POST.get('re_enter_password')
             if email.split('@')[1] != "rvce.edu.in":
                 message = "Not a RVCE email ID!!! Try again"
-                return render(request, "signin.html", {"message": message})
+                messages.info(request, message)
+                return render(request, "signin.html")
             if password != re_entered_password:
                 message = "Password does not match with re-entered password!!! Try again"
-                return render(request, "signin.html", {"message": message})
+                messages.info(request, message)
+                return render(request, "signin.html")
             try:
                 user = auth.create_user_with_email_and_password(
                     email, password)
             except:
                 message = "Try again!!! Unable to sign you up"
-                return render(request, "signin.html", {"message": message})
+                messages.info(request, message)
+                return render(request, "signin.html")
             print(user)
             newUserRecord = models.users()
             newUserRecord.user_id = user['localId']
@@ -87,19 +93,30 @@ def signin(request):
 
 def logout(request):
     djAuth.logout(request)
-    try:
-        del request.session['uid']
-        del request.session['username']
-    except:
-        pass
+    # try:
+    #     del request.session['uid']
+    #     del request.session['username']
+    #     del request.session['isAdmin']
+    # except:
+    #     pass
     return redirect(reverse('signin'))
 
 
 def home(request):
+    portalGlobalInformation = {}
+    try:
+        users = list(models.users.objects.raw('SELECT * FROM users'))
+        portalGlobalInformation['users'] = len(users)
+        admins = list(models.admins.objects.raw('SELECT * FROM admins'))
+        portalGlobalInformation['admins'] = len(admins)
+        resources = list(models.resources.objects.raw('SELECT * FROM resources'))
+        portalGlobalInformation['resources'] = len(resources)
+    except:
+        pass
     try:
         username = request.session['username']
-        print(username)
-        print(request.session['uid'])
+        # print(username)
+        # print(request.session['uid'])
         user_id = request.session['uid']
         request.session['isAdmin'] = False
 
@@ -107,27 +124,26 @@ def home(request):
             'SELECT user_id FROM admins WHERE user_id = "%s"' % user_id))
 
         if(len(admins) == 1):
-            print("It is admin")
+            # print("It is admin")
             request.session['isAdmin'] = True
-            return render(request, "index-2.html", {"username": username, "admin": "YES"})
+            return render(request, "index-2.html", {"username": username, "admin": "YES", "portalGlobalInformation":portalGlobalInformation})
         else:
-            return render(request, "index-2.html", {"username": username})
+            return render(request, "index-2.html", {"username": username, "portalGlobalInformation":portalGlobalInformation})
     except:
         pass
 
-    return render(request, "index-2.html")
+    return render(request, "index-2.html", {"portalGlobalInformation":portalGlobalInformation})
 
 
 def services(request):
     return render(request, "services.html")
 
-# DISPLAYs all the resources in the database (for admin as well as to user views) along with the search feature
+# DISPLAYs all the resources in the database (for admin as well as to user views) along with the SEARCH feature
 def resources(request):
     # SEARCH REDIRECTS BACK TO THE SAME URL= 'GENERIC-RES-LIST-VIEW'
     if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID') or request.POST.get('departmentName') or request.POST.get('costUpperBound') or request.POST.get('purchaseDate') or request.POST.get('costLowerBound')):
         isAdmin = False
         isUser = False
-        print("Yes")
         try:
             isAdmin = request.session['isAdmin']
             username = request.session['username']
@@ -192,7 +208,7 @@ def resources(request):
             else:
                 resource_list6 = res.objects.all()
         resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
-        # resource_list = resource_list[:5]
+        resource_list = resource_list[:10]
         print(resource_list2)
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
@@ -223,6 +239,20 @@ def contact(request):
         isUser = True
     except:
         pass
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        message = request.POST.get('message')
+        phone_no = request.POST.get('phone_no')
+        emailID = request.POST.get('emailID')
+        new_user_message_instance = userviewMODELS.userMessage()
+        new_user_message_instance.first_name = first_name
+        new_user_message_instance.last_name = last_name
+        new_user_message_instance.message = message
+        new_user_message_instance.phone_no = phone_no
+        new_user_message_instance.emailID = emailID
+        new_user_message_instance.save()
+        sendMessageThroughMail('rvce.resource.portal@gmail.com','rvce.resource.portal@gmail.com', request)
     if isAdmin:
         return render(request, "contact.html", {"username": username, "admin": 'YES'})
     elif isUser:
@@ -243,17 +273,35 @@ def readMoreAboutResource(request):
         pass
     if request.method == 'POST':
         resourceID = request.POST.get('resourceID')
-        print(resourceID)
+        # print(resourceID)
         resource_instance = get_resource_instance_by_id(resourceID)
-        print(resource_instance)
+        # print(resource_instance)
         relatedLinks = userviewMODELS.resourceRelatedLinks.objects.filter(resource_id=resourceID)
-        print(relatedLinks)
-        if isAdmin:
-            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "username": username, "admin": 'YES'})
-        elif isUser:
-            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "username": username})
+        # print(relatedLinks)
+        recentlyViewedResources = None
+        if 'recentlyViewedResources' in request.session:
+            if int(resourceID) in request.session['recentlyViewedResources']:
+                request.session['recentlyViewedResources'].remove(int(resourceID))
+            recentlyViewedResources = userviewMODELS.resources.objects.filter(resource_id__in=request.session['recentlyViewedResources'])
+            recentlyViewedResources = sorted(recentlyViewedResources, 
+                key=lambda x: request.session['recentlyViewedResources'].index(x.resource_id)
+                )
+            request.session['recentlyViewedResources'].insert(0, int(resourceID))
+            if len(request.session['recentlyViewedResources'])>5:
+                request.session['recentlyViewedResources'].pop()
         else:
-            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks})
+            request.session['recentlyViewedResources'] = [int(resourceID)]
+        request.session.modified = True
+
+        print((request.session['recentlyViewedResources'][0]))
+        print(recentlyViewedResources)
+
+        if isAdmin:
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "recentlyViewedResources": recentlyViewedResources, "username": username, "admin": 'YES'})
+        elif isUser:
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "recentlyViewedResources": recentlyViewedResources, "username": username})
+        else:
+            return render(request, "read-more-about-resource.html", {"resource": resource_instance, "relatedLinks":relatedLinks, "recentlyViewedResources": recentlyViewedResources})
 
     else:
         return redirect('generic-resources-list-view')
@@ -326,6 +374,427 @@ def userProfile(request):
     else:
         return redirect('signin')
     
+
+def sendMessageThroughMail(From, To, request):
+    EMAIL_PASSWORD = 'Research@rvce'
+    # print("EMAIL_PASSWORD", EMAIL_PASSWORD)
+    Subject = 'Grievance - New message from {usersName}'.format(usersName=request.POST.get('first_name')+" "+request.POST.get('last_name'))
+    Message = request.POST.get('message')
+    mssg = EmailMessage()
+    mssg['Subject'] = Subject
+    mssg['From'] = From
+    mssg['To'] = To
+    mssg.set_content(Message)
+    mssg.add_alternative("""\n
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email html</title>
+
+  <style type="text/css">
+  /* Take care of image borders and formatting */
+
+  img {
+    max-width: 600px;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+  }
+
+  a {
+    border: 0;
+    outline: none;
+  }
+
+  a img {
+    border: none;
+  }
+
+  /* General styling */
+
+  td, h1, h2, h3  {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 400;
+  }
+
+  td {
+    font-size: 13px;
+    line-height: 150%;
+    text-align: left;
+  }
+
+  body {
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:none;
+    width: 100%;
+    height: 100%;
+    color: #37302d;
+    background: #ffffff;
+  }
+
+  table {
+    border-collapse: collapse !important;
+  }
+
+
+  h1, h2, h3 {
+    padding: 0;
+    margin: 0;
+    color: #444444;
+    font-weight: 400;
+    line-height: 110%;
+  }
+
+  h1 {
+    font-size: 35px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  h4 {
+    font-size: 18px;
+    font-weight: normal;
+  }
+
+  .important-font {
+    color: #21BEB4;
+    font-weight: bold;
+  }
+
+  .hide {
+    display: none !important;
+  }
+
+  .force-full-width {
+    width: 100% !important;
+  }
+
+  td.desktop-hide {
+    font-size: 0;
+    height: 0;
+    display: none;
+    color: #ffffff;
+  }
+
+
+  </style>
+
+  <style type="text/css" media="screen">
+      @media screen {
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:400);
+
+        /* Thanks Outlook 2013! */
+        td, h1, h2, h3 {
+          font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif !important;
+        }
+      }
+  </style>
+
+  <style type="text/css" media="only screen and (max-width: 600px)">
+    /* Mobile styles */
+    @media only screen and (max-width: 600px) {
+
+      table[class="w320"] {
+        width: 320px !important;
+      }
+
+      table[class="w300"] {
+        width: 300px !important;
+      }
+
+      table[class="w290"] {
+        width: 290px !important;
+      }
+
+      td[class="w320"] {
+        width: 320px !important;
+      }
+
+      td[class~="mobile-padding"] {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+      }
+
+      td[class*="mobile-padding-left"] {
+        padding-left: 14px !important;
+      }
+
+      td[class*="mobile-padding-right"] {
+        padding-right: 14px !important;
+      }
+
+      td[class*="mobile-block"] {
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 15px !important;
+      }
+
+      td[class*="mobile-no-padding-bottom"] {
+        padding-bottom: 0 !important;
+      }
+
+      td[class~="mobile-center"] {
+        text-align: center !important;
+      }
+
+      table[class*="mobile-center-block"] {
+        float: none !important;
+        margin: 0 auto !important;
+      }
+
+      *[class*="mobile-hide"] {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        line-height: 0 !important;
+        font-size: 0 !important;
+      }
+
+      td[class*="mobile-border"] {
+        border: 0 !important;
+      }
+
+      td[class*="desktop-hide"] {
+        display: block !important;
+        font-size: 13px !important;
+        height: 61px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        color: #444444 !important;
+      }
+    }
+  </style>
+</head>
+<body class="body" style="padding:0; margin:0; display:block; background:white; -webkit-text-size-adjust:none" bgcolor="#ffffff">
+<table align="center" cellpadding="0" cellspacing="0" width="100%" height="100%">
+  <tr>
+    <td align="center" valign="top" bgcolor="#ffffff"  width="100%">
+
+    <table cellspacing="0" cellpadding="0" width="100%">
+      <tr>
+        <td style="background:#1f1f1f" width="100%">
+          <center>
+            <table cellspacing="0" cellpadding="0" width="600" class="w320">
+              <tr>
+                <td valign="top" class="mobile-block mobile-no-padding-bottom mobile-center" width="270" style="background:#fff;padding:10px 10px 10px 20px;">
+                  <a href="#" style="text-decoration:none;">
+                    <h3 style="
+                    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                    ">RESEARCH RESOURCE PORTAL</h3>
+                  </a>
+                </td>
+                <td valign="top" class="mobile-block mobile-center" width="270" style="background:#fff;padding:10px 15px 10px 10px">
+                  <table border="0" cellpadding="0" cellspacing="0" class="mobile-center-block" align="right">
+                    <tr>
+                      <!-- <td align="right">
+                        <a href="#">
+                        <img src="http://keenthemes.com/assets/img/emailtemplate/social_facebook.png"  width="30" height="30" alt="social icon"/>
+                        </a>
+                      </td>
+                      <td align="right" style="padding-left:5px">
+                        <a href="#">
+                        <img src="http://keenthemes.com/assets/img/emailtemplate/social_twitter.png"  width="30" height="30" alt="social icon"/>
+                        </a>
+                      </td>
+                      <td align="right" style="padding-left:5px">
+                        <a href="#">
+                        <img src="http://keenthemes.com/assets/img/emailtemplate/social_googleplus.png"  width="30" height="30" alt="social icon"/>
+                        </a>
+                      </td>
+                      <td align="right" style="padding-left:5px">
+                        <a href="#">
+                        <img src="http://keenthemes.com/assets/img/emailtemplate/social_linkedin.png"  width="30" height="30" alt="social icon"/>
+                        </a>
+                      </td>
+                      <td align="right" style="padding-left:5px">
+                        <a href="#">
+                        <img src="http://keenthemes.com/assets/img/emailtemplate/social_rss.png"  width="30" height="30" alt="social icon"/>
+                        </a>
+                      </td> -->
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </center>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid #e7e7e7;">
+          <center>
+            <table cellpadding="0" cellspacing="0" width="600" class="w320">
+              <tr>
+                <td align="left" class="mobile-padding" style="padding:20px">
+
+                  <br class="mobile-hide" />
+
+                  <div>
+                    <b>""" + request.POST.get('first_name') + " " + request.POST.get('last_name') +"""</b>
+                    <br>
+                    Email-id : """ + request.POST.get('emailID') + """
+                    <br>
+                    
+                    <br>
+                    Phone: """ + request.POST.get('phone_no') +  """<br>
+                    <br>
+                    """ + request.POST.get('message') + """
+                  </div>
+
+                  <br>
+
+                  <table cellspacing="0" cellpadding="0" width="100%" bgcolor="#ffffff">
+                    <tr>
+                      <td style="width:100px;background:#D84A38;">
+                        <div>
+                          <!--[if mso]>
+                          <v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:33px;v-text-anchor:middle;width:100px;" stroke="f" fillcolor="#D84A38">
+                            <w:anchorlock/>
+                            <center>
+                          <![endif]-->
+                              <a href="#"
+                        style="background-color:#D84A38;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:33px;text-align:center;text-decoration:none;width:100px;-webkit-text-size-adjust:none;">My Account</a>
+                          <!--[if mso]>
+                            </center>
+                          </v:rect>
+                          <![endif]-->
+                        </div>
+                      </td>
+                      <td width="281" style="background-color:#ffffff; font-size:0; line-height:0;">&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="mobile-hide" style="padding-top:20px;padding-bottom:0; vertical-align:bottom;" valign="bottom">
+                  <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                      <td align="right" valign="bottom" style="padding-bottom:0; vertical-align:bottom;">
+                        <img  style="vertical-align:bottom;" src="https://www.filepicker.io/api/file/9f3sP1z8SeW1sMiDA48o"  width="174" height="294" />
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </center>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" style="background-color:#f8f8f8;border-bottom:1px solid #e7e7e7;">
+<!-- 
+          <center>
+            <table border="0" cellpadding="0" cellspacing="0" width="600" class="w320" style="height:100%;">
+              <tr>
+                <td valign="top" class="mobile-padding" style="padding:20px;">
+                  <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                      <td style="padding-right:20px">
+                        <b>Plan</b>
+                      </td>
+                      <td style="padding-right:20px">
+                        <b>Period</b>
+                      </td>
+                      <td>
+                        <b>Amount</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding-top:5px;padding-right:20px; border-top:1px solid #E7E7E7; ">
+                        Silver Monthly
+                      </td>
+                      <td style="padding-top:5px;padding-right:20px; border-top:1px solid #E7E7E7;">
+                        Dec 4, 2013 - Jan 4, 2014
+                      </td>
+                      <td style="padding-top:5px; border-top:1px solid #E7E7E7;" class="mobile">
+                        $160.00
+                      </td>
+                    </tr>
+                  </table>
+                  <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                      <td style="padding-top:35px;">
+                        <table cellpadding="0" cellspacing="0" width="100%">
+                          <tr>
+                            <td width="350" class="mobile-hide" style="vertical-align:top;">
+                              Thank you for your business. Please  <a href="#">contact us</a> with any questions regarding your order,<br>
+                              <h4>Awesome Co<h4>
+                            </td>
+                            <td style="padding:0px 0 15px 30px;" class="mobile-block">
+                              <table cellspacing="0" cellpadding="0" width="100%">
+                                <tr>
+                                  <td>Subtotal:</td>
+                                  <td><b> $160.00</b></td>
+                                </tr>
+                                <tr>
+                                  <td>Tax</td>
+                                  <td>$8.00</td>
+                                </tr>
+                                <tr>
+                                  <td>Amount Due:</td>
+                                  <td><b>$168.00</b></td>
+                                </tr>
+                                <tr>
+                                  <td>Due by:</td>
+                                  <td>Feb 4, 2014</td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="vertical-align:top;" class="desktop-hide">
+                              Thank you for your business. Please contact us with any questions regarding this invoice,<br><br>
+                              Awesome Co
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </center> -->
+        </td>
+      </tr>
+      <tr>
+        <td style="background-color:#1f1f1f;">
+          <center>
+            <table border="0" cellpadding="0" cellspacing="0" width="600" class="w320" style="height:100%;color:#ffffff" bgcolor="#1f1f1f" >
+              <tr>
+                <td align="right" valign="middle" class="mobile-padding" style="font-size:12px;padding:20px; background-color:#1f1f1f; color:#ffffff; text-align:left; ">
+                  <a style="color:#ffffff;"  href="#">Contact Us</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a style="color:#ffffff;" href="#">Facebook</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a style="color:#ffffff;" href="#">Twitter</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a style="color:#ffffff;" href="#">Support</a>
+                </td>
+              </tr>
+            </table>
+          </center>
+        </td>
+      </tr>
+    </table>
+
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+    """, subtype='html')
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login('rvce.resource.portal@gmail.com', EMAIL_PASSWORD)
+        smtp.send_message(mssg)
+        smtp.close()
+    return None
 
 def get_user_instance_by_email(email_id):
     user = userviewMODELS.users.objects.filter(emailID=email_id).first()

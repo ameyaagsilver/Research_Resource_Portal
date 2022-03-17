@@ -14,7 +14,7 @@ def resources(request):  # DISPLAYs all resources a specific user taken resource
                                     join resource_logbook on users.user_id=resource_logbook.member_id
                                     join resources on resource_logbook.resource_id=resources.resource_id
                                     where users.user_id="%s" and return_date is null
-                                    order by return_date
+                                    order by issue_date desc
 
                                     ''' % user_id)
         # print("User Borrowed resources are", resource_list)

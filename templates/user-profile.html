@@ -565,9 +565,19 @@ ul.summary-list > li:last-child  {
 
                                 </div>
                                 <div class="bio-desk">
-                                    <h4><strong>{{resource.resource_name}}</strong> <p>by {{resource.OEM}}</p></h4>
-                                    <p>Issued on : {{resource.issue_date}}</p>
-                                    <p>Returned on : {{resource.return_date}}</p>
+                                    <form id="readmoreabout{{resource.resource_id}}" action="/read-more-about-resource/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" value={{resource.resource_id}}
+                                            name="resourceID">
+                                        
+                                        <!-- <a href="" onclick="myFunction()">
+                                            
+                                          </a> -->
+                                        <h4><strong>{{resource.resource_name}} </strong>(ID:{{resource.resource_id}}) <p>by {{resource.OEM}} <br>( <strong>{{resource.resource_type}}</strong> )</p></h4>
+                                        <p>Location : {{resource.location}}, <strong>{{resource.department_name}}</strong></p>
+                                        <p>Description : {{resource.about | truncatechars:40 }}</p>
+                                        <input type="submit" class="pull-right" value="Read more"></input>
+                                    </form>
                                 </div>
                             </div>
                         </div>

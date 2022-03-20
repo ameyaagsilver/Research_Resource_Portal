@@ -47,7 +47,8 @@ urlpatterns = [
 
     # REPORT app paths
 
-    path('downloadLogs', reportVIEW.downloadLogs, name="downloadLogs"),
+    path('downloadLogsPDF', reportVIEW.downloadLogsPDF, name="downloadLogsPDF"),
+    path('downloadLogsXLS', reportVIEW.downloadLogsXLS, name="downloadLogsXLS"),
     path('print-searched-query', reportVIEW.downloadRecentSearchedQuery, name="print-searched-query")
 
 ]

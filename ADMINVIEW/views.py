@@ -46,7 +46,11 @@ def issueResource(request):
             new_logbook_instance.member_id = user
             new_logbook_instance.issue_date = date.today().strftime("%Y-%m-%d")
             new_logbook_instance.save()
-            sendIssueConfirmationThroughMail('rvce.resource.portal@gmail.com', user, resource, admin, new_logbook_instance)
+            print("*********************")
+            threadAddResource = Thread(target=sendIssueConfirmationThroughMail, args=('rvce.resource.portal@gmail.com', user, resource, admin, new_logbook_instance))
+            threadAddResource.start()
+            print("*********************")
+            # sendIssueConfirmationThroughMail('rvce.resource.portal@gmail.com', user, resource, admin, new_logbook_instance)
         else:
             messages.info(request, "Currently not available!!! Try later")
             print("Currently not available!!! Try later")
@@ -350,6 +354,8 @@ def dictfetchall(cursor):
 
 
 def sendIssueConfirmationThroughMail(From, user, resource, admin, new_logbook_instance):
+    sleep(1)
+    print("INSIDE THE thread")
     EMAIL_PASSWORD = 'Research@rvce'
     # print("EMAIL_PASSWORD", EMAIL_PASSWORD)
     Subject = f'Resource issued confirmation (Issue ID: {str(new_logbook_instance.log_id)})'

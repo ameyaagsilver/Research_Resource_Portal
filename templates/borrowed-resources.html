@@ -85,6 +85,12 @@
                                                 {% endif %}
                                                 <br>
                                                 <!-- <a href="{% url 'print-searched-query' %}">Print</a> -->
+                                                {% if admin %}
+                                                <a href="{% url 'downloadLogsPDF' %}" class="btn btn-dark-gray"><i class="fa fa-download"></i> Logs(.pdf)</a>
+                                                {% endif %}
+                                                {% if admin %}
+                                                <a href="{% url 'downloadLogsXLS' %}" class="btn btn-dark-gray"><i class="fa fa-download"></i> Logs(.xls)</a>
+                                                {% endif %}
 
                                             </form>
                                         </div>

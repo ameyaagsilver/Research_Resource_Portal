@@ -160,11 +160,12 @@ class resourceUpdateLogbook(models.Model):
 
 class userMessage(models.Model):
     message_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    emailID = models.EmailField(max_length=100)
+    # first_name = models.CharField(max_length=50)
+    # last_name = models.CharField(max_length=50)
+    # emailID = models.EmailField(max_length=100)
     message = models.CharField(max_length=1500)
-    phone_no = models.CharField(max_length=20)
+    # phone_no = models.CharField(max_length=20)
+    user_id = models.ForeignKey(users, on_delete=models.CASCADE, db_column="member_id", blank=True, null=True)
 
     class Meta:
         db_table = "userMessage"

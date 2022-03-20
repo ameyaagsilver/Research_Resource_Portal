@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from USERVIEW.models import resources as res
 
 
-def downloadLogs(request):
+def downloadLogsPDF(request):
     buf = io.BytesIO()
     c = canvas.Canvas(buf, bottomup=0)
     # c.setPageSize(size=(600, 2500))
@@ -57,7 +57,53 @@ def downloadLogs(request):
 
     return FileResponse(buf, as_attachment=True, filename='resource-log-book.pdf')
 
+def downloadLogsXLS(request):
+    return export_resource_logbook_xls(request)
 
+def export_resource_logbook_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="resource-logbook-all-data.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Resource Logbook(ALL)')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    logs = resources.objects.raw('''
+        select * from users
+        join resource_logbook on users.user_id=resource_logbook.member_id
+        join resources on resource_logbook.resource_id=resources.resource_id
+        order by issue_date asc
+        ''')
+    columns = ['USN', 'Issue Date', 'Return date', 'Resource ID','First Name', 'Middle Name', 'Last Name', 'User email-id', 'User Phone#', 'Resource Name',  'OEM', 'Type', 'Department']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+    rows = logs
+    print(type(rows))
+    font_style = xlwt.XFStyle()
+    for row in rows:
+        row_num += 1
+        ws.write(row_num, 0, row.USN, font_style)
+        ws.write(row_num, 1, row.issue_date.strftime("%Y-%m-%d"), font_style)
+        if row.return_date:
+            ws.write(row_num, 2, row.return_date.strftime("%Y-%m-%d"), font_style)
+        else:
+            ws.write(row_num, 2, 'NOT YET RETURNED', font_style)
+        ws.write(row_num, 3, row.resource_id, font_style)
+        ws.write(row_num, 4, row.first_name, font_style)
+        ws.write(row_num, 5, row.middle_name, font_style)
+        ws.write(row_num, 6, row.last_name, font_style)
+        ws.write(row_num, 7, row.emailID, font_style)
+        ws.write(row_num, 8, row.phone_no, font_style)
+        ws.write(row_num, 9, row.resource_name, font_style)
+        ws.write(row_num, 10, row.OEM, font_style)
+        ws.write(row_num, 11, row.resource_type, font_style)
+        ws.write(row_num, 12, row.department_name, font_style)
+
+    wb.save(response)
+
+    return response
 def downloadRecentSearchedQuery(request):
     return export_users_xls(request)
 

@@ -1,5 +1,6 @@
 import re, os, email, smtplib
 from email.message import EmailMessage
+from threading import Thread
 from django.http import JsonResponse
 from numpy import rec
 from rsa import newkeys
@@ -64,7 +65,7 @@ def signup(request):
             newUserRecord.last_name = request.POST.get('last_name')
             newUserRecord.USN = request.POST.get('USN')
             newUserRecord.department_name = "ISE"
-            newUserRecord.phone_no = request.POST.get('phone_number')
+            newUserRecord.phone_no = '+91'+request.POST.get('phone_number')
             newUserRecord.save()
             return redirect(reverse('home'))
     return render(request, "signin.html")
@@ -208,7 +209,7 @@ def resources(request):
             else:
                 resource_list6 = res.objects.all()
         resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
-        resource_list = resource_list[:10]
+        # resource_list = resource_list[:10]
         print(resource_list2)
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
@@ -218,7 +219,7 @@ def resources(request):
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
 
     resource_list = res.objects.all()
-    resource_list = resource_list[:10]
+    # resource_list = resource_list[:10]
     try:
         username = request.session['username']
         isAdmin = request.session['isAdmin']
@@ -233,30 +234,43 @@ def resources(request):
 def contact(request):
     isAdmin = False
     isUser = False
+    user_id = None
     try:
         isAdmin = request.session['isAdmin']
         username = request.session['username']
+        user_id = request.session['uid']
         isUser = True
     except:
         pass
-    if request.method == "POST":
+    if request.method == "POST" and isUser:
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         message = request.POST.get('message')
         phone_no = request.POST.get('phone_no')
         emailID = request.POST.get('emailID')
         new_user_message_instance = userviewMODELS.userMessage()
-        new_user_message_instance.first_name = first_name
-        new_user_message_instance.last_name = last_name
+        # new_user_message_instance.first_name = first_name
+        # new_user_message_instance.last_name = last_name
         new_user_message_instance.message = message
-        new_user_message_instance.phone_no = phone_no
-        new_user_message_instance.emailID = emailID
+        # new_user_message_instance.phone_no = phone_no
+        # new_user_message_instance.emailID = emailID
+        new_user_message_instance.user_id = get_user_instance_by_id(user_id)
         new_user_message_instance.save()
-        sendMessageThroughMail('rvce.resource.portal@gmail.com','rvce.resource.portal@gmail.com', request)
+        # sendMessageThroughMail('rvce.resource.portal@gmail.com','rvce.resource.portal@gmail.com', request)
+        print("*********************")
+        threadAddResource = Thread(target=sendMessageThroughMail, args=('rvce.resource.portal@gmail.com','rvce.resource.portal@gmail.com', request))
+        threadAddResource.start()
+        print("*********************")
+        messages.info(request, "Message sent successfully!!!")
+        return redirect('contact')
+    elif request.method == 'POST':
+        messages.info(request, "Signin before sending a message!!!")
+        return redirect('signin')
+    userDetails = get_user_instance_by_id(user_id)
     if isAdmin:
-        return render(request, "contact.html", {"username": username, "admin": 'YES'})
+        return render(request, "contact.html", {"userDetails":userDetails, "username": username, "admin": 'YES'})
     elif isUser:
-        return render(request, "contact.html", {"username": username})
+        return render(request, "contact.html", {"userDetails":userDetails, "username": username})
     else:
         return render(request, "contact.html")
 

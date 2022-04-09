@@ -1,16 +1,15 @@
+import json
+from logging import exception
 import re, os, email, smtplib
 from email.message import EmailMessage
 from threading import Thread
 from django.http import JsonResponse
-from numpy import rec
-from rsa import newkeys
 from USERVIEW.models import resources as res
 from django.shortcuts import redirect, render
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import auth
-from pyasn1.type.univ import Null
 import pyrebase
 from django.contrib import auth, messages
 from django.templatetags.static import static
@@ -64,8 +63,8 @@ def signup(request):
             newUserRecord.middle_name = request.POST.get('middle_name')
             newUserRecord.last_name = request.POST.get('last_name')
             newUserRecord.USN = request.POST.get('USN')
-            newUserRecord.department_name = "ISE"
-            newUserRecord.phone_no = '+91'+request.POST.get('phone_number')
+            newUserRecord.department_name = request.POST.get('departmentName')
+            newUserRecord.phone_no = request.POST.get('phone_number')
             newUserRecord.save()
             return redirect(reverse('home'))
     return render(request, "signin.html")
@@ -81,9 +80,9 @@ def signin(request):
                 return redirect('signin')
             try:
                 user = auth.sign_in_with_email_and_password(email, password)
-                print(user)
-            except:
-                messages.info(request, "Invalid credentials!!! Try again")
+            except Exception as e:
+                print(e)
+                messages.info(request, "Invalid sign in attempt!!! Try again")
                 return redirect('signin')
             session_id = user['localId']
             request.session['uid'] = str(session_id)
@@ -91,6 +90,20 @@ def signin(request):
             return redirect('home')
     return render(request, "signin.html")
 
+
+def resetPassword(request):
+    if request.method == "POST" and request.POST.get('emailID'):
+        emailID = request.POST.get('emailID')
+        try:
+            auth.send_password_reset_email(emailID)
+            messages.info(request, "Mail sent for reset password")
+        except Exception as e:
+            # print(e)
+            if json.loads(e.args[1])['error']['message'] == 'EMAIL_NOT_FOUND':
+                messages.info(request, "Email ID does not exist...Try with a valid email ID")
+            messages.info(request, "Unable to reset your password...")
+            return redirect("home")
+    return redirect("home")
 
 def logout(request):
     djAuth.logout(request)
@@ -348,17 +361,31 @@ def userProfile(request):
         last_name = request.POST.get('last_name')
         phone_no = request.POST.get('phone_no')
         department_name = request.POST.get('department_name')
-        USN = request.POST.get('USN')
-        print(first_name, middle_name, last_name, phone_no, department_name, USN)
-        user_instance = get_user_instance_by_id(user_id)
-        print(user_instance)
-        user_instance.first_name = first_name
-        user_instance.middle_name = middle_name
-        user_instance.last_name = last_name
-        user_instance.phone_no = phone_no
-        user_instance.department_name = department_name
-        user_instance.USN = USN
-        user_instance.save()
+        if isAdmin:
+          admin_location = request.POST.get('admin_location')
+        else:
+          USN = request.POST.get('USN')
+        # print(first_name, middle_name, last_name, phone_no, department_name, USN)
+        if isAdmin:
+            admin_instance = get_admin_instance_by_id(user_id)
+            # print(user_instance)
+            admin_instance.first_name = first_name
+            admin_instance.middle_name = middle_name
+            admin_instance.last_name = last_name
+            admin_instance.phone_no = phone_no
+            admin_instance.department_name = department_name
+            admin_instance.admin_location = admin_location
+            admin_instance.save()
+        else:
+            user_instance = get_user_instance_by_id(user_id)
+            # print(user_instance)
+            user_instance.first_name = first_name
+            user_instance.middle_name = middle_name
+            user_instance.last_name = last_name
+            user_instance.phone_no = phone_no
+            user_instance.department_name = department_name
+            user_instance.USN = USN
+            user_instance.save()
         messages.info(request, "New profile changes saved!!!")
         return redirect(reverse('user-profile'))
     user_profile = None

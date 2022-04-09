@@ -461,10 +461,22 @@ ul.summary-list > li:last-child  {
                                                                 <p class="form-row form-row-first input-required">
                                                                     <input type="text" name="department_name" value="{{userprofile.department_name}}" required>
                                                                 </p>
+                                                                <h5>Email-ID</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <input type="email" name="emailID" value="{{userprofile.emailID}}" readonly>
+                                                                </p>
+                                                                   
+                                                                {% if admin %}
+                                                                <h5>Location</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <input type="text" name="admin_location" value="{{userprofile.admin_location}}" required>
+                                                                </p> 
+                                                                {% else %}
                                                                 <h5>USN</h5>
                                                                 <p class="form-row form-row-first input-required">
                                                                     <input type="text" name="USN" value="{{userprofile.USN}}" required>
-                                                                </p>                                                         
+                                                                </p> 
+                                                                {% endif %}                                                     
                                                             </div>
                                                         </div>
                                                             <input type="submit" value="Save changes" class="button btn btn-default pull-right">
@@ -485,32 +497,7 @@ ul.summary-list > li:last-child  {
             </div>
         </div>
         <div class="profile-info col-md-9">
-            <!-- <div class="panel">
-                <form>
-                    <textarea placeholder="Whats in your mind today?" rows="2" class="form-control input-lg p-text-area"></textarea>
-                </form>
-                <footer class="panel-footer">
-                    <button class="btn btn-warning pull-right">Post</button>
-                    <ul class="nav nav-pills">
-                        <li>
-                            <a href="#"><i class="fa fa-map-marker"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-camera"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class=" fa fa-film"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-microphone"></i></a>
-                        </li>
-                    </ul>
-                </footer>
-            </div> -->
             <div class="panel">
-                <!-- <div class="bio-graph-heading">
-                    Aliquam ac magna metus. Nam sed arcu non tellus fringilla fringilla ut vel ispum. Aliquam ac magna metus.
-                </div> -->
                 <div class="panel-body bio-graph-info">
                     <h1><strong>About me</strong></h1>
                     <div class="row">

@@ -24,11 +24,11 @@ class admins(models.Model):
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    admin_location = models.CharField(max_length=250)
+    department_name = models.CharField(max_length=100, null=True, blank=True)
     phone_no = models.CharField(max_length=15)
     emailID = models.EmailField(max_length=100)
-    department_name = models.CharField(max_length=100, null=True, blank=True)
-
+    admin_location = models.CharField(max_length=250)
+    
     class Meta:
         db_table = "admins"
 

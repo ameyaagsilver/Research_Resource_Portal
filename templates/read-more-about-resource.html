@@ -27,6 +27,7 @@
                 <!-- <br><br><br> -->
                 <h2 class="center-content section-title">About Resource ID {{resource.resource_id}}</h2>
                 <span class="underline center"></span>
+                <p class="lead center-content">Read more about the resource and get related links and recently viewed resources.</p>
             </div>
         </section>
         
@@ -38,7 +39,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-9 col-md-push-3">
-                                        <br><br><br><br><br><br><br><br>
+                                        <br><br><br><br><br><br>
                                         <div class="books-list">
                                             {% if resource %}
                                             <article> 
@@ -573,15 +574,17 @@
     
                         </div>
                         <div class="bio-desk">
+                            <form id="read-more-about-resource-{{resource.resource_id}}" action="/read-more-about-resource/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" value={{resource.resource_id}}
+                                    name="resourceID">
+                                <a  href="#" onclick="document.getElementById('read-more-about-resource-{{resource.resource_id}}').submit()"><h4><strong>{{resource.resource_name}} </strong>(ID:{{resource.resource_id}}) <p>by {{resource.OEM}} <br>( <strong>{{resource.resource_type}}</strong> )</p></h4></a>
+                            </form>
                             <form id="readmoreabout{{resource.resource_id}}" action="/read-more-about-resource/" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" value={{resource.resource_id}}
                                     name="resourceID">
                                 
-                                <!-- <a href="" onclick="myFunction()">
-                                    
-                                  </a> -->
-                                <h4><strong>{{resource.resource_name}} </strong>(ID:{{resource.resource_id}}) <p>by {{resource.OEM}} <br>( <strong>{{resource.resource_type}}</strong> )</p></h4>
                                 <p>Location : {{resource.location}}, <strong>{{resource.department_name}}</strong></p>
                                 <p>Description : {{resource.about | truncatechars:40 }}</p>
                                 <input type="submit" class="pull-right" value="Read more"></input>

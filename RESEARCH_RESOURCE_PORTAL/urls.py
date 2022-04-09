@@ -18,7 +18,7 @@ urlpatterns = [
     path('', loginVIEW.home, name=""),
 
     # LOGIN and some GENERAL paths included
-    path('home/', loginVIEW.home, name="home"),
+    path('home/', loginVIEW.home, name="home"),   
     path('generic-resources-list-view/', loginVIEW.resources,
          name="generic-resources-list-view"),
     path('signin/', loginVIEW.signin, name="signin"),
@@ -32,11 +32,12 @@ urlpatterns = [
     path('search-component/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
     path('read-more-about-resource/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
     path('user-profile/', loginVIEW.userProfile, name="user-profile"),
-
+    path('reset-password/', loginVIEW.resetPassword, name="reset-password"),
+    
     # USERVIEW paths included
     path('user/', include('USERVIEW.urls')),
 
-    # ADMINVIEW app paths
+    # ADMINVIEW app paths    
     path('issue-resource/', adminVIEW.issueResource, name="issue-resource"),
     path('borrowed-resources/', adminVIEW.borrowedResources,
          name="borrowed-resources"),

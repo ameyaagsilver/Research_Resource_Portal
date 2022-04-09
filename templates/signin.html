@@ -52,20 +52,52 @@
                                                                     <span class="second-letter">*</span>
                                                                 </label> -->
                                                                 <input type="password" id="password" name="password" class="input-text" placeholder="Password *" required>
-                                                            </p>
-                                                            <div class="clear"></div>
-                                                            <div class="password-form-row">
-                                                                <!-- <p class="form-row input-checkbox">
-                                                                    <input type="checkbox" value="forever" id="rememberme" name="rememberme">
-                                                                    <label class="inline" for="rememberme">Remember me</label>
-                                                                </p> -->
-                                                                <p class="lost_password">
-                                                                    <a href="#" class="lost_password">Lost your Pin?</a>
-                                                                </p>
-                                                            </div>
-                                                            <input type="submit" value="Login" name="login" class="button btn btn-default">
-                                                            <div class="clear"></div>
+                                                            </p>                                                            
+                                                            <input type="submit" value="Login" name="login" class="button btn btn-default">                                                            
                                                         </form>
+                                                        <div class="password-form-row">
+                                                            <p class="lost_password">
+                                                                <a href="#" class="lost_password" data-toggle="modal" data-target="#lostPinModal"><u>Forgot password?</u></a>                                                                      
+                                                                      <!-- Modal Content -->
+                                                                <div class="modal fade" id="lostPinModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h4>Research resource portal</h4>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="post-detail">
+                                                                                <header class="entry-header">
+                                                                                    <div class="row">
+                                                                                        <div class="col-sm-6">
+                                                                                            <h3 class="entry-title">
+                                                                                                Reset your password
+                                                                                                <hr>
+                                                                                            </h3>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </header>
+                                                                                <div class="entry-content">
+                                                                                    <form action="/reset-password/" method="POST">
+                                                                                        {% csrf_token %}
+                                                                                        <p><input type="email" name="emailID" id="emailID" placeholder="Enter your email address*" required></p>
+                                                                                        <input type="submit" name="Submit" id="submit">
+                                                                                    </form>
+                                                                                    
+                                                                                    <hr>
+                                                                                    <!-- <p> Enter your email id in the above given box. </p> -->
+                                                                                    <p> Once you press submit you will receive a password reset link click on it and proceed to reset your account password for this portal. <br><strong>Note:</strong> <strong>Do not share the link with anyone under any circumstances.</strong> </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,13 +163,40 @@
                                                                 <input type="text" name="USN" placeholder="University Serial Number(USN) ">
                                                             </p>
                                                             <p class="form-row form-row-first input-required">
+                                                                <div class="form-group">
+                                                                    <select name="departmentName" aria-placeholder="Choose a department" required>
+                                                                        <option value="ASE">Aerospace Engineering</option>
+                                                                        <option value="BT">Biotechnology</option>
+                                                                        <option value="CHE">Chemical Engineering</option>
+                                                                        <option value="CE">Civil Engineering</option>
+                                                                        <option value="CSE">Computer Science and Engineering</option>
+                                                                        <option value="EEE">Electrical and Electronics Engineering
+                                                                        </option>
+                                                                        <option value="ECE">Electronics and Communication Engineering
+                                                                        </option>
+                                                                        <option value="EIE">Electronics and Instrumentation Engineering
+                                                                        </option>
+                                                                        <option value="IEM">Industrial Engineering and Management
+                                                                        </option>
+                                                                        <option value="ISE">Information Science and Engineering</option>
+                                                                        <option value="MCA">Master of Computer Applications</option>
+                                                                        <option value="ME">Mechanical Engineering</option>
+                                                                        <option value="TE">Electronics and Telecommunication Engineering
+                                                                            (Telecommunication Engineering)</option>
+                                                                        <option value="BS">Basic Sciences</option>
+                                                                        <option value="AI&ML">Artificial Intelligence & Machine Learning
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </p>
+                                                            <p class="form-row form-row-first input-required">
                                                                 <!-- <label>
                                                                     <span class="first-letter">Email ID</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label> -->
                                                                 <input type="tel" name="phone_number" placeholder="(+91) 10-digit Phone Number *" pattern="[56789][0-9]{9}" required>
                                                             </p>
-                                                                                                                         
+                                                                                                                     
                                                             <div class="clear"></div>
                                                             <input type="submit" value="Signup" name="signup" id="signupbtn" class="button btn btn-default">
                                                             <div class="clear"></div>

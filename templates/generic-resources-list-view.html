@@ -224,7 +224,12 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <h3 class="entry-title">
-                                                                    <a href="#">{{resource.resource_name}}</a>
+                                                                    <form id="read-more-about-resource-{{resource.resource_id}}" action="/read-more-about-resource/" method="post">
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" value={{resource.resource_id}}
+                                                                            name="resourceID">
+                                                                        <a  href="#" onclick="document.getElementById('read-more-about-resource-{{resource.resource_id}}').submit()">{{resource.resource_name}}</a>
+                                                                    </form>
                                                                     <hr>
                                                                 </h3>
                                                                 <ul>

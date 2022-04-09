@@ -46,6 +46,7 @@ def issueResource(request):
             new_logbook_instance.member_id = user
             new_logbook_instance.issue_date = date.today().strftime("%Y-%m-%d")
             new_logbook_instance.save()
+            # Threading sending a mail to a user
             print("*********************")
             threadAddResource = Thread(target=sendIssueConfirmationThroughMail, args=('rvce.resource.portal@gmail.com', user, resource, admin, new_logbook_instance))
             threadAddResource.start()

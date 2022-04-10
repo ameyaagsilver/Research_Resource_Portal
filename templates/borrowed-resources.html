@@ -147,6 +147,7 @@
                                                                 <h3 class="entry-title">
                                                                     <a href="#">{{resource.resource_name}}</a>
                                                                     <hr>
+                                                                    
                                                                 </h3>
                                                                 <ul>
                                                                     <li><strong>OEM</strong> {{resource.OEM}}</li>
@@ -167,8 +168,8 @@
                                                     <div class="entry-content">
                                                         <p>Issued to <strong>{{resource.first_name}} {{resource.last_name}}</strong> ({{resource.USN}}, {{resource.emailID}})</p>
                                                         <p>Issued on <strong>{{resource.issue_date}}</strong> </p>
-                                                        <!-- <p>by <strong>{{resource.}}</strong></p> -->
-                                                        <p>{{resource.about|truncatechars:200}}</p>
+                                                        <p>by <strong>{{resource.admin_first_name}} {{resource.admin_middle_name}} {{resource.admin_last_name}}</strong>(System admin,{{resource.admin_department_name}})</p>
+                                                        <p>{{resource.about|truncatechars:120}}</p>
                                                     </div>
                                                     <footer class="entry-footer">
                                                         
@@ -179,6 +180,7 @@
                                                             <button class="btn btn-dark-gray" type="submit"
                                                                 value="Read More" value="Read more">Read more</button>
                                                         </form>
+                                                            
                                                         <hr>
                                                         {% if admin %}
                                                         <form action="/return-resource/" method="post">
@@ -189,12 +191,13 @@
                                                         </form>                                                        
                                                         {% endif %}
                                                     </footer>
+                                                    
                                                 </div>
                                                 <div class="clear"></div>
                                             </div>
                                         </article>
                                         <hr>
-                                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                                         {% endfor %}
                                         
                                     </div>

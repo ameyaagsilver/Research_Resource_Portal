@@ -59,7 +59,7 @@ def issueResource(request):
     return redirect('')
 
 
-def borrowedResources(request): # resources borrowed by all the users across departments
+def borrowedResources(request): # resources borrowed by all the users across all departments
     adminID = None
     isAdmin = False
     try:
@@ -90,6 +90,7 @@ def borrowedResources(request): # resources borrowed by all the users across dep
                     select * from resource_logbook
                     inner join resources on resource_logbook.resource_id = resources.resource_id
                     inner join users on resource_logbook.member_id = users.user_id
+                    inner join admins on resource_logbook.admin_id = admins.admin_id
                     where return_date is null AND (users.emailID LIKE "%%{keywords}%%" OR users.first_name LIKE "%%{keywords}%%" OR users.last_name LIKE "%%{keywords}%%" OR users.middle_name LIKE "%%{keywords}%%") AND resources.resource_id={resourceID}
                     ''')
                 # print(resource_list, "*************************")
@@ -102,6 +103,7 @@ def borrowedResources(request): # resources borrowed by all the users across dep
                     select * from resource_logbook
                     inner join resources on resource_logbook.resource_id = resources.resource_id
                     inner join users on resource_logbook.member_id = users.user_id
+                    inner join admins on resource_logbook.admin_id = admins.admin_id
                     where return_date is null AND (users.emailID LIKE "%%{keywords}%%" OR users.first_name LIKE "%%{keywords}%%" OR users.last_name LIKE "%%{keywords}%%" OR users.middle_name LIKE "%%{keywords}%%")
                     ''')
                 print(resource_list, "^^^^^^^^^^^^^^^^^^^^^^^^")
@@ -114,6 +116,7 @@ def borrowedResources(request): # resources borrowed by all the users across dep
                     select * from resource_logbook
                     inner join resources on resource_logbook.resource_id = resources.resource_id
                     inner join users on resource_logbook.member_id = users.user_id
+                    inner join admins on resource_logbook.admin_id = admins.admin_id
                     where return_date is null AND resources.resource_id={}
                     '''.format(resourceID))
 
@@ -128,8 +131,16 @@ def borrowedResources(request): # resources borrowed by all the users across dep
         select * from resource_logbook
         inner join resources on resource_logbook.resource_id = resources.resource_id
         inner join users on resource_logbook.member_id = users.user_id
-        where return_date is null;
+        inner join admins on resource_logbook.admin_id = admins.admin_id
+        where resource_logbook.return_date is null;;
         ''')
+
+        old_query_used_above_here = '''
+        select * from resource_logbook
+        inner join resources on resource_logbook.resource_id = resources.resource_id
+        inner join users on resource_logbook.member_id = users.user_id
+        where return_date is null;
+        '''
         return render(request, 'borrowed-resources.html', {"resources": logbook_resources, "username": username, "admin": "YES"})
     return redirect('')
 
@@ -320,7 +331,7 @@ def resourceHistory(request):
         resourceID = request.POST.get('resourceID')
         updated_resources_table = userviewMODELS.resources.objects.raw('''
         select * from resourceUpdateLogbook
-        inner join admins on admins.user_id = resourceUpdateLogbook.admin_id
+        inner join admins on admins.admin_id = resourceUpdateLogbook.admin_id
         where resourceUpdateLogbook.resource_id = %s
         '''%resourceID)
         # print(updated_resources_table[0].name)
@@ -330,7 +341,7 @@ def resourceHistory(request):
         # with connection.cursor() as cursor:
         #     cursor.execute('''
         # select * from resourceUpdateLogbook
-        # inner join admins on admins.user_id = resourceUpdateLogbook.admin_id
+        # inner join admins on admins.admin_id = resourceUpdateLogbook.admin_id
         # where resourceUpdateLogbook.resource_id = %s
         # '''%resourceID)
         #     data = dictfetchall(cursor)
@@ -356,7 +367,7 @@ def dictfetchall(cursor):
 
 def sendIssueConfirmationThroughMail(From, user, resource, admin, new_logbook_instance):
     sleep(1)
-    print("INSIDE THE thread")
+    print("INSIDE THE send confirmation through mail THREAD...")
     EMAIL_PASSWORD = 'Research@rvce'
     # print("EMAIL_PASSWORD", EMAIL_PASSWORD)
     Subject = f'Resource issued confirmation (Issue ID: {str(new_logbook_instance.log_id)})'
@@ -621,7 +632,7 @@ def sendIssueConfirmationThroughMail(From, user, resource, admin, new_logbook_in
 
                   <div>
                     Issued to: <b>""" + user.first_name + " " + user.middle_name + " " + user.last_name +"""</b><br>
-                    Issued by: <b>""" + admin.first_name + " " + admin.last_name +"""(System admin)</b><br>
+                    Issued by: <b>""" + admin.admin_first_name + " " + admin.admin_middle_name+ " " + admin.admin_last_name +"""(System admin, """ + admin.admin_department_name + """)</b><br>
                     Issue date: <b>""" + str(new_logbook_instance.issue_date) + """</b><br>
                     Email-id: """ + user.emailID + """
                     <br>
@@ -791,7 +802,7 @@ def get_user_instance_by_email(email_id):
 
 
 def get_admin_instance_by_id(adminID):
-    admin = userviewMODELS.admins.objects.filter(user_id=adminID).first()
+    admin = userviewMODELS.admins.objects.filter(admin_id=adminID).first()
     return admin
 
 
@@ -799,7 +810,3 @@ def get_resource_instance_by_id(resourceID):
     resource = userviewMODELS.resources.objects.filter(
         resource_id=resourceID).first()
     return resource
-
-
-# def returnRecentQuery():
-#     return recentSearchedQuery

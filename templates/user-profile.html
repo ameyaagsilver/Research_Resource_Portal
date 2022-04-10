@@ -459,7 +459,31 @@ ul.summary-list > li:last-child  {
                                                                 </p>
                                                                 <h5>Department</h5>
                                                                 <p class="form-row form-row-first input-required">
-                                                                    <input type="text" name="department_name" value="{{userprofile.department_name}}" required>
+                                                                    <div class="form-group">
+                                                                        <select name="department_name" required>
+                                                                            <option value="ASE">Aerospace Engineering</option>
+                                                                            <option value="BT">Biotechnology</option>
+                                                                            <option value="CHE">Chemical Engineering</option>
+                                                                            <option value="CE">Civil Engineering</option>
+                                                                            <option value="CSE">Computer Science and Engineering</option>
+                                                                            <option value="EEE">Electrical and Electronics Engineering
+                                                                            </option>
+                                                                            <option value="ECE">Electronics and Communication Engineering
+                                                                            </option>
+                                                                            <option value="EIE">Electronics and Instrumentation Engineering
+                                                                            </option>
+                                                                            <option value="IEM">Industrial Engineering and Management
+                                                                            </option>
+                                                                            <option value="ISE">Information Science and Engineering</option>
+                                                                            <option value="MCA">Master of Computer Applications</option>
+                                                                            <option value="ME">Mechanical Engineering</option>
+                                                                            <option value="TE">Electronics and Telecommunication Engineering
+                                                                                (Telecommunication Engineering)</option>
+                                                                            <option value="BS">Basic Sciences</option>
+                                                                            <option value="AI&ML">Artificial Intelligence & Machine Learning
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
                                                                 </p>
                                                                 <h5>Email-ID</h5>
                                                                 <p class="form-row form-row-first input-required">
@@ -496,36 +520,38 @@ ul.summary-list > li:last-child  {
                 </ul>
             </div>
         </div>
+        
+        
         <div class="profile-info col-md-9">
             <div class="panel">
                 <div class="panel-body bio-graph-info">
                     <h1><strong>About me</strong></h1>
                     <div class="row">
                         <div class="bio-row">
-                            <p><span>First Name </span>: {{userprofile.first_name}}</p>
+                            <p><span><strong>First Name</strong> </span>: {{userprofile.first_name}}</p>
                         </div>
                         <div class="bio-row">
-                            <p><span>Middle Name </span>: {{userprofile.middle_name}}</p>
+                            <p><span><strong>Middle Name</strong> </span>: {{userprofile.middle_name}}</p>
                         </div>
                         <div class="bio-row">
-                            <p><span>Last Name </span>: {{userprofile.last_name}}</p>
+                            <p><span><strong>Last Name</strong> </span>: {{userprofile.last_name}}</p>
                         </div>
                         <div class="bio-row">
-                            <p><span>Department </span>: {{userprofile.department_name}}</p>
+                            <p><span><strong>Department</strong> </span>: {{userprofile.department_name}}</p>
                         </div>
                         <div class="bio-row">
-                            <p><span>Email </span>: {{userprofile.emailID}}</p>
+                            <p><span><strong>Email</strong> </span>: {{userprofile.emailID}}</p>
                         </div>
                         <div class="bio-row">
-                            <p><span>Mobile </span>: {{userprofile.phone_no}}</p>
+                            <p><span><strong>Contact No</strong> </span>: {{userprofile.phone_no}}</p>
                         </div>
                         {% if admin %}
                         <div class="bio-row">
-                            <p><span>Location </span>: {{userprofile.admin_location}}</p>
+                            <p><span><strong>Location</strong> </span>: {{userprofile.admin_location}}</p>
                         </div>
                         {% else %}
                         <div class="bio-row">
-                            <p><span>USN </span>: {{userprofile.USN}}</p>
+                            <p><span><strong>USN</strong> </span>: {{userprofile.USN}}</p>
                         </div>
                         {% endif %}
                     </div>
@@ -537,6 +563,10 @@ ul.summary-list > li:last-child  {
 
                     <h3>Your recent activities</h3><br>
 
+                    {% else %}
+
+                    <h3>You have not issued any resoruces recently!!!</h3>
+
                     {% endif %}
                     {% for resource in recentIssuedResources %}
                     <div class="col-md-6">
@@ -544,11 +574,10 @@ ul.summary-list > li:last-child  {
                             <div class="panel-body">
                                 
                                 <div class="bio-chart">
-                                    <!-- <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="35" data-fgcolor="#e06b7d" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(224, 107, 125); padding: 0px; -webkit-appearance: none; background: none;"></div> -->
                                     <img alt="resource-image" src='{{ resource.image.url }}'
-                                                            class="prod-image" style="object-fit:fill;
-                                                            padding-right: 10%;
-                                                            ">
+                                        class="prod-image" style="object-fit:fill;
+                                        padding-right: 10%;
+                                        ">
 
                                 </div>
                                 <div class="bio-desk">
@@ -557,14 +586,72 @@ ul.summary-list > li:last-child  {
                                         <input type="hidden" value={{resource.resource_id}}
                                             name="resourceID">
                                         
-                                        <!-- <a href="" onclick="myFunction()">
-                                            
-                                          </a> -->
                                         <h4><strong>{{resource.resource_name}} </strong>(ID:{{resource.resource_id}}) <p>by {{resource.OEM}} <br>( <strong>{{resource.resource_type}}</strong> )</p></h4>
                                         <p>Location : {{resource.location}}, <strong>{{resource.department_name}}</strong></p>
-                                        <p>Description : {{resource.about | truncatechars:40 }}</p>
-                                        <input type="submit" class="pull-right" value="Read more"></input>
+                                        <p>Issue date : {{resource.issue_date}}</p>
+                                        <!-- <input type="submit" class="pull-right" value="Read more"></input> -->
                                     </form>
+                                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{resource.update_id}}"> -->
+                                    <a><i class="fa fa-link fa-2x pull-right" data-toggle="modal" data-target="#readMoreAboutRecentResourceIssued{{resource.log_id}}"></i></a>
+                                    <!-- </button> -->
+                                    
+                                    <!-- Modal Content -->
+                                    <div class="modal fade" id="readMoreAboutRecentResourceIssued{{resource.log_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4>Resource Issue details</h4>
+                                                <!-- <strong>Name</strong> <p>by <strong>{{resource.admin_first_name}} {{resource.admin_middle_name}} {{resource.admin_last_name}}</strong>(System admin,{{resource.admin_department_name}})</p>
+                                                <strong>Email id</strong> {{resource.emailID}} <br>
+                                                <strong>Location</strong> {{resource.admin_location}} -->
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="post-detail">
+                                                    <header class="entry-header">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <h3 class="entry-title">
+                                                                    Resource Issue id {{resource.log_id}}
+                                                                    <hr>
+                                                                </h3>
+                                                                <ul>
+                                                                    <li><strong>Name</strong> {% if resource.resource_name %}{{resource.resource_name}}{% else %}No changes{% endif %} </li>
+                                                                    <li><strong>OEM</strong> {% if resource.OEM %}{{resource.OEM}}{% else %}No changes{% endif %}</li>
+                                                                    <li><strong>Unit cost:</strong> {% if resource.unit_cost %}<i class="fa fa-rupee"></i> {{resource.unit_cost}}{% else %}No changes{% endif %}</li> 
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <ul>
+                                                                    <br><br><br>
+
+                                                                    <li><strong>Type </strong>{% if resource.resource_type %}{{resource.resource_type}}{% else %}No changes{% endif %}</li>
+                                                                    <li><strong>Department </strong>{% if resource.department_name %}{{resource.department_name}}{% else %}No changes{% endif %}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </header>
+                                                    <div class="entry-content">
+                                                        <p><strong>Return Location </strong>{{resource.location}}, <strong>{{resource.department_name}}</strong> </p>
+                                                        <p><strong>About the resource </strong> {% if resource.about %}{{resource.about | truncatechars:120 }}{% else %}No changes{% endif %}</p>
+                                                        <hr>
+                                                        <p>This resource was issued to you by <strong>{{resource.admin_first_name}} {{resource.admin_middle_name}} {{resource.admin_last_name}} ({{resource.admin_emailID}})</strong> <br>
+                                                        <strong>Issued on: </strong>{{resource.issue_date}} <br> 
+                                                        <strong>Returned on: </strong>{% if resource.return_date %} {{resource.return_date}} {% else %} NOT YET RETURNED {% endif %}</p>
+                                                        <p><strong>Note:</strong> Once done with the use kindly return return it to the above mentioned location.</p>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <!-- <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

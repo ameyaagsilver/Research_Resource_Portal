@@ -85,8 +85,9 @@
                                                         <div class="entry-content">
                                                             <!-- <p><strong>Location</strong> {{resource.location}}, {{resource.department_name}}</p> -->
                                                             <p><strong>Issued on: </strong>{{resource.issue_date}}</p>
-                                                            <p><strong>Returned on: </strong>{{resource.return_date}}</p>
-                                                            <p>{{resource.about|truncatechars:200}}</p>
+                                                            <p>Issued by <strong>{{resource.admin_first_name}} {{resource.admin_middle_name}} {{resource.admin_last_name}}</strong>(System admin,{{resource.admin_department_name}})</p>
+                                                            <p><strong>Returned on: </strong>{% if resource.return_date %} {{resource.return_date}} {% else %} NOT YET RETURNED {% endif %}</p>
+                                                            <p>{{resource.about|truncatechars:150}}</p>
                                                         </div>
                                                         <footer class="entry-footer">
                                                             <form action="/read-more-about-resource/" method="post">
@@ -100,7 +101,7 @@
                                                 </div>
                                             </article>
                                             <hr>
-                                            <br><br><br><br><br><br><br><br><br><br><br><br>
+                                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                                         {% endfor %}
                                         {% if not resources %}
                                         <h3>You don't have any borrowed resources</h3>

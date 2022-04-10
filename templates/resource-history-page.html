@@ -169,7 +169,7 @@
                                 <span class="text-offset">{{ resource.dateTime.time }}</span>
                             </td>
                             <td>
-                                <strong class="resource-name">{{ resource.first_name }} {{ resource.middle_name }} {{ resource.last_name }}</strong><br>
+                                <strong class="resource-name">{{ resource.admin_first_name }} {{ resource.admin_middle_name }} {{ resource.admin_last_name }}</strong><br>
                 
                                 <span class="text-offset">{{ resource.emailID }}</span>
                             </td>
@@ -193,8 +193,8 @@
                                       <div class="modal-content">
                                         <div class="modal-header">
                                             <h4>Admin details</h4>
-                                            <strong>Name</strong> {{resource.first_name}} {{resource.middle_name}} {{resource.last_name}}
-                                            <strong>Email id</strong> {{resource.emailID}} <br>
+                                            <strong>Name</strong> {{resource.admin_first_name}} {{resource.admin_middle_name}} {{resource.admin_last_name}}
+                                            <strong>Email id</strong> {{resource.admin_emailID}} <br>
                                             <strong>Location</strong> {{resource.admin_location}}
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -231,7 +231,7 @@
                                                     <p><strong>Location </strong>{% if resource.location %}{{resource.location}}{% else %}No changes{% endif %} </p>
                                                     <p><strong>About the resource </strong> {% if resource.about %}{{resource.about}}{% else %}No changes{% endif %}</p>
                                                     <hr>
-                                                    <p>The above mentioned changes are done by <strong>{{resource.first_name}} {{resource.middle_name}} {{resource.last_name}} ({{resource.emailID}})</strong> </p>
+                                                    <p>The above mentioned changes are done by <strong>{{resource.admin_first_name}} {{resource.admin_middle_name}} {{resource.admin_last_name}} ({{resource.admin_emailID}})</strong> </p>
                                                     <p><strong>Note:</strong> "No changes" signifies that the admin has not changed the value of the that attribute, only those attributes are changed by the admin which have proper value corresponding to their attribute names.</p>
                                                 </div>
                                                 

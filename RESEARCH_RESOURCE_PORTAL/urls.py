@@ -15,9 +15,9 @@ import RESEARCH_RESOURCE_PORTAL.settings as settings
 urlpatterns = [
     # ADMIN paths included
     path('admin/', admin.site.urls),
-    path('', loginVIEW.home, name=""),
 
     # LOGIN and some GENERAL paths included
+    path('', loginVIEW.home, name=""),
     path('home/', loginVIEW.home, name="home"),   
     path('generic-resources-list-view/', loginVIEW.resources,
          name="generic-resources-list-view"),

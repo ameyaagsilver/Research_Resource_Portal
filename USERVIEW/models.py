@@ -20,40 +20,17 @@ class users(models.Model):
 
 
 class admins(models.Model):
-    user_id = models.CharField(max_length=100, primary_key=True)
-    first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    department_name = models.CharField(max_length=100, null=True, blank=True)
-    phone_no = models.CharField(max_length=15)
-    emailID = models.EmailField(max_length=100)
+    admin_id = models.CharField(max_length=100, primary_key=True)
+    admin_first_name = models.CharField(max_length=50)
+    admin_middle_name = models.CharField(max_length=50)
+    admin_last_name = models.CharField(max_length=50)
+    admin_department_name = models.CharField(max_length=100, null=True, blank=True)
+    admin_phone_no = models.CharField(max_length=15)
+    admin_emailID = models.EmailField(max_length=100)
     admin_location = models.CharField(max_length=250)
     
     class Meta:
         db_table = "admins"
-
-
-class committee(models.Model):
-    committee_id = models.AutoField(primary_key=True, default=None)
-    committee_name = models.CharField(max_length=100)
-
-    class Meta:
-        db_table = "committee"
-
-
-class committee_members(models.Model):
-    user_id = models.CharField(max_length=100, primary_key=True)
-    first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=15)
-    emailID = models.EmailField(max_length=100)
-    committee_id = models.ForeignKey(
-        committee, on_delete=models.CASCADE, db_column="committee_id")
-
-    class Meta:
-        db_table = "committee_members"
-
 
 class resources(models.Model):
     resource_id = models.AutoField(primary_key=True, default=None)
@@ -107,28 +84,6 @@ class resource_logbook(models.Model):
 
     class Meta:
         db_table = "resource_logbook"
-
-    # def __str__(self):
-    #     return self.name
-
-
-class tender(models.Model):
-    tender_id = models.AutoField(primary_key=True, default=None)
-    OEM = models.CharField(max_length=100)
-    resource_type = models.CharField(max_length=50)
-    unit_cost = models.IntegerField()
-    resource_name = models.CharField(max_length=250)
-    tender_issue_date = models.DateField()
-    quantity = models.IntegerField()
-    about = models.CharField(max_length=1000)
-    admin_id = models.ForeignKey(
-        admins, on_delete=models.CASCADE, db_column="admin_id")
-    committee_id = models.ForeignKey(
-        committee, on_delete=models.CASCADE, db_column="committee_id")
-    approval_date = models.DateField()
-
-    class Meta:
-        db_table = "tender"
 
     # def __str__(self):
     #     return self.name

@@ -97,12 +97,12 @@
 
                                                     <div style="padding-top: 5%;" class="dropdown-menu cart-dropdown">
                                                         <ul>
-                                                            <li><a href="{% url 'user-resources' %}">Borrowed resources</a>
+                                                            <li><a href="{% url 'user-resources' %}">Borrowed resources(by myself)</a>
                                                             </li>
                                                         </ul>
                                                             {% if admin %}
                                                             <ul>
-                                                                <li><a href="{% url 'borrowed-resources' %}">Resource Logbook</a></li>
+                                                                <li><a href="{% url 'borrowed-resources' %}">Resource Logbook(College)</a></li>
                                                             </ul>
                                                             <ul>
                                                                 <li><a href="{% url 'add-resource' %}">Add a new resource</a></li>

@@ -105,6 +105,7 @@ def resetPassword(request):
             return redirect("home")
     return redirect("home")
 
+
 def logout(request):
     djAuth.logout(request)
     # try:
@@ -135,7 +136,7 @@ def home(request):
         request.session['isAdmin'] = False
 
         admins = list(models.admins.objects.raw(
-            'SELECT user_id FROM admins WHERE user_id = "%s"' % user_id))
+            'SELECT admin_id FROM admins WHERE admin_id = "%s"' % user_id))
 
         if(len(admins) == 1):
             # print("It is admin")
@@ -396,16 +397,28 @@ def userProfile(request):
         recent_issued_resources = userviewMODELS.resources.objects.raw('''
         select * from resource_logbook
         join resources on resource_logbook.resource_id = resources.resource_id
+        inner join admins on resource_logbook.admin_id = admins.admin_id
         where resource_logbook.member_id = "%s" and resource_logbook.return_date is null
+        order by resource_logbook.issue_date desc
         limit 4
         '''%userID)
+        for r in recent_issued_resources:
+            print(r)
+        '''
+        select * from resource_logbook
+        inner join resources on resource_logbook.resource_id = resources.resource_id
+        inner join users on resource_logbook.member_id = users.user_id
+        where return_date is null;
+        '''
     if isAdmin:
         userID = request.session['uid']
-        user_profile = userviewMODELS.admins.objects.filter(user_id=userID).first()
+        user_profile = userviewMODELS.admins.objects.filter(admin_id=userID).first()
         recent_issued_resources = userviewMODELS.resources.objects.raw('''
         select * from resource_logbook
         join resources on resource_logbook.resource_id = resources.resource_id
+        inner join admins on resource_logbook.admin_id = admins.admin_id
         where resource_logbook.member_id = "%s" and resource_logbook.return_date is null
+        order by resource_logbook.issue_date desc
         limit 4
         '''%userID)
     if isAdmin:
@@ -837,6 +850,7 @@ def sendMessageThroughMail(From, To, request):
         smtp.close()
     return None
 
+
 def get_user_instance_by_email(email_id):
     user = userviewMODELS.users.objects.filter(emailID=email_id).first()
     return user
@@ -847,7 +861,7 @@ def get_user_instance_by_id(user_id):
 
 
 def get_admin_instance_by_id(adminID):
-    admin = userviewMODELS.admins.objects.filter(user_id=adminID).first()
+    admin = userviewMODELS.admins.objects.filter(admin_id=adminID).first()
     return admin
 
 

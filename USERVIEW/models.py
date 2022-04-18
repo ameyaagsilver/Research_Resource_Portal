@@ -50,15 +50,12 @@ class resources(models.Model):
     class Meta:
         db_table = "resources"
 
-    # def __str__(self):
-    #     return self.name
-
 class resourceRelatedLinks(models.Model):
     link_id = models.AutoField(primary_key=True)
     url = models.CharField(max_length=400, default="")
     heading = models.CharField(max_length=100, default="")
-    resource_id = models.ForeignKey(resources, on_delete=models.CASCADE, default=None, db_column="resource_id")
-
+    resource_id = models.ForeignKey(
+        resources, on_delete=models.CASCADE, db_column="resource_id", null=True, blank=True)
     class Meta:
         db_table = "resourceRelatedLinks"
 
@@ -74,7 +71,7 @@ class test(models.Model):
 class resource_logbook(models.Model):
     log_id = models.AutoField(primary_key=True, default=None)
     member_id = models.ForeignKey(
-        users, on_delete=models.CASCADE, db_column="member_id")
+        users, on_delete=models.CASCADE, db_column="member_id", default=None)
     admin_id = models.ForeignKey(
         admins, on_delete=models.CASCADE, db_column="admin_id")
     resource_id = models.ForeignKey(
@@ -84,9 +81,6 @@ class resource_logbook(models.Model):
 
     class Meta:
         db_table = "resource_logbook"
-
-    # def __str__(self):
-    #     return self.name
 
 
 class resourceUpdateLogbook(models.Model):

@@ -407,8 +407,16 @@ ul.summary-list > li:last-child  {
                     <a href="">
                         <img src="https://www.w3schools.com/howto/img_avatar.png" alt="user profile pic">
                     </a>
+                    {% if admin %}
+                    <h1>{{userprofile.admin_first_name}} {{userprofile.admin_middle_name}} {{userprofile.admin_last_name}}</h1>
+                    <p>{{userprofile.admin_emailID}}</p>
+                    {% else %}
                     <h1>{{userprofile.first_name}} {{userprofile.middle_name}} {{userprofile.last_name}}</h1>
                     <p>{{userprofile.emailID}}</p>
+                    {% endif %}
+
+
+
                 </div>
 
                 <ul class="nav nav-pills nav-stacked">
@@ -439,6 +447,66 @@ ul.summary-list > li:last-child  {
                                                         {% csrf_token %}
                                                         <div class="row">
                                                             <div class="col-sm-6">
+                                                                {% if admin %}
+                                                                <h5>First Name</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <input type="text" name="first_name" value="{{userprofile.admin_first_name}}" required>
+                                                                </p>
+                                                                <h5>Middle Name</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <input type="text" name="middle_name" value="{{userprofile.admin_middle_name}}" required>
+                                                                </p>
+                                                                <h5>Last name</h5>
+                                                                <p class="form-row input-required">
+                                                                    <input type="text" name="last_name"  value="{{userprofile.admin_last_name}}" required>
+                                                                </p> 
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <h5>Mobile</h5>
+                                                                <p class="form-row input-required">
+                                                                    <input type="tel" name="phone_no" value="{{userprofile.admin_phone_no}}" pattern="[56789][0-9]{9}" required>
+                                                                </p>
+                                                                <h5>Department</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <div class="form-group">
+                                                                        <select name="department_name" required>
+                                                                            <option value="ASE">Aerospace Engineering</option>
+                                                                            <option value="BT">Biotechnology</option>
+                                                                            <option value="CHE">Chemical Engineering</option>
+                                                                            <option value="CE">Civil Engineering</option>
+                                                                            <option value="CSE">Computer Science and Engineering</option>
+                                                                            <option value="EEE">Electrical and Electronics Engineering
+                                                                            </option>
+                                                                            <option value="ECE">Electronics and Communication Engineering
+                                                                            </option>
+                                                                            <option value="EIE">Electronics and Instrumentation Engineering
+                                                                            </option>
+                                                                            <option value="IEM">Industrial Engineering and Management
+                                                                            </option>
+                                                                            <option value="ISE">Information Science and Engineering</option>
+                                                                            <option value="MCA">Master of Computer Applications</option>
+                                                                            <option value="ME">Mechanical Engineering</option>
+                                                                            <option value="TE">Electronics and Telecommunication Engineering
+                                                                                (Telecommunication Engineering)</option>
+                                                                            <option value="BS">Basic Sciences</option>
+                                                                            <option value="AI&ML">Artificial Intelligence & Machine Learning
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </p>
+                                                                <h5>Email-ID</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <input type="email" name="emailID" value="{{userprofile.admin_emailID}}" readonly>
+                                                                </p>
+                                                                <h5>Location</h5>
+                                                                <p class="form-row form-row-first input-required">
+                                                                    <input type="text" name="admin_location" value="{{userprofile.admin_location}}" required>
+                                                                </p>
+                                                                
+                                                                
+                                                                {% else %}
+
+                                                                
                                                                 <h5>First Name</h5>
                                                                 <p class="form-row form-row-first input-required">
                                                                     <input type="text" name="first_name" value="{{userprofile.first_name}}" required>
@@ -489,13 +557,6 @@ ul.summary-list > li:last-child  {
                                                                 <p class="form-row form-row-first input-required">
                                                                     <input type="email" name="emailID" value="{{userprofile.emailID}}" readonly>
                                                                 </p>
-                                                                   
-                                                                {% if admin %}
-                                                                <h5>Location</h5>
-                                                                <p class="form-row form-row-first input-required">
-                                                                    <input type="text" name="admin_location" value="{{userprofile.admin_location}}" required>
-                                                                </p> 
-                                                                {% else %}
                                                                 <h5>USN</h5>
                                                                 <p class="form-row form-row-first input-required">
                                                                     <input type="text" name="USN" value="{{userprofile.USN}}" required>
@@ -527,6 +588,30 @@ ul.summary-list > li:last-child  {
                 <div class="panel-body bio-graph-info">
                     <h1><strong>About me</strong></h1>
                     <div class="row">
+                        
+                        {% if admin %}
+                        <div class="bio-row">
+                            <p><span><strong>First Name</strong> </span>: {{userprofile.admin_first_name}}</p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span><strong>Middle Name</strong> </span>: {{userprofile.admin_middle_name}}</p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span><strong>Last Name</strong> </span>: {{userprofile.admin_last_name}}</p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span><strong>Department</strong> </span>: {{userprofile.admin_department_name}}</p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span><strong>Email</strong> </span>: {{userprofile.admin_emailID}}</p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span><strong>Contact No</strong> </span>: {{userprofile.admin_phone_no}}</p>
+                        </div>
+                        <div class="bio-row">
+                            <p><span><strong>Location</strong> </span>: {{userprofile.admin_location}}</p>
+                        </div>
+                        {% else %}
                         <div class="bio-row">
                             <p><span><strong>First Name</strong> </span>: {{userprofile.first_name}}</p>
                         </div>
@@ -545,11 +630,6 @@ ul.summary-list > li:last-child  {
                         <div class="bio-row">
                             <p><span><strong>Contact No</strong> </span>: {{userprofile.phone_no}}</p>
                         </div>
-                        {% if admin %}
-                        <div class="bio-row">
-                            <p><span><strong>Location</strong> </span>: {{userprofile.admin_location}}</p>
-                        </div>
-                        {% else %}
                         <div class="bio-row">
                             <p><span><strong>USN</strong> </span>: {{userprofile.USN}}</p>
                         </div>

@@ -370,11 +370,11 @@ def userProfile(request):
         if isAdmin:
             admin_instance = get_admin_instance_by_id(user_id)
             # print(user_instance)
-            admin_instance.first_name = first_name
-            admin_instance.middle_name = middle_name
-            admin_instance.last_name = last_name
-            admin_instance.phone_no = phone_no
-            admin_instance.department_name = department_name
+            admin_instance.admin_first_name = first_name
+            admin_instance.admin_middle_name = middle_name
+            admin_instance.admin_last_name = last_name
+            admin_instance.admin_phone_no = phone_no
+            admin_instance.admin_department_name = department_name
             admin_instance.admin_location = admin_location
             admin_instance.save()
         else:
@@ -391,25 +391,6 @@ def userProfile(request):
         return redirect(reverse('user-profile'))
     user_profile = None
     recent_issued_resources = None
-    if isUser:
-        userID = request.session['uid']
-        user_profile = userviewMODELS.users.objects.filter(user_id=userID).first()
-        recent_issued_resources = userviewMODELS.resources.objects.raw('''
-        select * from resource_logbook
-        join resources on resource_logbook.resource_id = resources.resource_id
-        inner join admins on resource_logbook.admin_id = admins.admin_id
-        where resource_logbook.member_id = "%s" and resource_logbook.return_date is null
-        order by resource_logbook.issue_date desc
-        limit 4
-        '''%userID)
-        for r in recent_issued_resources:
-            print(r)
-        '''
-        select * from resource_logbook
-        inner join resources on resource_logbook.resource_id = resources.resource_id
-        inner join users on resource_logbook.member_id = users.user_id
-        where return_date is null;
-        '''
     if isAdmin:
         userID = request.session['uid']
         user_profile = userviewMODELS.admins.objects.filter(admin_id=userID).first()
@@ -421,6 +402,25 @@ def userProfile(request):
         order by resource_logbook.issue_date desc
         limit 4
         '''%userID)
+    elif isUser:
+        userID = request.session['uid']
+        user_profile = userviewMODELS.users.objects.filter(user_id=userID).first()
+        recent_issued_resources = userviewMODELS.resources.objects.raw('''
+        select * from resource_logbook
+        join resources on resource_logbook.resource_id = resources.resource_id
+        inner join admins on resource_logbook.admin_id = admins.admin_id
+        where resource_logbook.member_id = "%s" and resource_logbook.return_date is null
+        order by resource_logbook.issue_date desc
+        limit 4
+        '''%userID)
+        # for r in recent_issued_resources:
+        #     print(r)
+        # '''
+        # select * from resource_logbook
+        # inner join resources on resource_logbook.resource_id = resources.resource_id
+        # inner join users on resource_logbook.member_id = users.user_id
+        # where return_date is null;
+        # '''
     if isAdmin:
             return render(request, "user-profile.html", {"recentIssuedResources":recent_issued_resources,"userprofile": user_profile, "username": username, "admin": 'YES'})
     elif isUser:
@@ -854,6 +854,7 @@ def sendMessageThroughMail(From, To, request):
 def get_user_instance_by_email(email_id):
     user = userviewMODELS.users.objects.filter(emailID=email_id).first()
     return user
+
 
 def get_user_instance_by_id(user_id):
     user = userviewMODELS.users.objects.filter(user_id=user_id).first()

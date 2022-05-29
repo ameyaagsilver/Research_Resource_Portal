@@ -33,6 +33,6 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 try:
-    auth.send_password_reset_email('ameyamgonal.s@rvce.edu.in')
+    auth.send_password_reset_email('ameyamgonal.is19@rvce.edu.in')
 except Exception as e:
     print(json.loads(e.args[1])['error']['message'])

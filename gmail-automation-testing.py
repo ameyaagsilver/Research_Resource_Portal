@@ -1,53 +1,21 @@
-from os import link
-from time import sleep
-import requests, bs4 , sys
-from threading import Thread
-# print('Googling...')
-# keyword = 'Beaglebone circuit'
-# res = requests.get('https://google.com/search?q=' + keyword)
+from ast import Not
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
+import mimetypes
+import os
+from Google import Create_Service
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-# soup = bs4.BeautifulSoup(res.text, "html.parser")
+CLIENT_SECRET_FILE = 'client_secret.json'
+API_NAME = 'gmail'
+API_VERSION = 'v1'
+SCOPES = ['https://mail.google.com/']
 
-# linkElems = soup.select('div#main > div > div > div > a')  
-# numOpen = min(5, len(linkElems))
-# for i in range(numOpen):
-#     print("*********************************************************************")
-#     if len(linkElems[i].select('h3'))!=0:
-#         print("".join(linkElems[i].select('h3')[0].select('div')[0].strings)) 
-#         print('http://google.com' + linkElems[i].get("href"))
+service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
-# class a(Thread):
-#     def run(self):
-#         for i in range(5):
-#             print(i)
-#             sleep(1)
-# def webScrapperForAddNewResource(keyword):
-#     print('Googling...')
-#     res = requests.get('https://google.com/search?q=' + keyword)
-
-#     soup = bs4.BeautifulSoup(res.text, "html.parser")
-
-#     linkElems = soup.select('div#main > div > div > div > a')  
-#     numOpen = min(25, len(linkElems))
-#     linkCount = 0
-#     for i in range(numOpen):
-
-#         if len(linkElems[i].select('h3'))!=0 and linkCount<3:
-#             print("*********************************************************************")
-#             heading = "".join(linkElems[i].select('h3')[0].select('div')[0].strings)
-#             url = 'http://google.com' + linkElems[i].get("href")
-#             print(heading)
-#             print(url)
-#             if url:
-#                 linkCount+=1
-# def foo():
-#     threadAddResource = Thread(target=webScrapperForAddNewResource, args=('Arduino', ))
-#     threadAddResource.start()
-#     return
-# foo()
-
-
-print("""\
+emailMsg = """\n
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -238,7 +206,7 @@ print("""\
     }
   </style>
 </head>
-<body class="body" style="padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none" bgcolor="#ffffff">
+<body class="body" style="padding:0; margin:0; display:block; background:white; -webkit-text-size-adjust:none" bgcolor="#ffffff">
 <table align="center" cellpadding="0" cellspacing="0" width="100%" height="100%">
   <tr>
     <td align="center" valign="top" bgcolor="#ffffff"  width="100%">
@@ -249,14 +217,14 @@ print("""\
           <center>
             <table cellspacing="0" cellpadding="0" width="600" class="w320">
               <tr>
-                <td valign="top" class="mobile-block mobile-no-padding-bottom mobile-center" width="270" style="background:#1f1f1f;padding:10px 10px 10px 20px;">
+                <td valign="top" class="mobile-block mobile-no-padding-bottom mobile-center" width="270" style="background:#fff;padding:10px 10px 10px 20px;">
                   <a href="#" style="text-decoration:none;">
                     <h3 style="
                     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
                     ">RESEARCH RESOURCE PORTAL</h3>
                   </a>
                 </td>
-                <td valign="top" class="mobile-block mobile-center" width="270" style="background:#1f1f1f;padding:10px 15px 10px 10px">
+                <td valign="top" class="mobile-block mobile-center" width="270" style="background:#fff;padding:10px 15px 10px 10px">
                   <table border="0" cellpadding="0" cellspacing="0" class="mobile-center-block" align="right">
                     <tr>
                       <!-- <td align="right">
@@ -301,16 +269,7 @@ print("""\
 
                   <br class="mobile-hide" />
 
-                  <div>
-                    <b>""" +"Ameya"+ """</b>
-                    Email-id : 
-                    <br>
-                    
-                    <br>
-                    Phone: <br>
-                    <br>
-                    
-                  </div>
+                  
 
                   <br>
 
@@ -323,7 +282,7 @@ print("""\
                             <w:anchorlock/>
                             <center>
                           <![endif]-->
-                              <a href="#"
+                              <a href="location.href='http://127.0.0.1:8000/user-profile/'"
                         style="background-color:#D84A38;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:33px;text-align:center;text-decoration:none;width:100px;-webkit-text-size-adjust:none;">My Account</a>
                           <!--[if mso]>
                             </center>
@@ -351,7 +310,7 @@ print("""\
       </tr>
       <tr>
         <td valign="top" style="background-color:#f8f8f8;border-bottom:1px solid #e7e7e7;">
-
+<!-- 
           <center>
             <table border="0" cellpadding="0" cellspacing="0" width="600" class="w320" style="height:100%;">
               <tr>
@@ -423,7 +382,7 @@ print("""\
                 </td>
               </tr>
             </table>
-          </center>
+          </center> -->
         </td>
       </tr>
       <tr>
@@ -449,4 +408,38 @@ print("""\
 </table>
 </body>
 </html>
-    """)
+    """
+
+mimeMessage = MIMEMultipart()
+mimeMessage['to'] = 'ameyamgonal.is19@rvce.edu.in'
+mimeMessage['subject'] = 'Hi there'
+mimeMessage.attach(MIMEText(emailMsg, 'html'))
+fileName = 'e.jpg'
+with open(fileName, "rb") as fp:
+    (content_type, encoding) = mimetypes.guess_type(fileName)
+    print(content_type)
+    if content_type is None or encoding is not None:
+        content_type = "application/octet-stream"
+
+    (main_type, sub_type) = content_type.split("/", 1)
+
+    if main_type == "image":
+        attachment = MIMEImage(fp.read(), _subtype=sub_type)
+    # elif main_type == "text":
+    #     attachment = MIMEImage(fp.read(), _subtype=sub_type)
+    else:
+        attachment = MIMEBase(main_type, sub_type)
+        attachment.set_payload(fp.read())
+
+    fileName = os.path.basename(fileName)
+    attachment.add_header('Content-Disposition', 'attachment', filename=fileName)
+
+    mimeMessage.attach(attachment)
+    
+    
+
+raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
+
+message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
+print(message)
+# service

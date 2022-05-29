@@ -28,7 +28,7 @@ def resources(request):  # DISPLAYs all resources a specific user taken resource
 
 def returnRecentQuery():
     return redirect('generic-resources-list-view')
-# searches for resource searched w.r.t a keyword or the resourceID provided
+# searches for resource searched w.r.t a keyword ocamr the resourceID provided
 # def searchResources(request):
 #     isAdmin = False
 #     resource_list = res.objects.none()  # declaring an empty querysert

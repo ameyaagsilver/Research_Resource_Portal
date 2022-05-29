@@ -18,6 +18,21 @@ from RESEARCH_RESOURCE_PORTAL.settings import STATIC_ROOT
 from USERVIEW import models
 from django.contrib import auth as djAuth
 from USERVIEW import models as userviewMODELS
+from ast import Not
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
+import mimetypes
+import os
+from Google import Create_Service
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+CLIENT_SECRET_FILE = 'client_secret.json'
+API_NAME = 'gmail'
+API_VERSION = 'v1'
+SCOPES = ['https://mail.google.com/']
+service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES) # Gmail API
 
 
 firebaseConfig = {
@@ -288,7 +303,6 @@ def contact(request):
     else:
         return render(request, "contact.html")
 
-
 # return the READ MORE section of a resource selected
 def readMoreAboutResource(request):
     isAdmin = False
@@ -430,16 +444,10 @@ def userProfile(request):
     
 
 def sendMessageThroughMail(From, To, request):
-    EMAIL_PASSWORD = 'Research@rvce'
-    # print("EMAIL_PASSWORD", EMAIL_PASSWORD)
-    Subject = 'Grievance - New message from {usersName}'.format(usersName=request.POST.get('first_name')+" "+request.POST.get('last_name'))
-    Message = request.POST.get('message')
-    mssg = EmailMessage()
-    mssg['Subject'] = Subject
-    mssg['From'] = From
-    mssg['To'] = To
-    mssg.set_content(Message)
-    mssg.add_alternative("""\n
+    # sleep(1)
+    print("INSIDE THE send MESSAGE/Grievances through mail THREAD...")
+    print("**************************8", From, To)
+    emailMsg = str("""\n
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -842,12 +850,16 @@ def sendMessageThroughMail(From, To, request):
 </table>
 </body>
 </html>
-    """, subtype='html')
-
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-        smtp.login('rvce.resource.portal@gmail.com', EMAIL_PASSWORD)
-        smtp.send_message(mssg)
-        smtp.close()
+    """)
+    
+    mimeMessage = MIMEMultipart()
+    mimeMessage['to'] = To
+    mimeMessage['subject'] = 'Grievance/Message - New message from {usersName}'.format(usersName=request.POST.get('first_name')+" "+request.POST.get('last_name'))
+    mimeMessage.attach(MIMEText(emailMsg, 'html'))
+    
+    raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
+    message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
+    print(message)
     return None
 
 

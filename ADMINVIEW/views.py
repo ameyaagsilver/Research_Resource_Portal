@@ -700,11 +700,7 @@ def sendIssueConfirmationThroughMail(From, user, resource, admin, new_logbook_in
                 <td class="mobile-hide" style="padding-top:20px;padding-bottom:0; vertical-align:bottom;" valign="bottom">
                   <table cellspacing="0" cellpadding="0" width="100%">
                     <tr>
-                      <!-- <td align="right" valign="bottom" style="padding-bottom:0; vertical-align:bottom;">
-                        <img  style="vertical-align:bottom;" src="https://www.filepicker.io/api/file/9f3sP1z8SeW1sMiDA48o"  width="174" height="294" />
-                      </td>
-                      --!>
-                
+                                     
                     </tr>
                   </table>
                 </td>
@@ -1080,11 +1076,7 @@ def sendReturnConfirmationThroughMail(From, user, resource, admin, old_logbook_i
                 <td class="mobile-hide" style="padding-top:20px;padding-bottom:0; vertical-align:bottom;" valign="bottom">
                   <table cellspacing="0" cellpadding="0" width="100%">
                     <tr>
-                    <!--
-                      <td align="right" valign="bottom" style="padding-bottom:0; vertical-align:bottom;">
-                        <img  style="vertical-align:bottom;" src="https://www.filepicker.io/api/file/9f3sP1z8SeW1sMiDA48o"  width="174" height="294" />
-                      </td>
-                      --!>
+                    
                     </tr>
                   </table>
                 </td>

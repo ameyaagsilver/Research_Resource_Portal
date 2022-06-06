@@ -34,6 +34,7 @@ service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES) # Gm
 
 
 def issueResource(request):
+    print(request)
     adminID = None
     try:
         isAdmin = request.session['isAdmin']
@@ -65,6 +66,7 @@ def issueResource(request):
             threadAddResource = Thread(target=sendIssueConfirmationThroughMail, args=('rvce.resource.portal@gmail.com', user, resource, admin, new_logbook_instance))
             threadAddResource.start()
             print("*********************")
+            messages.info(request, "Resource successfully allocated to "+user_mail_id+"("+user.USN+")")
             # sendIssueConfirmationThroughMail('rvce.resource.portal@gmail.com', user, resource, admin, new_logbook_instance)
         else:
             messages.info(request, "Currently not available!!! Try later")

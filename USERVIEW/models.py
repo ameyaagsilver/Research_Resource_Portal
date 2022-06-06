@@ -32,6 +32,7 @@ class admins(models.Model):
     class Meta:
         db_table = "admins"
 
+
 class resources(models.Model):
     resource_id = models.AutoField(primary_key=True, default=None)
     resource_name = models.CharField(max_length=250)
@@ -50,6 +51,7 @@ class resources(models.Model):
     class Meta:
         db_table = "resources"
 
+
 class resourceRelatedLinks(models.Model):
     link_id = models.AutoField(primary_key=True)
     url = models.CharField(max_length=400, default="")
@@ -58,6 +60,7 @@ class resourceRelatedLinks(models.Model):
         resources, on_delete=models.CASCADE, db_column="resource_id", null=True, blank=True)
     class Meta:
         db_table = "resourceRelatedLinks"
+
 
 class test(models.Model):
     test_id = models.AutoField(primary_key=True, default=None)

@@ -273,7 +273,7 @@
                                                     </form>
                                                     <hr>
                                                     {% if admin %}
-                                                    <form action="/issue-resource/" method="post">
+                                                    <!-- <form action="/issue-resource/" method="post">
                                                         {% csrf_token %}
                                                         <div id="autocomplete{{resource.resource_id}}" class="autocomplete">
                                                             <input type="email" name="emailID" id="autocomplete"
@@ -309,7 +309,9 @@
                                                                 }
                                                             })
                                                         </script>
-                                                    </form>
+                                                    </form> -->
+                                                    
+                                                    
                                                     <form action="/update-resource/" method="post">
                                                         {% csrf_token %}
                                                         <input type="hidden" name="toUpdatePage" value="YES">

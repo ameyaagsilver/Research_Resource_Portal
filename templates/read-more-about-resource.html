@@ -91,44 +91,11 @@
                                                         </div>
                                                         <!-- <footer class="entry-footer"> -->
                                                             <hr>
-                                                            {% if admin %}
-                                                            <form action="/issue-resource/" method="post">
-                                                                {% csrf_token %}
-                                                                <div id="autocomplete{{resource.resource_id}}" class="autocomplete">
-                                                                    <input type="email" name="emailID" id="autocomplete"
-                                                                        autocomplete="off" placeholder="Email ID for issuing" required></input>
-                                                                    <ul class="autocomplete-result-list"></ul>
-                                                                </div>
-                                                                <br>
-                                                                <input class="btn btn-dark-gray" type="submit"
-                                                                    value="Issue"></input>
-                                                                <input type="hidden" value={{resource.resource_id}}
-                                                                    name="resourceID">
-        
-                                                                <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
-                                                                <script>
-                                                                    new Autocomplete('#autocomplete{{resource.resource_id}}', {
-                                                                        search: input => {
-                                                                            console.log(input)
-                                                                            const url =
-                                                                                `search-email-ids/?emailID=${input}`
-                                                                            return new Promise(resolve => {
-                                                                                fetch(url)
-                                                                                    .then(response => {
-                                                                                        console.log(
-                                                                                            response)
-                                                                                        return response
-                                                                                            .json()
-                                                                                    })
-                                                                                    .then(data => {
-                                                                                        console.log(data)
-                                                                                        resolve(data.data)
-                                                                                    })
-                                                                            })
-                                                                        }
-                                                                    })
-                                                                </script>
-                                                            </form>   
+                                                            {% if admin %}                                                           
+                                                            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{resource.update_id}}"> -->
+                                                            <a><button class="btn btn-dark-gray" data-toggle="modal" data-target="#exampleModalCenter{{resource.update_id}}">Issue resource</button></a>
+                                                            <!-- </button> -->
+
                                                             <form action="/update-resource/" method="post">
                                                                 {% csrf_token %}
                                                                 <input type="hidden" name="toUpdatePage" value="YES">
@@ -151,9 +118,132 @@
                     </main>
                 </div>
             </div>
+            <!-- Modal Content -->
+            <div class="modal fade" id="exampleModalCenter{{resource.update_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Issue this resource</h4>
+                            <div id="autocomplete{{resource.resource_id}}" class="autocomplete">
+                                <input type="email" id="inputEmailID" name="emailID" id="autocomplete"
+                                    autocomplete="off" placeholder="Email ID for issuing" required></input>
+                                <ul class="autocomplete-result-list"></ul>
+                            </div>
+                            <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+                            <script>
+                                new Autocomplete('#autocomplete{{resource.resource_id}}', {
+                                    search: input => {
+                                        console.log(input)
+                                        const url =
+                                            `search-email-ids/?emailID=${input}`
+                                        return new Promise(resolve => {
+                                            fetch(url)
+                                                .then(response => {
+                                                    console.log(
+                                                        response)
+                                                    return response
+                                                        .json()
+                                                })
+                                                .then(data => {
+                                                    console.log(data)
+                                                    resolve(data.data)
+                                                })
+                                        })
+                                    }
+                                })
+                            </script>
+                            <input type="submit" onclick="getStudentInfo()" class="" value="Get Info"></input>
+                            <script>
+                                window.onload = function() {
+                                    var src = document.getElementById("inputEmailID"),
+                                        dst = document.getElementById("email_id_input");
+                                    src.addEventListener('input', function() {
+                                        dst.value = src.value;
+                                    });
+                                    src.addEventListener('change', function() {
+                                        dst.value = src.value;
+                                    });
+                                };
+
+                                function getStudentInfo() {
+                                    clearAllFields();
+                                    const url = `fetch-user-info-with-mail-id/?emailID=`+document.getElementById("inputEmailID").value;
+                                    const studentInfo = fetch(url)
+                                    .then(response => {
+                                        return response.json()
+                                    })
+                                    .then(data => {
+                                        // console.log(data.data)
+                                        resolve(data.data)
+                                    });
+                                }
+
+                                function resolve(data) {
+                                    console.log(data);
+                                    document.getElementById("full_name_field").innerHTML = "<strong>Name</strong> "+data.first_name + " " + data.middle_name + " " + data.last_name;
+                                    document.getElementById("USN_field").innerHTML = "<strong>USN</strong> "+data.USN;
+                                    document.getElementById("department_name_field").innerHTML = "<strong>Department</strong> "+data.department_name;
+                                    document.getElementById("phone_no_field").innerHTML = "<strong>Phone No</strong> "+data.phone_no;
+                                    document.getElementById("emailID_field").innerHTML = "<strong>Email ID</strong> "+data.emailID;
+                                    document.getElementById("issue_button").disabled = false;
+                                }
+
+                                function clearAllFields() {
+                                    document.getElementById("full_name_field").innerHTML = "<strong>Name</strong> "+"N/A";
+                                    document.getElementById("USN_field").innerHTML = "<strong>USN</strong> "+"N/A";
+                                    document.getElementById("department_name_field").innerHTML = "<strong>Department</strong> "+"N/A";
+                                    document.getElementById("phone_no_field").innerHTML = "<strong>Phone No</strong> "+"N/A";
+                                    document.getElementById("emailID_field").innerHTML = "<strong>Email ID</strong> "+"N/A";
+                                    document.getElementById("issue_button").disabled = true;
+                                }
+                            </script>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="post-detail">
+                                <header class="entry-header">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h3 class="entry-title">
+                                                Student Info 
+                                                <hr>
+                                            </h3>
+                                            <ul>
+                                                <li id="full_name_field"><strong>Name</strong> N/A</li>
+                                                <li id="department_name_field"><strong>Department</strong> N/A</li>
+                                                <li id="USN_field"><strong>USN</strong> N/A</li> 
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ul>
+                                                <br><br><br>
+                                                <li id="emailID_field"><strong>Email ID </strong> N/A</li>
+                                                <li id="phone_no_field"><strong>Phone No. </strong> N/A</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/issue-resource/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="emailID" id="email_id_input"></input>
+                                <input type="hidden" value={{resource.resource_id}} name="resourceID">
+                                <input type="submit" id="issue_button" class="btn btn-primary" value="issue the resource" disabled></input>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
     <br><br><br>
         <!-- End: Resource Info -->
+
+
+
     <div class="row">
         <!-- <br><br> -->
         <section>
@@ -571,7 +661,6 @@
                                                     class="prod-image" style="object-fit:fill;
                                                     padding-right: 10%;
                                                     ">
-    
                         </div>
                         <div class="bio-desk">
                             <form id="read-more-about-resource-{{resource.resource_id}}" action="/read-more-about-resource/" method="post">
@@ -584,7 +673,6 @@
                                 {% csrf_token %}
                                 <input type="hidden" value={{resource.resource_id}}
                                     name="resourceID">
-                                
                                 <p>Location : {{resource.location}}, <strong>{{resource.department_name}}</strong></p>
                                 <p>Description : {{resource.about | truncatechars:40 }}</p>
                                 <input type="submit" class="pull-right" value="Read more"></input>
@@ -593,24 +681,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <script>
-                const form  = document.getElementById('readmoreabout{{resource.resource_id}}');
-                form.addEventListener('click', (event) => {
-                    form.submit();
-                });
-            </script> -->
             {% endfor %}
-            <!-- <script>
-                
-
-                btns.forEach(btn => {
-
-                btn.addEventListener('click', event => {
-                console.log( event.target.id );
-                });
-
-                });
-            </script> -->
         </div>
     </div>
     

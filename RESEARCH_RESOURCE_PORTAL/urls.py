@@ -1,6 +1,5 @@
 from django.conf.urls import include
 from django.contrib import admin
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from testDB import views as v1
 from LOGIN import views as loginVIEW
@@ -11,6 +10,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
 import RESEARCH_RESOURCE_PORTAL.settings as settings
+from django.views.static import serve
 
 urlpatterns = [
     # ADMIN paths included
@@ -31,6 +31,7 @@ urlpatterns = [
     path('search-component/', loginVIEW.searchComponent),
     path('search-component/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
     path('read-more-about-resource/search-email-ids/', loginVIEW.searchAutoCompleteEmailID),
+    path('read-more-about-resource/fetch-user-info-with-mail-id/', loginVIEW.fetchUserInfoWithMailId),
     path('user-profile/', loginVIEW.userProfile, name="user-profile"),
     path('reset-password/', loginVIEW.resetPassword, name="reset-password"),
     
@@ -50,8 +51,9 @@ urlpatterns = [
 
     path('downloadLogsPDF', reportVIEW.downloadLogsPDF, name="downloadLogsPDF"),
     path('downloadLogsXLS', reportVIEW.downloadLogsXLS, name="downloadLogsXLS"),
-    path('print-searched-query', reportVIEW.downloadRecentSearchedQuery, name="print-searched-query")
-
+    path('print-searched-query', reportVIEW.downloadRecentSearchedQuery, name="print-searched-query"),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'LOGIN.views.error_404_handler'

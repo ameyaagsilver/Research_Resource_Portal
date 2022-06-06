@@ -18,6 +18,8 @@ from RESEARCH_RESOURCE_PORTAL.settings import STATIC_ROOT
 from USERVIEW import models
 from django.contrib import auth as djAuth
 from USERVIEW import models as userviewMODELS
+from django.core import serializers
+
 from ast import Not
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
@@ -356,8 +358,25 @@ def searchAutoCompleteEmailID(request):
         allEmailIDs = userviewMODELS.users.objects.filter(emailID__icontains=partialEmailID)
         for email in allEmailIDs:
             allEmails.append(email.emailID)
-    return JsonResponse({'status':200, 'data':allEmails[0:3]})
+    return JsonResponse({'status':200, 'data':allEmails[0:5]})
 
+
+def fetchUserInfoWithMailId(request):
+    print(request.GET.get('emailID'), "**********")
+    email_id = request.GET.get('emailID')
+    user_instance = get_user_instance_by_email(email_id)
+    user = None
+    if user_instance:
+        user = {"user_id" : user_instance.user_id,
+                "first_name" : user_instance.first_name,
+                "middle_name" : user_instance.middle_name,
+                "last_name" : user_instance.last_name,
+                "department_name" : user_instance.department_name,
+                "phone_no" : user_instance.phone_no,
+                "emailID" : user_instance.emailID,
+                "USN" : user_instance.USN
+                }
+    return JsonResponse({'status':200, 'data':user})
 
 def userProfile(request):
     isAdmin = False
@@ -885,3 +904,6 @@ def get_resource_instance_by_id(resourceID):
 
 def searchComponent(request):
     return render(request, "searchComponent.html")
+
+def error_404_handler(request, exception):
+    return render(request, '404.html')

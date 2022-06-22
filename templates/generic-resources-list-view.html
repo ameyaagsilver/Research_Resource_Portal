@@ -3,6 +3,15 @@
 
 
 {% block content %}
+<!-- <select class="form-select" name="orderby">
+    <option value="">H</option>
+    <option>Default sorting</option>
+    <option selected class="active">Sort by popularity</option>
+    <option>Sort by rating</option>
+    <option>Sort by newness</option>
+    <option>Sort by price</option>
+</select> -->
+
     <!-- Start: Page Banner -->
     <section class="page-banner services-banner">
         <div class="container">
@@ -22,10 +31,13 @@
     <!-- End: Page Banner -->
 
     <!-- Start: Book & Media Section -->
+    
     <div id="content" class="site-content">
         <div id="primary" class="content-area">
             <main id="main" class="site-main">
+                
                 <div class="books-media-list">
+                    
                     <div class="container">
                         <div class="row">
                             <!-- Start: Search Section -->
@@ -172,9 +184,12 @@
                             </section>
                             <!-- End: Search Section -->
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-9 col-md-push-3">
+                                
                                 <div class="filter-options margin-list">
+                                    
                                     <div class="row">
                                         <div class="col-md-4 col-sm-4">
                                             <select name="orderby">
@@ -269,7 +284,7 @@
                                                         <input type="hidden" value={{resource.resource_id}}
                                                             name="resourceID">
                                                         <input class="btn btn-dark-gray" type="submit"
-                                                            value="Read More"></input>
+                                                            value="Read More | Issue"></input>
                                                     </form>
                                                     <hr>
                                                     {% if admin %}
@@ -332,8 +347,38 @@
                                     </ul>
                                     {% endfor %}
                                     {% endif %}
+
+                                    <nav class="navigation pagination text-center">
+                                        <div class="pagination">
+                                            <h2 class="">Posts navigation</h2>
+                                            
+                                            <span class="step-links">
+                                                <div class="nav-links">
+                                                    {% if resources.has_previous %}
+                                                    <a class="page-numbers" href="?page=1">&laquo; First</a>
+                                                    <a class="prev page-numbers" href="?page={{ resources.previous_page_number }}"><i class="fa fa-long-arrow-left"></i> Prev page</a>
+                                                    {% endif %}
+                                            
+                                                    <span class="current">
+                                                        Page {{ resources.number }} of {{ resources.paginator.num_pages }}.
+                                                        <!-- <a class="page-numbers" href="#.">{{ resources.number }}</a> -->
+                                                    </span>
+                                                    
+                                                    {% if resources.has_next %}
+                                                        <a class="page-numbers" href="?page={{ resources.paginator.num_pages }}">Last &raquo;</a>
+                                                        <a class="next page-numbers" href="?page={{ resources.next_page_number }}">Next page <i class="fa fa-long-arrow-right"></i></a>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                            </span>
+                                        </div>
+                                    </nav>
                                 </div>
                             </div>
+
+
+
+
                             <div class="col-md-3 col-md-pull-9">
                                 <aside id="secondary" class="sidebar widget-area" data-accordion-group>
                                     <div class="widget widget_related_search open" data-accordion>

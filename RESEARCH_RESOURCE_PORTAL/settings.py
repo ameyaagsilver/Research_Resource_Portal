@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+from requests import Session
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,6 +34,7 @@ ALLOWED_HOSTS = ['*', 'localhost', '192.168.43.96']
 # Application definition
 
 INSTALLED_APPS = [
+    "sslserver",
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,6 +151,13 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://192.168.43.96', 'https://127.0.0.1', 'https://192.168.43.96']
 
+# SECURE_SSL_REDIRECT = True
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
+# C:\Users\ameya\AppData\Local\Programs\Python\Python310\lib\site-packages\sslserver\certs\development.crt
+# C:\Users\ameya\AppData\Local\Programs\Python\Python310\lib\site-packages\sslserver\certs\development.key
+
+SESSION_EXPIRE_SECONDS = 600 #will log you out after 10 minutes
+SESSION_TIMEOUT_REDIRECT = '/signin/'

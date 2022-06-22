@@ -46,8 +46,15 @@
     // window.onunload = function() {
     //     window.open()
     // }
-    // window.onclose = function() {
-    //     window.open()
+    // window.onload = function() {
+    //     console.log(window.self);
+    //     let win  = window.self;
+    //     var timer = setInterval(function() {   
+    //         if(win.closed) {  
+    //             clearInterval(timer);  
+    //             alert('closed');  
+    //         }  
+    //     }, 500); 
     // }
     // window.onload = function() {
     //     alert('Welcome to RRP!!!')
@@ -279,11 +286,11 @@
 <footer class="site-footer">
     <div class="container">
         <div id="footer-widgets">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 widget-container">
+            <div class="row center-content">
+                <div class="">
                     <div id="text-2" class="widget widget_text">
                         <h3 class="footer-widget-title">About Research Resource portal</h3>
-                        <span class="underline left"></span>
+                        <span class="underline center"></span>
                         <div class="textwidget">
                             Students and teachers who are interested in research often don't have proper knowledge
                             about the resources college possesses, so people who face difficulty locating any
@@ -298,39 +305,71 @@
                             <div class="info">
                                 <i class="fa fa-envelope"></i>
                                 <span><a href="mailto:rvce.resource.portal@gmail.com">rvce.resource.portal@gmail.com</a></span>
-                            </div>
-                            <div class="info">
+                                <span>/</span> 
                                 <i class="fa fa-phone"></i>
                                 <span><a href="tel:+91 9876543210">+91 9876543210</a></span>
                             </div>
+                            <div class="info">
+                                
+                            </div>
                         </address>
                     </div>
-                </div>
-                <div class="col-md-2 col-sm-6 widget-container">
-                    <div id="nav_menu-2" class="widget widget_nav_menu">
-                        <h3 class="footer-widget-title">Quick Links</h3>
-                        <span class="underline left"></span>
-                        <div class="menu-quick-links-container">
-                            <ul id="menu-quick-links" class="menu">
-                                <li><a href="/generic-resources-list-view/">Resources</a></li>
-                                <li><a href="https://www.rvce.edu.in//calendar-of-events">Calender of Events</a>
-                                </li>
-                                <li><a href="https://www.rvce.edu.in//feedback-grievance">Feedback/ Grievance</a>
-                                </li>
-                            </ul>
-                        </div>
+                </div>                
+            </div>
+
+            <div class="row center-content" style="background-color: rgba(70, 70, 70, 0.911); padding: 2.5%;">
+                <h3 class="footer-widget-title">Developer details</h3>
+                <span class="underline center"></span>
+                <div class="col-sm-6">
+                  <div class="card">
+                    <img src='/media/hello/ameya.png' style="border-radius:100%;  width:25%" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h3 class="card-title" style="color: white;">Ameya Mahadev Gonal </h3>
+                      <p class="card-text">Upcoming 2023 batch graduate, Department of Information Science Engg.</p>
                     </div>
+                  </div>
                 </div>
-                <div class="clearfix hidden-lg hidden-md hidden-xs tablet-margin-bottom"></div>
-                <div class="col-md-2 col-sm-6 widget-container">
-                    <div id="text-4" class="widget widget_text">
-                        <h3 class="footer-widget-title">Contact Timing</h3>
-                        <span class="underline left"></span>
-                        <div class="timming-text-widget">
-                            <time datetime="2017-02-13">Mon - Thu: 9 am - 6 pm</time>
-                        </div>
+                <div class="col-sm-6">
+                  <div class="card">
+                    <img src='/media/hello/atharv.jpeg' style="border-radius:100%;  width:25%" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h3 class="card-title" style="color: white;">Atharv Prashant Wani</h3>
+                      <p class="card-text">Upcoming 2023 batch graduate, Department of Information Science Engg.</p>
                     </div>
+                  </div>
                 </div>
+            </div>
+
+            <div class="row center-content" style="background-color: rgba(70, 70, 70, 0.911); padding: 2.5%;">
+                <h3 class="footer-widget-title">Project guides</h3>
+                <span class="underline center"></span>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <img src='/media/hello/HoD sir.jpg' style="border-radius:100%;  width:25%" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h3 class="card-title" style="color: white;">Dr. Sagar B M </h3>
+                      <p class="card-text">Head of the Department, Dept. of Information Science & Engineering, RVCE</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <img src='/media/hello/Smitha maam.jpg' style="border-radius:100%;  width:25%" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h3 class="card-title" style="color: white;">Prof. Smitha G R</h3>
+                      <p class="card-text">Assistant Professor, Department of Information Science Engineering, RVCE</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                      <img src='/media/hello/Umesh Sir.jpg' style="border-radius:100%;  width:25%" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h3 class="card-title" style="color: white;">Dr. I M Umesh </h3>
+                        <p class="card-text">System Analyst, R. V. College of Engineering</p>
+                      </div>
+                    </div>
+                  </div>
             </div>
         </div>
     </div>

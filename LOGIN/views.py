@@ -4,6 +4,7 @@ import re, os, email, smtplib
 from email.message import EmailMessage
 from threading import Thread
 from django.http import JsonResponse
+from pkg_resources import resource_exists
 from USERVIEW.models import resources as res
 from django.shortcuts import redirect, render
 import firebase_admin
@@ -19,6 +20,7 @@ from USERVIEW import models
 from django.contrib import auth as djAuth
 from USERVIEW import models as userviewMODELS
 from django.core import serializers
+from django.core.paginator import Paginator
 
 from ast import Not
 from email.mime.base import MIMEBase
@@ -170,7 +172,7 @@ def home(request):
 def services(request):
     return render(request, "services.html")
 
-# DISPLAYs all the resources in the database (for admin as well as to user views) along with the SEARCH feature
+# DISPLAYs all the resources in the college (for admin as well as to user views) along with the SEARCH feature
 def resources(request):
     # SEARCH REDIRECTS BACK TO THE SAME URL= 'GENERIC-RES-LIST-VIEW'
     if request.method == 'POST' and (request.POST.get('keywords') or request.POST.get('resourceID') or request.POST.get('departmentName') or request.POST.get('costUpperBound') or request.POST.get('purchaseDate') or request.POST.get('costLowerBound')):
@@ -240,8 +242,9 @@ def resources(request):
             else:
                 resource_list6 = res.objects.all()
         resource_list = resource_list1 & resource_list2 & resource_list3 & resource_list4 & resource_list5 & resource_list6
-        # resource_list = resource_list[:10]
-        print(resource_list2)
+        paginator = Paginator(resource_list, len(resource_list))
+        page = request.GET.get('page')
+        resource_list = paginator.get_page(page)
         if isAdmin:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": 'YES', "searchedQuery": searchedQuery})
         elif isUser:
@@ -249,17 +252,21 @@ def resources(request):
         else:
             return render(request, "generic-resources-list-view.html", {"resources": resource_list, "searchedQuery": searchedQuery})
 
-    resource_list = res.objects.all()
+    # resource_list = res.objects.all().order_by('?')   #Jumbled order
+    paginator = Paginator(res.objects.all(), 5)
+    page = request.GET.get('page')
+    resources = paginator.get_page(page)
+
     # resource_list = resource_list[:10]
     try:
         username = request.session['username']
         isAdmin = request.session['isAdmin']
         if isAdmin:
-            return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username, "admin": "YES"})
-        return render(request, "generic-resources-list-view.html", {"resources": resource_list, "username": username})
+            return render(request, "generic-resources-list-view.html", {"resources": resources, "username": username, "admin": "YES"})
+        return render(request, "generic-resources-list-view.html", {"resources": resources, "username": username})
     except:
         pass
-    return render(request, "generic-resources-list-view.html", {"resources": resource_list})
+    return render(request, "generic-resources-list-view.html", {"resources": resources})
 
 
 def contact(request):
@@ -377,6 +384,7 @@ def fetchUserInfoWithMailId(request):
                 "USN" : user_instance.USN
                 }
     return JsonResponse({'status':200, 'data':user})
+
 
 def userProfile(request):
     isAdmin = False
